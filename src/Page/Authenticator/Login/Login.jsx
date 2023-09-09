@@ -5,33 +5,59 @@ import * as yup from "yup"
 import { yupResolver } from '@hookform/resolvers/yup';
 import ComInput from "../../Components/ComInput/ComInput";
 import ComButton from "../../Components/ComButton/ComButton";
-import { TextLogin } from "../../../TextContent/TextLogin";
+import { textLogin } from "../../../TextContent/TextLogin";
+import { ComLink } from "../../Components/ComLink/ComLink";
+import { routs } from "../../../constants/ROUT.ts";
+import { useStorage } from "../../../hooks/useLocalStorage";
+import { useEffect, useState } from "react";
+import { fetchData } from "../../../api/api";
 
 
 
 
 export default function Login() {
+    const [Token, setToken] = useStorage("ACCESS_TOKEN",null);
 
+    const [data, setData] = useState({});
+
+    useEffect(() => {
+        // Truyền headers tùy chỉnh (nếu cần) cho yêu cầu GET
+        const headers = {
+          "Custom-Header": "custom-value0",
+          // Thêm các headers khác tùy chỉnh ở đây
+        };
+    
+        // Sử dụng fetchData để lấy danh sách các mục từ API với headers tùy chỉnh
+        fetchData("/", { /* params */ }, headers)
+          .then((data) => {
+            console.log(data);
+            setData(data);
+          })
+          .catch((error) => {
+            console.error("Error fetching items:", error);
+          });
+      }, []);
+    
     const loginMessenger = yup.object({
-        code: yup.string().required(TextLogin.Login.message.username).min(5, "Username must be at least 5 characters"),
-        username: yup.string().required(TextLogin.Login.message.username),
-        password: yup.string().required(TextLogin.Login.message.password),
-        email: yup.string().email('định dạng sai').required('Login ID is required email'),
+        // code: yup.string().required(textLogin.Login.message.username).min(5, "Username must be at least 5 characters"),
+        username: yup.string().required(textLogin.Login.message.username),
+        password: yup.string().required(textLogin.Login.message.password),
+        // email: yup.string().email('định dạng sai').required('Login ID is required email'),
     })
     const LoginRequestDefault = {
-        code: "",
+        // code: "",
         password: "",
         username: "",
-        email: "",
+        // email: "",
 
     };
     const methods = useForm({
         resolver: yupResolver(loginMessenger),
         defaultValues: {
-            code: "",
+            // code: "",
             username: "",
             password: "",
-            email: "",
+            // email: "",
         },
         values: LoginRequestDefault
     })
@@ -56,7 +82,7 @@ export default function Login() {
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                     <FormProvider {...methods} >
                         <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
-
+                            {/* 
                             <ComInput
                                 placeholder={TextLogin.Login.label.username}
                                 label={TextLogin.Login.pageTitle}
@@ -94,28 +120,48 @@ export default function Login() {
                                 maxLength={16}
                                 {...register("password")}
                                 required
+                            /> */}
+
+                            <ComInput
+                                placeholder={textLogin.Login.placeholder.username}
+                                label={textLogin.Login.label.username}
+                                type="text"
+                                // search
+                                maxLength={5}
+                                {...register("username")}
+                                required
                             />
+
+                            <ComInput
+                                placeholder={textLogin.Login.placeholder.password}
+                                label={textLogin.Login.label.password}
+                                type="password"
+                                maxLength={16}
+                                {...register("password")}
+                                required
+                            /> 
                             <ComButton
                                 htmlType="submit"
                                 type="primary"
                             >
                                 login
                             </ComButton>
-                            <ComButton
+
+                            {/* <ComButton
                                 htmlType="submit"
                                 type="primary"
                                 className="bg-black hover:bg-white"
                             >
                                 cancel
-                            </ComButton>
+                            </ComButton> */}
                         </form>
                     </FormProvider>
 
                     <p className="mt-10 text-center text-sm text-gray-500">
                         Not a member?{' '}
-                        <a href="#" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
-                            Start a 14 day free trial
-                        </a>
+                        <ComLink to={routs["/reissue"].link} >
+                            <>{routs["/reissue"].name}</>
+                        </ComLink>
                     </p>
                 </div>
             </div>

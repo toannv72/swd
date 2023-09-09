@@ -1,5 +1,5 @@
 
-export const TextLogin = {
+export const textLogin = {
 
     common: {
         button: {
@@ -11,7 +11,7 @@ export const TextLogin = {
         pageTitle: "login",
         label: {
             username: "Login ID",
-            password: "password"
+            password: "Password"
         },
         placeholder: {
             username: "Please enter you Login ID",
@@ -19,7 +19,7 @@ export const TextLogin = {
         },
         message: {
             username: "Login ID is required item",
-            password: "password is required item"
+            password: "Password is required item"
         }
     },
     
