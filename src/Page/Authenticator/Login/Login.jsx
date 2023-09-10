@@ -7,11 +7,10 @@ import ComInput from "../../Components/ComInput/ComInput";
 import ComButton from "../../Components/ComButton/ComButton";
 import { textLogin } from "../../../TextContent/TextLogin";
 import { ComLink } from "../../Components/ComLink/ComLink";
-import { routs } from "../../../constants/ROUT.ts";
+import { routs } from "../../../constants/ROUT";
 import { useStorage } from "../../../hooks/useLocalStorage";
 import { useEffect, useState } from "react";
 import { postData } from "../../../api/api";
-import Cookies from "js-cookie";
 import ComHeader from "../../Components/ComHeader/ComHeader";
 
 

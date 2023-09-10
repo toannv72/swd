@@ -16,6 +16,8 @@ import { Fragment, useEffect, useState } from 'react'
 import { Dialog, Popover, Tab, Transition } from '@headlessui/react'
 import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import ShoppingCart from '../../Authenticator/ShoppingCart/ShoppingCart'
+import { routs } from '../../../constants/ROUT'
+import { ComLink } from '../ComLink/ComLink'
 
 const navigation = {
     categories: [
@@ -315,14 +317,14 @@ export default function ComHeader() {
 
                                 {/* Logo */}
                                 <div className="ml-4 flex lg:ml-0">
-                                    <a href="#">
+                                    <ComLink to={routs['/'].link}>
                                         <span className="sr-only">Your Company</span>
                                         <img
                                             className="h-8 w-auto"
                                             src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
                                             alt=""
                                         />
-                                    </a>
+                                    </ComLink>
                                 </div>
 
                                 {/* Flyout menus */}
@@ -427,13 +429,13 @@ export default function ComHeader() {
 
                                 <div className="ml-auto flex items-center">
                                     <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                                        <a href="#" className="text-sm font-medium text-gray-700 hover:text-gray-800">
-                                            Sign in
-                                        </a>
+                                        <ComLink to={routs['/login'].link} className="text-sm font-medium text-gray-700 hover:text-gray-800">
+                                        {routs['/login'].name}
+                                        </ComLink>
                                         <span className="h-6 w-px bg-gray-200" aria-hidden="true" />
-                                        <a href="#" className="text-sm font-medium text-gray-700 hover:text-gray-800">
-                                            Create account
-                                        </a>
+                                        <ComLink to={routs['/reissue'].link} className="text-sm font-medium text-gray-700 hover:text-gray-800">
+                                        {routs['/reissue'].name}
+                                        </ComLink>
                                     </div>
 
                                     <div className="hidden lg:ml-8 lg:flex">
