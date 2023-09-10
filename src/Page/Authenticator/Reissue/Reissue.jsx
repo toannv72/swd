@@ -15,8 +15,7 @@ import ComHeader from "../../Components/ComHeader/ComHeader";
 
 
 
-export default function Login() {
-    const [token, setToken] = useStorage("accessToken", null);
+export default function Reissue() {
 
     const [data, setData] = useState({});
     const [disabled, setDisabled] = useState(false);
@@ -24,14 +23,16 @@ export default function Login() {
 
 
     const loginMessenger = yup.object({
-        // code: yup.string().required(textLogin.Login.message.username).min(5, "Username must be at least 5 characters"),
-        username: yup.string().required(textLogin.Login.message.username),
-        password: yup.string().required(textLogin.Login.message.password),
+        // code: yup.string().required(textLogin.Reissue.message.username).min(5, "Username must be at least 5 characters"),
+        username: yup.string().required(textLogin.Reissue.message.username),
+        phone: yup.string().required(textLogin.Reissue.message.phone),
+        password: yup.string().required(textLogin.Reissue.message.password),
         // email: yup.string().email('định dạng sai').required('Login ID is required email'),
     })
     const LoginRequestDefault = {
         // code: "",
         password: "",
+        phone: "",
         username: "",
         // email: "",
 
@@ -41,6 +42,7 @@ export default function Login() {
         defaultValues: {
             // code: "",
             username: "",
+            phone: "",
             password: "",
             // email: "",
         },
@@ -52,7 +54,6 @@ export default function Login() {
         postData('/login', data, {})
             .then((data) => {
                 console.log(data);
-                setToken(data.accessToken)
                 setDisabled(false)
             })
             .catch((error) => {
@@ -66,61 +67,22 @@ export default function Login() {
     // }, [disableds]);
     return (
         <>
-        <ComHeader/>
+            <ComHeader />
             <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
 
                     <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-                        Sign in to your account
+                        Create in to your account
                     </h2>
                 </div>
 
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                     <FormProvider {...methods} >
                         <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
-                            {/* 
+                       
                             <ComInput
-                                placeholder={TextLogin.Login.label.username}
-                                label={TextLogin.Login.pageTitle}
-                                type="numbers"
-                                search
-                                maxLength={5}
-                                // minLength={4}
-                                {...register("code")}
-                                required
-                            />
-
-                            <ComInput
-                                placeholder='question'
-                                label='qưe'
-                                type="text"
-                                // search
-                                maxLength={5}
-                                {...register("username")}
-                                required
-                            />
-
-                            <ComInput
-                                placeholder='email'
-                                label='email'
-                                type="emails"
-                                // search
-                                {...register("email")}
-                                required
-                            />
-
-                            <ComInput
-                                placeholder='question'
-                                label='qưe'
-                                type="password"
-                                maxLength={16}
-                                {...register("password")}
-                                required
-                            /> */}
-
-                            <ComInput
-                                placeholder={textLogin.Login.placeholder.username}
-                                label={textLogin.Login.label.username}
+                                placeholder={textLogin.Reissue.placeholder.username}
+                                label={textLogin.Reissue.label.username}
                                 type="text"
                                 // search
                                 maxLength={15}
@@ -129,8 +91,16 @@ export default function Login() {
                             />
 
                             <ComInput
-                                placeholder={textLogin.Login.placeholder.password}
-                                label={textLogin.Login.label.password}
+                                placeholder={textLogin.Reissue.placeholder.phone}
+                                label={textLogin.Reissue.label.phone}
+                                type="numbers"
+                                maxLength={16}
+                                {...register("phone")}
+                                required
+                            />
+                            <ComInput
+                                placeholder={textLogin.Reissue.placeholder.password}
+                                label={textLogin.Reissue.label.password}
                                 type="password"
                                 maxLength={16}
                                 {...register("password")}
@@ -142,7 +112,7 @@ export default function Login() {
                                 htmlType="submit"
                                 type="primary"
                             >
-                               {textLogin.Login.pageTitle}
+                                {textLogin.Reissue.pageTitle}
                             </ComButton>
 
                             {/* <ComButton
@@ -157,8 +127,8 @@ export default function Login() {
 
                     <p className="mt-10 text-center text-sm text-gray-500">
                         Not a member?{' '}
-                        <ComLink to={routs["/reissue"].link} >
-                            <>{routs["/reissue"].name}</>
+                        <ComLink to={routs["/login"].link} >
+                            <>{routs["/login"].name}</>
                         </ComLink>
                     </p>
                 </div>

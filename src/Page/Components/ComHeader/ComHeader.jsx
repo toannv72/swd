@@ -152,7 +152,7 @@ export default function ComHeader() {
     const updateShoppingCartStatus = (newStatus) => {
         setShoppingCart(newStatus);
     };
- 
+
     return (
         <>
             <ShoppingCart show={shoppingCart} updateShoppingCart={updateShoppingCartStatus}></ShoppingCart>
@@ -271,14 +271,14 @@ export default function ComHeader() {
 
                                     <div className="space-y-6 border-t border-gray-200 px-4 py-6">
                                         <div className="flow-root">
-                                            <a href="#" className="-m-2 block p-2 font-medium text-gray-900">
-                                                Sign in
-                                            </a>
+                                            <ComLink to={routs['/login'].link} className="-m-2 block p-2 font-medium text-gray-900">
+                                                {routs['/login'].name}
+                                            </ComLink>
                                         </div>
                                         <div className="flow-root">
-                                            <a href="#" className="-m-2 block p-2 font-medium text-gray-900">
-                                                Create account
-                                            </a>
+                                            <ComLink to={routs['/reissue'].link} className="-m-2 block p-2 font-medium text-gray-900">
+                                                {routs['/reissue'].name}
+                                            </ComLink>
                                         </div>
                                     </div>
 
@@ -302,7 +302,7 @@ export default function ComHeader() {
                 <header className="relative bg-white">
 
 
-                    <nav aria-label="Top" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <nav aria-label="Top" className="mx-auto max-w-full px-4 sm:px-6 lg:px-8">
                         <div className="border-b border-gray-200">
                             <div className="flex h-16 items-center">
                                 <button
@@ -430,11 +430,11 @@ export default function ComHeader() {
                                 <div className="ml-auto flex items-center">
                                     <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
                                         <ComLink to={routs['/login'].link} className="text-sm font-medium text-gray-700 hover:text-gray-800">
-                                        {routs['/login'].name}
+                                            {routs['/login'].name}
                                         </ComLink>
                                         <span className="h-6 w-px bg-gray-200" aria-hidden="true" />
                                         <ComLink to={routs['/reissue'].link} className="text-sm font-medium text-gray-700 hover:text-gray-800">
-                                        {routs['/reissue'].name}
+                                            {routs['/reissue'].name}
                                         </ComLink>
                                     </div>
 
