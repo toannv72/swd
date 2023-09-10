@@ -10,34 +10,20 @@ import { ComLink } from "../../Components/ComLink/ComLink";
 import { routs } from "../../../constants/ROUT.ts";
 import { useStorage } from "../../../hooks/useLocalStorage";
 import { useEffect, useState } from "react";
-import { fetchData } from "../../../api/api";
-
+import { postData } from "../../../api/api";
+import Cookies from "js-cookie";
+import ComHeader from "../../Components/ComHeader/ComHeader";
 
 
 
 export default function Login() {
-    const [Token, setToken] = useStorage("ACCESS_TOKEN",null);
+    const [token, setToken] = useStorage("accessToken", null);
 
     const [data, setData] = useState({});
+    const [disableds, setDisabled] = useState(false);
 
-    useEffect(() => {
-        // Truyền headers tùy chỉnh (nếu cần) cho yêu cầu GET
-        const headers = {
-          "Custom-Header": "custom-value0",
-          // Thêm các headers khác tùy chỉnh ở đây
-        };
-    
-        // Sử dụng fetchData để lấy danh sách các mục từ API với headers tùy chỉnh
-        fetchData("/", { /* params */ }, headers)
-          .then((data) => {
-            console.log(data);
-            setData(data);
-          })
-          .catch((error) => {
-            console.error("Error fetching items:", error);
-          });
-      }, []);
-    
+
+
     const loginMessenger = yup.object({
         // code: yup.string().required(textLogin.Login.message.username).min(5, "Username must be at least 5 characters"),
         username: yup.string().required(textLogin.Login.message.username),
@@ -62,18 +48,29 @@ export default function Login() {
         values: LoginRequestDefault
     })
     const { handleSubmit, register, setFocus, watch, setValue } = methods
-    const onSubmit = (data) => console.log(data)
+    const onSubmit = (data) => {
+        setDisabled(true)
+        postData('/login', data, {})
+            .then((data) => {
+                console.log(data);
+                setToken(data.accessToken)
+                setDisabled(false)
+            })
+            .catch((error) => {
+                console.error("Error fetching items:", error);
+                setDisabled(false)
+            });
+    }
+    // console.log(disableds);
+    // useEffect(() => {
 
-
+    // }, [disableds]);
     return (
         <>
+        <ComHeader/>
             <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                    <img
-                        className="mx-auto h-10 w-auto"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                        alt="Your Company"
-                    />
+
                     <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
                         Sign in to your account
                     </h2>
@@ -127,7 +124,7 @@ export default function Login() {
                                 label={textLogin.Login.label.username}
                                 type="text"
                                 // search
-                                maxLength={5}
+                                maxLength={15}
                                 {...register("username")}
                                 required
                             />
@@ -139,8 +136,10 @@ export default function Login() {
                                 maxLength={16}
                                 {...register("password")}
                                 required
-                            /> 
+                            />
                             <ComButton
+
+                                disabled={disableds}
                                 htmlType="submit"
                                 type="primary"
                             >

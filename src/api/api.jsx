@@ -1,18 +1,17 @@
 import axios from "axios";
-import { useStorage } from "../hooks/useLocalStorage";
 
 // eslint-disable-next-line react-hooks/rules-of-hooks
 
-const item = window.localStorage.getItem("ACCESS_TOKEN");
-console.log(item);
+
 const api = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: process.env.REACT_APP_BASE_URLS1,
+  withCredentials: true,
 });
-console.log(process.env.REACT_APP_BASE_URLS);
 // Thêm các headers mặc định nếu cần
 // api.defaults.headers.common["Authorization"] = "Bearer YOUR_ACCESS_TOKEN";
+// Đặt cookies vào tiêu đề yêu cầu (nếu có)
 
-export const fetchData = async (endpoint, params = {}, headers = {}) => {
+export const getData = async (endpoint, params = {}, headers = {}) => {
   try {
     const response = await api.get(endpoint, { params, headers });
     return response; // Trả về toàn bộ phản hồi từ API
@@ -21,7 +20,7 @@ export const fetchData = async (endpoint, params = {}, headers = {}) => {
   }
 };
 
-export const createData = async (endpoint, data, headers = {}) => {
+export const postData = async (endpoint, data, headers = {}) => {
   try {
     const response = await api.post(endpoint, data, { headers });
     return response.data;
@@ -30,7 +29,7 @@ export const createData = async (endpoint, data, headers = {}) => {
   }
 };
 
-export const updateData = async (endpoint, id, data, headers = {}) => {
+export const putData = async (endpoint, id, data, headers = {}) => {
   try {
     const response = await api.put(`${endpoint}/${id}`, data, { headers });
     return response.data;
