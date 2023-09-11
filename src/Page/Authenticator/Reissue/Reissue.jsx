@@ -5,7 +5,7 @@ import * as yup from "yup"
 import { yupResolver } from '@hookform/resolvers/yup';
 import ComInput from "../../Components/ComInput/ComInput";
 import ComButton from "../../Components/ComButton/ComButton";
-import { textLogin } from "../../../TextContent/TextLogin";
+import { textApp } from "../../../TextContent/textApp";
 import { ComLink } from "../../Components/ComLink/ComLink";
 import { routs } from "../../../constants/ROUT";
 import { useStorage } from "../../../hooks/useLocalStorage";
@@ -23,10 +23,10 @@ export default function Reissue() {
 
 
     const loginMessenger = yup.object({
-        // code: yup.string().required(textLogin.Reissue.message.username).min(5, "Username must be at least 5 characters"),
-        username: yup.string().required(textLogin.Reissue.message.username),
-        phone: yup.string().required(textLogin.Reissue.message.phone),
-        password: yup.string().required(textLogin.Reissue.message.password),
+        // code: yup.string().required(textApp.Reissue.message.username).min(5, "Username must be at least 5 characters"),
+        username: yup.string().required(textApp.Reissue.message.username),
+        phone: yup.string().required(textApp.Reissue.message.phone),
+        password: yup.string().required(textApp.Reissue.message.password),
         // email: yup.string().email('định dạng sai').required('Login ID is required email'),
     })
     const LoginRequestDefault = {
@@ -81,8 +81,8 @@ export default function Reissue() {
                         <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
                        
                             <ComInput
-                                placeholder={textLogin.Reissue.placeholder.username}
-                                label={textLogin.Reissue.label.username}
+                                placeholder={textApp.Reissue.placeholder.username}
+                                label={textApp.Reissue.label.username}
                                 type="text"
                                 // search
                                 maxLength={15}
@@ -91,16 +91,16 @@ export default function Reissue() {
                             />
 
                             <ComInput
-                                placeholder={textLogin.Reissue.placeholder.phone}
-                                label={textLogin.Reissue.label.phone}
+                                placeholder={textApp.Reissue.placeholder.phone}
+                                label={textApp.Reissue.label.phone}
                                 type="numbers"
                                 maxLength={16}
                                 {...register("phone")}
                                 required
                             />
                             <ComInput
-                                placeholder={textLogin.Reissue.placeholder.password}
-                                label={textLogin.Reissue.label.password}
+                                placeholder={textApp.Reissue.placeholder.password}
+                                label={textApp.Reissue.label.password}
                                 type="password"
                                 maxLength={16}
                                 {...register("password")}
@@ -112,7 +112,7 @@ export default function Reissue() {
                                 htmlType="submit"
                                 type="primary"
                             >
-                                {textLogin.Reissue.pageTitle}
+                                {textApp.Reissue.pageTitle}
                             </ComButton>
 
                             {/* <ComButton
