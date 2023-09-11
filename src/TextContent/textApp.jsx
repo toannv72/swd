@@ -3,13 +3,13 @@ export const textApp = {
 
     common: {
         button: {
-            login: "Login",
+            login: "Đăng nhập",
             reissue: "Reissue",
             createProduct: "Create Product"
         }
     },
     Login: {
-        pageTitle: "login",
+        pageTitle: "Đăng nhập",
         label: {
             username: "Login ID",
             password: "Password"

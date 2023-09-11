@@ -33,9 +33,8 @@ export default function CreateProduct() {
         models: yup.string().required(textApp.CreateProduct.message.models),
         material: yup.string().required(textApp.CreateProduct.message.material),
         accessory: yup.string().required(textApp.CreateProduct.message.accessory),
-        sold: yup.string().required(textApp.CreateProduct.message.sold),
         // image: yup.string().required(textApp.CreateProduct.message.image),
-        describe: yup.string().required(textApp.CreateProduct.message.describe),
+        // describe: yup.string().required(textApp.CreateProduct.message.describe),
         // email: yup.string().email('định dạng sai').required('Login ID is required email'),
     })
     const CreateProductRequestDefault = {
@@ -52,7 +51,6 @@ export default function CreateProduct() {
             models: "",
             material: "",
             accessory: "",
-            sold: "",
             image: [],
             describe: "",
         },
@@ -161,6 +159,7 @@ export default function CreateProduct() {
 
                                     label={textApp.CreateProduct.label.detail}
                                     placeholder={textApp.CreateProduct.placeholder.detail}
+                                    required
                                     type="text"
                                     {...register("detail")}
                                 />
@@ -169,6 +168,7 @@ export default function CreateProduct() {
                                 <ComInput
                                     label={textApp.CreateProduct.label.models}
                                     placeholder={textApp.CreateProduct.placeholder.models}
+                                    required
                                     type="text"
                                     {...register("models")}
                                 />
@@ -177,6 +177,7 @@ export default function CreateProduct() {
                                 <ComInput
                                     label={textApp.CreateProduct.label.material}
                                     placeholder={textApp.CreateProduct.placeholder.material}
+                                    required
                                     type="text"
                                     {...register("material")}
                                 />
@@ -185,18 +186,12 @@ export default function CreateProduct() {
                                 <ComInput
                                     label={textApp.CreateProduct.label.accessory}
                                     placeholder={textApp.CreateProduct.placeholder.accessory}
+                                    required
                                     type="text"
                                     {...register("accessory")}
                                 />
                             </div>
-                            <div className="sm:col-span-2">
-                                <ComInput
-                                    label={textApp.CreateProduct.label.sold}
-                                    placeholder={textApp.CreateProduct.placeholder.sold}
-                                    type="text"
-                                    {...register("sold")}
-                                />
-                            </div>
+                      
 
                             <div className="sm:col-span-2">
 
@@ -212,14 +207,17 @@ export default function CreateProduct() {
                                     />
                                 </div>
                             </div>
-                            <ComUpImg onChange={onChange} />
-                            <input type="file" onChange={handleImageChanges} multiple />
+                            <div className="sm:col-span-1">
+                                <ComUpImg onChange={onChange} />
+                            </div>
                         </div>
                         <div className="mt-10">
                             <ComButton
 
                                 disabled={disabled}
                                 htmlType="submit"
+                                type="primary"
+
                                 className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                             >
                                 {textApp.common.button.createProduct}

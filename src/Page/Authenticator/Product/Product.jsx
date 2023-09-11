@@ -1,10 +1,12 @@
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { StarIcon } from '@heroicons/react/20/solid'
 import { RadioGroup } from '@headlessui/react'
 import ComHeader from '../../Components/ComHeader/ComHeader'
 import ComImage from '../../Components/ComImage/ComImage'
 import ImageGallery from "react-image-gallery";
+import { getData } from '../../../api/api'
+import { useParams } from 'react-router-dom'
 const product = {
     name: 'Basic Tee 6-Pack',
     price: '$192',
@@ -70,27 +72,55 @@ function classNames(...classes) {
 export default function Product() {
     const [selectedColor, setSelectedColor] = useState(product.colors[0])
     const [selectedSize, setSelectedSize] = useState(product.sizes[2])
+    const [Product, setProduct] = useState([])
+    const [images, setImages] = useState([])
+    const { slug } = useParams();
+    console.log(slug);
+    // const images = [
+    //     {
+    //         original: "https://picsum.photos/id/1018/1000/600/",
+    //         thumbnail: "https://picsum.photos/id/1018/250/150/",
+    //     },
+    //     {
+    //         original: "https://picsum.photos/id/1015/1000/600/",
+    //         thumbnail: "https://picsum.photos/id/1015/250/150/",
+    //     },
+    //     {
+    //         original: "https://picsum.photos/id/1019/1000/600/",
+    //         thumbnail: "https://picsum.photos/id/1019/250/150/",
+    //     },
+    // ];
+    // const products = {
+    //     name: 'Tên sản phẩm',
+    //     description: 'Mô tả sản phẩm',
+    //     images: images, // Danh sách các hình ảnh sản phẩm
+    // };
 
-    const images = [
-        {
-            original: "https://picsum.photos/id/1018/1000/600/",
-            thumbnail: "https://picsum.photos/id/1018/250/150/",
-        },
-        {
-            original: "https://picsum.photos/id/1015/1000/600/",
-            thumbnail: "https://picsum.photos/id/1015/250/150/",
-        },
-        {
-            original: "https://picsum.photos/id/1019/1000/600/",
-            thumbnail: "https://picsum.photos/id/1019/250/150/",
-        },
-    ];
-    const products = {
-        name: 'Tên sản phẩm',
-        description: 'Mô tả sản phẩm',
-        images: images, // Danh sách các hình ảnh sản phẩm
-    };
+    useEffect(() => {
+        getData(`/product/${slug}`)
+            .then(product =>
+                setProduct(product.data))
+            .catch((error) => {
+                console.log(error);
+            })
+       
+    }, [slug]);
 
+    useEffect(() => {
+
+        if (Product?.image) {
+            setImages(Product?.image.map(image => ({
+    
+                original: image,
+                thumbnail: image,
+                className: 'w-24 h-24',
+            })
+            ))
+        }
+
+    },[Product])
+
+console.log(Product);
     return (
         <>
             <ComHeader />
@@ -103,16 +133,16 @@ export default function Product() {
 
                     {/* Product info */}
                     <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
-                        {/* <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
-                            <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{product.name}</h1>
-                        </div> */}
+                        <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
+                        </div>
 
                         {/* Options */}
-                        <ComImage product={products} />
+                        <ComImage product={images} />
 
                         <div className="mt-4 lg:row-span-3 lg:mt-0">
-                            <h2 className="sr-only">Product information</h2>
-                            <p className="text-3xl tracking-tight text-gray-900">{product.price}</p>
+                            <h3 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{Product.name}</h3>
+
+                            <p className="text-3xl tracking-tight text-gray-900">{Product.price}</p>
 
                             {/* Reviews */}
                             <div className="mt-6">
@@ -247,38 +277,10 @@ export default function Product() {
 
                     </div>
                     <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
-                        <div className="py-10 lg:col-span-2 lg:col-start-1 lg:border-r  lg:pb-16 lg:pr-8 lg:pt-6">
-                            {/* Description and details */}
+                        <div className="py-10 lg:col-span-2 lg:col-start-1   lg:pb-16  lg:pt-6">
+                            Description and details
 
-                            <div>
-                                <h3 className="sr-only">Description</h3>
-
-                                <div className="space-y-6">
-                                    <p className="text-base text-gray-900">{product.description}</p>
-                                </div>
-                            </div>
-
-                            <div className="mt-10">
-                                <h3 className="text-sm font-medium text-gray-900">Highlights</h3>
-
-                                <div className="mt-4">
-                                    <ul role="list" className="list-disc space-y-2 pl-4 text-sm">
-                                        {product.highlights.map((highlight) => (
-                                            <li key={highlight} className="text-gray-400">
-                                                <span className="text-gray-600">{highlight}</span>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <div className="mt-10">
-                                <h2 className="text-sm font-medium text-gray-900">Details</h2>
-
-                                <div className="mt-4 space-y-6">
-                                    <p className="text-sm text-gray-600">{product.details}</p>
-                                </div>
-                            </div>
+                            {Product.describe}
                         </div>
                     </div>
                 </div>

@@ -3,15 +3,16 @@ import ImageGallery from 'react-image-gallery';
 
 
 const ComImage = ({ product }) => {
-    const images = product?.images.map(image => ({
-        original: image.original,
-        thumbnail: image.thumbnail,
-    }));
+    // const images = product.map(image => ({
+
+    //     original: image.original,
+    //     thumbnail: image.thumbnail,
+    // }));
 
     return (
         <div>
 
-            <ImageGallery items={images} />
+            <ImageGallery thumbnailHeight={200} items={product} />
         </div>
     );
 };
