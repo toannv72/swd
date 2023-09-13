@@ -12,16 +12,16 @@ import { useStorage } from "../../../hooks/useLocalStorage";
 import { useEffect, useState } from "react";
 import { postData } from "../../../api/api";
 import ComHeader from "../../Components/ComHeader/ComHeader";
-
+import { useNavigate } from "react-router-dom";
+import { FieldError } from "../../Components/FieldError/FieldError";
 
 
 export default function Login() {
     const [token, setToken] = useStorage("user", null);
-
-    const [data, setData] = useState({});
     const [disabled, setDisabled] = useState(false);
+    const [Login, setLogin] = useState(false);
 
-
+    const navigate = useNavigate();
 
     const loginMessenger = yup.object({
         // code: yup.string().required(textApp.Login.message.username).min(5, "Username must be at least 5 characters"),
@@ -48,16 +48,19 @@ export default function Login() {
     })
     const { handleSubmit, register, setFocus, watch, setValue } = methods
     const onSubmit = (data) => {
+        setLogin(false)
         setDisabled(true)
         postData('/login', data, {})
             .then((data) => {
                 console.log(data);
                 setToken(data)
                 setDisabled(false)
+                navigate('/')
             })
             .catch((error) => {
                 console.error("Error fetching items:", error);
                 setDisabled(false)
+                setLogin(true)
             });
     }
     // console.log(disableds);
@@ -136,6 +139,8 @@ export default function Login() {
                                 {...register("password")}
                                 required
                             />
+                            
+                            <FieldError className="text-red-500 text-center">{Login?textApp.Login.message.error:''}</FieldError>
                             <ComButton
 
                                 disabled={disabled}
@@ -144,7 +149,7 @@ export default function Login() {
                             >
                                {textApp.Login.pageTitle}
                             </ComButton>
-
+                            
                             {/* <ComButton
                                 htmlType="submit"
                                 type="primary"

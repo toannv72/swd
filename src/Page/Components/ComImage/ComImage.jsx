@@ -11,7 +11,6 @@ const ComImage = ({ product }) => {
 
     return (
         <div>
-
             <ImageGallery thumbnailHeight={200} items={product} />
         </div>
     );

@@ -51,7 +51,7 @@ export default function Reissue() {
     const { handleSubmit, register, setFocus, watch, setValue } = methods
     const onSubmit = (data) => {
         setDisabled(true)
-        postData('/login', data, {})
+        postData('/reg', data, {})
             .then((data) => {
                 console.log(data);
                 setDisabled(false)

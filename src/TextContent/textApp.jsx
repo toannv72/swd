@@ -20,7 +20,8 @@ export const textApp = {
         },
         message: {
             username: "Login ID is required item",
-            password: "Password is required item"
+            password: "Password is required item",
+            error:"Tài khoản hoặc mật khẩu sai"
         }
     },
     Reissue: {
