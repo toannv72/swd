@@ -4,7 +4,6 @@ import { StarIcon } from '@heroicons/react/20/solid'
 import { RadioGroup } from '@headlessui/react'
 import ComHeader from '../../Components/ComHeader/ComHeader'
 import ComImage from '../../Components/ComImage/ComImage'
-import ImageGallery from "react-image-gallery";
 import { getData } from '../../../api/api'
 import { useParams } from 'react-router-dom'
 const product = {
@@ -120,7 +119,6 @@ export default function Product() {
 
     },[Product])
 
-console.log(Product);
     return (
         <>
             <ComHeader />
