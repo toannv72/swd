@@ -9,6 +9,7 @@ import { ChevronDownIcon, } from '@heroicons/react/20/solid'
 import { ComLink } from '../ComLink/ComLink'
 import { Link, useNavigate } from 'react-router-dom'
 import { getData } from '../../../api/api'
+import { Affix } from 'antd'
 
 const products = [
   { name: 'Create Product', href: '/createProduct', },
@@ -40,6 +41,7 @@ export default function ComHeaderAdmin() {
 
   }, [navigate]);
   return (
+    <Affix offsetTop={0} onChange={(affixed) => console.log(affixed)}>
     <header className="bg-white border-b border-gray-200">
       <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
         <div className="flex lg:flex-1">
@@ -193,5 +195,6 @@ export default function ComHeaderAdmin() {
         </Dialog.Panel>
       </Dialog>
     </header>
+    </Affix>
   )
 }
