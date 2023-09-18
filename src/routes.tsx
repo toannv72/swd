@@ -7,6 +7,7 @@ import PageNotFound from "./Page/Authenticator/404/PageNotFound";
 import CreateProduct from "./Page/Authenticator/CreateProduct/CreateProduct";
 import Reissue from "./Page/Authenticator/Reissue/Reissue";
 import PaymentPage from "./Page/Authenticator/Payment/Payment";
+import TableProduct from "./Page/admin/TableProduct";
 
 export const routers = createBrowserRouter([
   {
@@ -33,6 +34,11 @@ export const routers = createBrowserRouter([
     path: "/createProduct",
     element: <CreateProduct />,
   },
+  {
+    path: "/tableProduct",
+    element: <TableProduct />,
+  },
+
   {
     path: "/payment",
     element: <PaymentPage />,

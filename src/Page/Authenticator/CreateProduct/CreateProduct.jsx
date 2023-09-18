@@ -1,8 +1,5 @@
 
 import { useState } from 'react'
-import { ChevronDownIcon } from '@heroicons/react/20/solid'
-import { Switch } from '@headlessui/react'
-import ComHeader from '../../Components/ComHeader/ComHeader'
 import { postData } from '../../../api/api'
 import { textApp } from '../../../TextContent/textApp'
 import ComInput from '../../Components/ComInput/ComInput'
@@ -12,15 +9,11 @@ import * as yup from "yup"
 import ComUpImg from '../../Components/ComUpImg/ComUpImg'
 import { firebaseImgs } from '../../../upImgFirebase/firebaseImgs'
 import ComButton from '../../Components/ComButton/ComButton'
-function classNames(...classes) {
-    return classes.filter(Boolean).join(' ')
-}
+import ComHeaderAdmin from '../../Components/ComHeaderAdmin/ComHeaderAdmin'
+
 
 export default function CreateProduct() {
-    const [agreed, setAgreed] = useState(false)
     const [disabled, setDisabled] = useState(false);
-    const [fileList, setFileList] = useState([]);
-    // const [images, setImageUrls] = useState([]);
     const [image, setImages] = useState([]);
 
 
@@ -69,7 +62,7 @@ export default function CreateProduct() {
                     image: dataImg, // Thêm trường images chứa đường dẫn ảnh
                 };
 
-                postData('/create/store', updatedData, {})
+                postData('/product', updatedData, {})
                     .then((dataS) => {
                         console.log(dataS);
                         setDisabled(false)
@@ -98,23 +91,17 @@ export default function CreateProduct() {
         console.log(image);
         // setFileList(data);
     }
-    const handleImageChanges = (e) => {
-        const selectedImages = e.target.files;
-        console.log(selectedImages);
-        setImages([selectedImages]);
-    };
+
     return (
         <>
-            <ComHeader />
-            <div className="isolate bg-white px-6 py-24 sm:py-32 lg:px-8">
-
+            <ComHeaderAdmin />
+            
+            <div className="isolate bg-white px-6 py-10 sm:py-10 lg:px-8">
                 <div className="mx-auto max-w-2xl text-center">
                     <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
                         {textApp.CreateProduct.pageTitle}
                     </h2>
-                    <p className="mt-2 text-lg leading-8 text-gray-600">
-                        Aute magna irure deserunt veniam aliqua magna enim voluptate.
-                    </p>
+                
                 </div>
                 <FormProvider {...methods} >
                     <form onSubmit={handleSubmit(onSubmit)} className="mx-auto mt-16 max-w-xl sm:mt-20">
@@ -136,7 +123,6 @@ export default function CreateProduct() {
                                     label={textApp.CreateProduct.label.price}
                                     placeholder={textApp.CreateProduct.placeholder.price}
                                     type="numbers"
-                                    id="first-name"
                                     {...register("price")}
                                     required
                                 />
