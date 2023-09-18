@@ -1,15 +1,16 @@
 
 import { useState } from 'react'
-import { postData } from '../../../api/api'
-import { textApp } from '../../../TextContent/textApp'
-import ComInput from '../../Components/ComInput/ComInput'
+import { postData } from '../../api/api'
+import { textApp } from '../../TextContent/textApp'
+import ComInput from '../Components/ComInput/ComInput'
 import { FormProvider, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from "yup"
-import ComUpImg from '../../Components/ComUpImg/ComUpImg'
-import { firebaseImgs } from '../../../upImgFirebase/firebaseImgs'
-import ComButton from '../../Components/ComButton/ComButton'
-import ComHeaderAdmin from '../../Components/ComHeaderAdmin/ComHeaderAdmin'
+import ComUpImg from '../Components/ComUpImg/ComUpImg'
+import { firebaseImgs } from '../../upImgFirebase/firebaseImgs'
+import ComButton from '../Components/ComButton/ComButton'
+import ComHeaderAdmin from '../Components/ComHeaderAdmin/ComHeaderAdmin'
+import ComTextArea from '../Components/ComInput/ComTextArea'
 
 
 export default function CreateProduct() {
@@ -27,7 +28,7 @@ export default function CreateProduct() {
         material: yup.string().required(textApp.CreateProduct.message.material),
         accessory: yup.string().required(textApp.CreateProduct.message.accessory),
         // image: yup.string().required(textApp.CreateProduct.message.image),
-        // describe: yup.string().required(textApp.CreateProduct.message.describe),
+        description: yup.string().required(textApp.CreateProduct.message.description),
         // email: yup.string().email('định dạng sai').required('Login ID is required email'),
     })
     const CreateProductRequestDefault = {
@@ -95,13 +96,13 @@ export default function CreateProduct() {
     return (
         <>
             <ComHeaderAdmin />
-            
+
             <div className="isolate bg-white px-6 py-10 sm:py-10 lg:px-8">
                 <div className="mx-auto max-w-2xl text-center">
                     <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
                         {textApp.CreateProduct.pageTitle}
                     </h2>
-                
+
                 </div>
                 <FormProvider {...methods} >
                     <form onSubmit={handleSubmit(onSubmit)} className="mx-auto mt-16 max-w-xl sm:mt-20">
@@ -177,19 +178,19 @@ export default function CreateProduct() {
                                     {...register("accessory")}
                                 />
                             </div>
-                      
+
 
                             <div className="sm:col-span-2">
 
                                 <div className="mt-2.5">
-                                    <textarea
-                                        name="message"
-                                        id="message"
-                                        rows={4}
-                                        className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                        defaultValue={''}
-                                        {...register("describe")}
 
+
+                                    <ComTextArea
+                                        label={textApp.CreateProduct.label.description}
+                                        placeholder={textApp.CreateProduct.placeholder.description}
+                                        rows={4}
+                                        defaultValue={''}
+                                        {...register("description")}
                                     />
                                 </div>
                             </div>

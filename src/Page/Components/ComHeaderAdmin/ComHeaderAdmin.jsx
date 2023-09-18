@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Dialog, Disclosure, Popover, Transition } from '@headlessui/react'
 import {
   Bars3Icon,
@@ -7,10 +7,12 @@ import {
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, } from '@heroicons/react/20/solid'
 import { ComLink } from '../ComLink/ComLink'
+import { Link, useNavigate } from 'react-router-dom'
+import { getData } from '../../../api/api'
 
 const products = [
-  { name: 'Create Product', href: '/createProduct',  },
-  { name: 'table Product', href: '/tableProduct',  },
+  { name: 'Create Product', href: '/createProduct', },
+  { name: 'table Product', href: '/tableProduct', },
 ]
 
 
@@ -20,7 +22,23 @@ function classNames(...classes) {
 
 export default function ComHeaderAdmin() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    getData('/admin')
+      .then((data) => {
+        if (!data.data.admin) {
+          navigate('/')
+        } 
+        if (data.data.admin==='login') {
+          navigate('/login')
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+
+  }, [navigate]);
   return (
     <header className="bg-white border-b border-gray-200">
       <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
@@ -63,7 +81,7 @@ export default function ComHeaderAdmin() {
                       key={item.name}
                       className="group relative flex items-center gap-x-6 rounded-lg p-1 text-sm leading-6 hover:bg-gray-50"
                     >
-                    
+
                       <div className="min-w-full ">
                         <ComLink to={item.href} className=" font-semibold text-gray-900 whitespace-nowrap ">
                           {item.name}
@@ -73,7 +91,7 @@ export default function ComHeaderAdmin() {
                     </div>
                   ))}
                 </div>
-              
+
               </Popover.Panel>
             </Transition>
           </Popover>
@@ -89,9 +107,9 @@ export default function ComHeaderAdmin() {
           </a>
         </Popover.Group>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-            Log in <span aria-hidden="true">&rarr;</span>
-          </a>
+          <Link to="/login" className="text-sm font-semibold leading-6 text-gray-900">
+            Logout
+          </Link>
         </div>
       </nav>
       <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>

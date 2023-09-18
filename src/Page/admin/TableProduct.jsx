@@ -4,18 +4,42 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from "yup"
 
-import { Table } from 'antd';
+import { Modal, Table, Typography, notification } from 'antd';
 import { textApp } from '../../TextContent/textApp';
-import { getData, postData } from '../../api/api';
+import { getData, postData, putData } from '../../api/api';
 import { firebaseImgs } from '../../upImgFirebase/firebaseImgs';
 import ComHeaderAdmin from '../Components/ComHeaderAdmin/ComHeaderAdmin';
+import ComButton from '../Components/ComButton/ComButton';
+import ComUpImg from '../Components/ComUpImg/ComUpImg';
+import ComInput from '../Components/ComInput/ComInput';
+import ComTextArea from '../Components/ComInput/ComTextArea';
 
 
-export default function CreateProduct() {
+export default function TableProduct() {
     const [disabled, setDisabled] = useState(false);
     const [image, setImages] = useState([]);
     const [products, setProducts] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [productRequestDefault, setProductRequestDefault] = useState({});
+    const [api, contextHolder] = notification.useNotification();
 
+    const showModalEdit = (e) => {
+        setProductRequestDefault({
+            name: e.name,
+            price: e.price,
+            quantity: e.quantity,
+            detail: e.detail,
+            models: e.models,
+            material: e.material,
+            accessory: e.accessory,
+            description: e.description,
+            id: e._id
+        })
+        setIsModalOpen(true);
+    };
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
 
     const CreateProductMessenger = yup.object({
 
@@ -27,13 +51,13 @@ export default function CreateProduct() {
         material: yup.string().required(textApp.CreateProduct.message.material),
         accessory: yup.string().required(textApp.CreateProduct.message.accessory),
         // image: yup.string().required(textApp.CreateProduct.message.image),
-        // describe: yup.string().required(textApp.CreateProduct.message.describe),
+        description: yup.string().required(textApp.CreateProduct.message.description),
         // email: yup.string().email('định dạng sai').required('Login ID is required email'),
     })
-    const CreateProductRequestDefault = {
+    // const productRequestDefault = {
+    //     name: "123"
 
-
-    };
+    // };
     const methods = useForm({
         resolver: yupResolver(CreateProductMessenger),
         defaultValues: {
@@ -44,40 +68,61 @@ export default function CreateProduct() {
             models: "",
             material: "",
             accessory: "",
-            image: [],
-            describe: "",
+            description: "",
         },
-        values: CreateProductRequestDefault
+        values: productRequestDefault
     })
     const { handleSubmit, register, setFocus, watch, setValue } = methods
 
     const onSubmit = (data) => {
-        console.log(data);
         setDisabled(true)
         firebaseImgs(image)
             .then((dataImg) => {
-                console.log('ảnh nè : ', dataImg);
-                const updatedData = {
-                    ...data, // Giữ lại các trường dữ liệu hiện có trong data
-                    image: dataImg, // Thêm trường images chứa đường dẫn ảnh
-                };
+                if (Array.isArray(image) && image.length === 0) {
+                    const updatedData = {
+                        ...data, // Giữ lại các trường dữ liệu hiện có trong data
+                    };
 
-                postData('/product', updatedData, {})
-                    .then((dataS) => {
-                        console.log(dataS);
-                        setDisabled(false)
-                    })
-                    .catch((error) => {
-                        console.error("Error fetching items:", error);
-                        setDisabled(false)
-                    });
+                    putData(`/product`, productRequestDefault.id, updatedData, {})
+                        .then((dataS) => {
+                            api["success"]({
+                                message: 'Notification Title',
+                                description:
+                                  'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
+                              });
+                        })
+                        .catch((error) => {
+                            console.error("Error fetching items:", error);
+                            setDisabled(false)
+                        });
+                } else {
+                    const updatedData = {
+                        ...data, // Giữ lại các trường dữ liệu hiện có trong data
+                        image: dataImg, // Thêm trường images chứa đường dẫn ảnh
+                    };
+                    putData(`/product`, productRequestDefault.id, updatedData, {})
+                        .then((dataS) => {
+                            api["success"]({
+                                message: 'Notification Title',
+                                description:
+                                  'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
+                              });
+                        })
+                        .catch((error) => {
+                            console.error("Error fetching items:", error);
+                            setDisabled(false)
+                        });
+                }
+
             }
             )
             .catch((error) => {
                 console.log(error)
             });
-
-
+        setImages([]);
+        setDisabled(false)
+        setIsModalOpen(false);
+      
     }
 
     useEffect(() => {
@@ -93,8 +138,7 @@ export default function CreateProduct() {
                 console.error("Error fetching items:", error);
                 setDisabled(false)
             });
-    }, []);
-    console.log(products);
+    }, [disabled]);
     const onChange = (data) => {
         const selectedImages = data;
         // Tạo một mảng chứa đối tượng 'originFileObj' của các tệp đã chọn
@@ -168,16 +212,24 @@ export default function CreateProduct() {
             key: 'operation',
             fixed: 'right',
             width: 100,
-            render: () => <a>action</a>,
+            render: (_, record) => (
+
+                <Typography.Link onClick={() => showModalEdit(record)}>
+                    Edit
+                </Typography.Link>
+
+            )
         },
     ];
 
 
     return (
         <>
+         {contextHolder}
             <ComHeaderAdmin />
-            <div className='flex p-5'>
+            <div className='flex p-5 '>
                 <Table
+                    rowKey="_id"
                     columns={columns}
                     dataSource={products}
                     scroll={{
@@ -191,7 +243,127 @@ export default function CreateProduct() {
                     }}
                 />
             </div>
+            <Modal title={textApp.TableProduct.title.change}
+                okType="primary text-black border-gray-700"
+                open={isModalOpen}
 
+                width={1000}
+                style={{ top: 20 }}
+
+                onCancel={handleCancel}>
+                <FormProvider {...methods} >
+                    <form onSubmit={handleSubmit(onSubmit)} className="mx-auto max-w-xl ">
+                        <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+
+                            <div className="sm:col-span-2">
+                                <div className="mt-2.5">
+                                    <ComInput
+                                        type="text"
+                                        label={textApp.CreateProduct.label.name}
+                                        placeholder={textApp.CreateProduct.placeholder.name}
+                                        {...register("name")}
+                                        required
+                                    />
+                                </div>
+                            </div>
+                            <div>
+                                <ComInput
+                                    label={textApp.CreateProduct.label.price}
+                                    placeholder={textApp.CreateProduct.placeholder.price}
+                                    type="numbers"
+                                    {...register("price")}
+                                    required
+                                />
+
+                            </div>
+                            <div>
+
+                                <ComInput
+                                    label={textApp.CreateProduct.label.quantity}
+                                    placeholder={textApp.CreateProduct.placeholder.quantity}
+                                    type="numbers"
+                                    {...register("quantity")}
+                                    required
+                                />
+
+                            </div>
+                            <div className="sm:col-span-2">
+
+                                <ComInput
+
+                                    label={textApp.CreateProduct.label.detail}
+                                    placeholder={textApp.CreateProduct.placeholder.detail}
+                                    required
+                                    type="text"
+                                    {...register("detail")}
+                                />
+                            </div>
+                            <div className="sm:col-span-2">
+                                <ComInput
+                                    label={textApp.CreateProduct.label.models}
+                                    placeholder={textApp.CreateProduct.placeholder.models}
+                                    required
+                                    type="text"
+                                    {...register("models")}
+                                />
+                            </div>
+                            <div className="sm:col-span-2">
+                                <ComInput
+                                    label={textApp.CreateProduct.label.material}
+                                    placeholder={textApp.CreateProduct.placeholder.material}
+                                    required
+                                    type="text"
+                                    {...register("material")}
+                                />
+                            </div>
+                            <div className="sm:col-span-2">
+                                <ComInput
+                                    label={textApp.CreateProduct.label.accessory}
+                                    placeholder={textApp.CreateProduct.placeholder.accessory}
+                                    required
+                                    type="text"
+                                    {...register("accessory")}
+                                />
+                            </div>
+
+
+                            <div className="sm:col-span-2">
+
+                                <ComTextArea
+                                    label={textApp.CreateProduct.label.description}
+                                    placeholder={textApp.CreateProduct.placeholder.description}
+                                    rows={4}
+                                    defaultValue={''}
+                                    {...register("description")}
+                                />
+
+                            </div>
+                            <div className="sm:col-span-1">
+                                <ComUpImg onChange={onChange} />
+                            </div>
+                        </div>
+                        <div className="mt-10 flex gap-2">
+                            <ComButton
+                                disabled={disabled}
+                                type="primary"
+                                onClick={() => setIsModalOpen(false)}
+                                className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 "
+                            >
+                                {textApp.TableProduct.modal.cancel}
+                            </ComButton>
+                            <ComButton
+                                disabled={disabled}
+                                htmlType="submit"
+                                type="primary"
+                                className="block w-full rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-red-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 bg-red-700"
+                            >
+                                {textApp.TableProduct.modal.submitChange}
+                            </ComButton>
+                        </div>
+                    </form>
+                </FormProvider>
+
+            </Modal>
         </>
     )
 }

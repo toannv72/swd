@@ -21,3 +21,8 @@
 .ant-table-container{
   height: 750px;
 }
+
+
+.ant-modal-footer{
+  display: none!important;
+}

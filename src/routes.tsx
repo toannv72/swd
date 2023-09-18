@@ -5,9 +5,9 @@ import Login from "./Page/Authenticator/Login/Login";
 import Home from "./Page/Authenticator/Home/Home";
 import Product from "./Page/Authenticator/Product/Product";
 import PageNotFound from "./Page/Authenticator/404/PageNotFound";
-import CreateProduct from "./Page/Authenticator/CreateProduct/CreateProduct";
 import Reissue from "./Page/Authenticator/Reissue/Reissue";
 import TableProduct from "./Page/admin/TableProduct";
+import CreateProduct from "./Page/admin/CreateProduct";
 
 
 export const routers = createBrowserRouter(

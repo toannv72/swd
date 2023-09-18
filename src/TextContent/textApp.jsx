@@ -21,7 +21,7 @@ export const textApp = {
         message: {
             username: "Login ID is required item",
             password: "Password is required item",
-            error:"Tài khoản hoặc mật khẩu sai"
+            error: "Tài khoản hoặc mật khẩu sai"
         }
     },
     Reissue: {
@@ -54,7 +54,7 @@ export const textApp = {
             accessory: "accessory",
             sold: "sold",
             image: 'Img',
-            describe: "Describe",
+            description: "Describe",
         },
         placeholder: {
             name: "Please enter Product Name",
@@ -66,7 +66,7 @@ export const textApp = {
             accessory: "Please enter accessory",
             sold: "Please enter sold",
             image: "Please enter Img",
-            describe: "Please enter Describe",
+            description: "Please enter Describe",
         },
         message: {
             name: "name is required item",
@@ -78,7 +78,18 @@ export const textApp = {
             accessory: "accessory is required item",
             sold: "sold is required item",
             image: "image is required item",
-            describe: "describe is required item",
+            description: "description is required item",
+        }
+    },
+    TableProduct: {
+        title:{
+            change:"Chỉnh sửa",
+            delete:'Xóa sản phẩm'
+        },
+        modal: {
+            cancel: "Hủy",
+            submitChange: "Thay đổi",
+            submitDelete: "Xóa"
         }
     }
 

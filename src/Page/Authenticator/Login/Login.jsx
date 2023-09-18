@@ -55,7 +55,12 @@ export default function Login() {
                 console.log(data);
                 setToken(data)
                 setDisabled(false)
-                navigate('/')
+                // navigate('/')
+                if (data._doc.admin) {
+                    navigate('/createProduct')
+                } else {
+                    navigate('/')
+                }
             })
             .catch((error) => {
                 console.error("Error fetching items:", error);
@@ -69,7 +74,7 @@ export default function Login() {
     // }, [disableds]);
     return (
         <>
-        <ComHeader/>
+            <ComHeader />
             <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
 
@@ -139,17 +144,17 @@ export default function Login() {
                                 {...register("password")}
                                 required
                             />
-                            
-                            <FieldError className="text-red-500 text-center">{Login?textApp.Login.message.error:''}</FieldError>
+
+                            <FieldError className="text-red-500 text-center">{Login ? textApp.Login.message.error : ''}</FieldError>
                             <ComButton
 
                                 disabled={disabled}
                                 htmlType="submit"
                                 type="primary"
                             >
-                               {textApp.Login.pageTitle}
+                                {textApp.Login.pageTitle}
                             </ComButton>
-                            
+
                             {/* <ComButton
                                 htmlType="submit"
                                 type="primary"
