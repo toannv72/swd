@@ -11,49 +11,65 @@ import { firebaseImgs } from '../../upImgFirebase/firebaseImgs'
 import ComButton from '../Components/ComButton/ComButton'
 import ComHeaderAdmin from '../Components/ComHeaderAdmin/ComHeaderAdmin'
 import ComTextArea from '../Components/ComInput/ComTextArea'
+import ComNumber from '../Components/ComInput/ComNumber'
+import { notification } from 'antd'
 
 
 export default function CreateProduct() {
     const [disabled, setDisabled] = useState(false);
     const [image, setImages] = useState([]);
+    const [api, contextHolder] = notification.useNotification();
 
 
     const CreateProductMessenger = yup.object({
 
         name: yup.string().required(textApp.CreateProduct.message.name),
-        price: yup.string().required(textApp.CreateProduct.message.price),
-        quantity: yup.string().required(textApp.CreateProduct.message.quantity),
+        price: yup.number().min(1, textApp.CreateProduct.message.priceMin).typeError(textApp.CreateProduct.message.price),
+        price1: yup.string().required(textApp.CreateProduct.message.price).min(1, textApp.CreateProduct.message.priceMin),
+        quantity: yup.number().min(1, textApp.CreateProduct.message.quantityMin).typeError(textApp.CreateProduct.message.quantity),
         detail: yup.string().required(textApp.CreateProduct.message.detail),
         models: yup.string().required(textApp.CreateProduct.message.models),
         material: yup.string().required(textApp.CreateProduct.message.material),
         accessory: yup.string().required(textApp.CreateProduct.message.accessory),
-        // image: yup.string().required(textApp.CreateProduct.message.image),
         description: yup.string().required(textApp.CreateProduct.message.description),
-        // email: yup.string().email('định dạng sai').required('Login ID is required email'),
     })
-    const CreateProductRequestDefault = {
-
+    const createProductRequestDefault = {
+        price: 1000,
 
     };
+
     const methods = useForm({
         resolver: yupResolver(CreateProductMessenger),
         defaultValues: {
             name: "",
-            price: "",
-            quantity: "",
+            quantity: 1,
             detail: "",
             models: "",
             material: "",
             accessory: "",
             image: [],
-            describe: "",
+            description: "",
         },
-        values: CreateProductRequestDefault
+        values: createProductRequestDefault
     })
     const { handleSubmit, register, setFocus, watch, setValue } = methods
 
+    function isInteger(number) {
+        return typeof number === 'number' && isFinite(number) && Math.floor(number) === number;
+      }
     const onSubmit = (data) => {
         console.log(data);
+
+      
+        if (!isInteger(data.price)) {
+
+            api["error"]({
+                message: 'Notification Title',
+                description:
+                  'Giá tiền phải là số nguyên',
+              });
+            return 
+          } 
         setDisabled(true)
         firebaseImgs(image)
             .then((dataImg) => {
@@ -92,11 +108,14 @@ export default function CreateProduct() {
         console.log(image);
         // setFileList(data);
     }
-
+    const handleValueChange = (e,value) => {
+        console.log(value);
+        setValue("price", value, { shouldValidate: true });
+      };
     return (
         <>
+            {contextHolder}
             <ComHeaderAdmin />
-
             <div className="isolate bg-white px-6 py-10 sm:py-10 lg:px-8">
                 <div className="mx-auto max-w-2xl text-center">
                     <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
@@ -120,30 +139,32 @@ export default function CreateProduct() {
                                 </div>
                             </div>
                             <div>
-                                <ComInput
+                                <ComNumber
                                     label={textApp.CreateProduct.label.price}
                                     placeholder={textApp.CreateProduct.placeholder.price}
-                                    type="numbers"
-                                    {...register("price")}
+                                    // type="money"
+                                    defaultValue={1000}
+                                    min={1000}
+                                    money
+                                    onChangeValue={handleValueChange}
+                                    {...register("price1")}
                                     required
                                 />
 
                             </div>
                             <div>
-
-                                <ComInput
+                                <ComNumber
                                     label={textApp.CreateProduct.label.quantity}
                                     placeholder={textApp.CreateProduct.placeholder.quantity}
-                                    type="numbers"
+                                    // type="numbers"
+                                    defaultValue={1}
                                     {...register("quantity")}
                                     required
                                 />
 
                             </div>
                             <div className="sm:col-span-2">
-
                                 <ComInput
-
                                     label={textApp.CreateProduct.label.detail}
                                     placeholder={textApp.CreateProduct.placeholder.detail}
                                     required

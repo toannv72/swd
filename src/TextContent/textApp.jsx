@@ -71,7 +71,9 @@ export const textApp = {
         message: {
             name: "name is required item",
             price: "price is required item",
+            priceMin: "phải lớn hơn hoặc bằng 1",
             quantity: "quantity is required item",
+            quantityMin: "phải lớn hơn hoặc bằng 1",
             detail: "detail is required item",
             models: "models is required item",
             material: "material is required item",
@@ -90,6 +92,27 @@ export const textApp = {
             cancel: "Hủy",
             submitChange: "Thay đổi",
             submitDelete: "Xóa"
+        }
+    },
+    Product:{
+        title:{
+            
+        },
+        page:{
+            quantity:"Số lượng",
+
+        },
+        message: {
+            name: "name is required item",
+            price: "price is required item",
+            quantity: "quantity is required item",
+            detail: "detail is required item",
+            models: "models is required item",
+            material: "material is required item",
+            accessory: "accessory is required item",
+            sold: "sold is required item",
+            image: "image is required item",
+            description: "description is required item",
         }
     }
 
