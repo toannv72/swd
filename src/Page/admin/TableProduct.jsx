@@ -88,8 +88,8 @@ export default function TableProduct() {
                             api["success"]({
                                 message: 'Notification Title',
                                 description:
-                                  'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
-                              });
+                                    'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
+                            });
                         })
                         .catch((error) => {
                             console.error("Error fetching items:", error);
@@ -105,8 +105,8 @@ export default function TableProduct() {
                             api["success"]({
                                 message: 'Notification Title',
                                 description:
-                                  'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
-                              });
+                                    'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
+                            });
                         })
                         .catch((error) => {
                             console.error("Error fetching items:", error);
@@ -122,7 +122,7 @@ export default function TableProduct() {
         setImages([]);
         setDisabled(false)
         setIsModalOpen(false);
-      
+
     }
 
     useEffect(() => {
@@ -148,19 +148,37 @@ export default function TableProduct() {
 
     }
     const columns = [
+
+        {
+            title: 'img',
+           
+            dataIndex: 'image',
+            key: 'img',
+            fixed: 'left',
+            render: (_, record) => (
+
+                <div >
+                    <img src={record.image} alt={record.image} />
+                </div>
+            )
+        },
         {
             title: 'Name',
-            width: 100,
             dataIndex: 'name',
             key: 'name',
             fixed: 'left',
+            render: (_, record) => (
+
+                <div >
+                    <h1>{record.name}</h1>
+                </div>
+            )
         },
         {
             title: 'Price',
             width: 100,
             dataIndex: 'price',
             key: 'price',
-            fixed: 'left',
             sorter: (a, b) => a.price - b.price,
         },
         {
@@ -168,7 +186,6 @@ export default function TableProduct() {
             width: 100,
             dataIndex: 'quantity',
             key: 'quantity',
-            fixed: 'left',
         },
         {
             title: 'createdAt',
@@ -222,10 +239,10 @@ export default function TableProduct() {
         },
     ];
 
-
+    console.log(products);
     return (
         <>
-         {contextHolder}
+            {contextHolder}
             <ComHeaderAdmin />
             <div className='flex p-5 '>
                 <Table
@@ -234,7 +251,7 @@ export default function TableProduct() {
                     dataSource={products}
                     scroll={{
                         x: 1500,
-                        y: 700,
+                        y: 500,
                     }}
                     bordered
                     pagination={{

@@ -11,7 +11,7 @@ const ComImage = ({ product }) => {
 
     return (
         <div>
-            <ImageGallery thumbnailHeight={200} items={product} />
+            <ImageGallery thumbnailHeight={200} fullscreen={false}   showFullscreenButton={false} showPlayButton={false} autoPlay={true} slideDuration={1000} slideInterval={4000}  items={product} />
         </div>
     );
 };

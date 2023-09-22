@@ -25,21 +25,31 @@ export const textApp = {
         }
     },
     Reissue: {
-        pageTitle: "Reissue",
+        pageTitle: "Tạo tài khoản",
         label: {
-            username: "Login User",
-            password: "Password",
-            phone: "Phone number"
+            username: "Tên đăng nhập",
+            password: "Mật Khẩu",
+            password2: "Xác nhận lại mật khẩu",
+            phone: "Số điện thoại",
+            email: "Email"
         },
         placeholder: {
             username: "Please enter you Login User",
             phone: "Please enter you phone",
+            email: "Please enter you email",
             password: "Please enter you password",
+            password2: "Please enter you password",
         },
         message: {
             username: "Login User is required item",
+            usernameMIn: "Tài khoản phải lớn hơn 6 kí tự",
             phone: "Phone is required item",
-            password: "Password is required item"
+            password: "Password is required item",
+            password2: "Password is required item",
+            passwordMIn: "Mật khẩu phải lớn hơn hoặc bằng 5 kí tự",
+            email: "Email is required item",
+            emailFormat:"Định dạng mail không hợp lệ.",
+            passwordCheck:"Mật khẩu nhập lại không khớp.",
         }
     },
     CreateProduct: {
@@ -72,6 +82,7 @@ export const textApp = {
             name: "name is required item",
             price: "price is required item",
             priceMin: "phải lớn hơn hoặc bằng 1",
+            priceDecimal: "Số tiền không được là số thập phân ",
             quantity: "quantity is required item",
             quantityMin: "phải lớn hơn hoặc bằng 1",
             detail: "detail is required item",
