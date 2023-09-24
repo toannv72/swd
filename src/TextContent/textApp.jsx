@@ -64,7 +64,7 @@ export const textApp = {
             accessory: "accessory",
             sold: "sold",
             image: 'Img',
-            description: "Describe",
+            description: "Description",
         },
         placeholder: {
             name: "Please enter Product Name",

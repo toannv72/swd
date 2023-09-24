@@ -239,7 +239,6 @@ export default function TableProduct() {
         },
     ];
 
-    console.log(products);
     return (
         <>
             {contextHolder}
@@ -350,7 +349,9 @@ export default function TableProduct() {
                                     label={textApp.CreateProduct.label.description}
                                     placeholder={textApp.CreateProduct.placeholder.description}
                                     rows={4}
+                                    maxLength={1000}
                                     defaultValue={''}
+                                    required
                                     {...register("description")}
                                 />
 
