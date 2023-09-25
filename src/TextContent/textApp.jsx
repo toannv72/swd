@@ -127,7 +127,7 @@ export const textApp = {
         }
     },
     Footer:{
-        title:"trang mery",
+        title:"Thông tin liên hệ",
     }
 
 }
