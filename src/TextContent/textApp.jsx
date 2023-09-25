@@ -125,6 +125,9 @@ export const textApp = {
             image: "image is required item",
             description: "description is required item",
         }
+    },
+    Footer:{
+        title:"trang mery",
     }
 
 }

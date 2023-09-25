@@ -11,6 +11,7 @@ import ShoppingCart from "../../Authenticator/ShoppingCart/ShoppingCart";
 import { routs } from "../../../constants/ROUT";
 import { ComLink } from "../ComLink/ComLink";
 import { Affix } from "antd";
+import images from "../../../img";
 
 const navigation = {
   categories: [
@@ -364,8 +365,8 @@ export default function ComHeader() {
                     <ComLink to={routs["/"].link}>
                       <span className="sr-only">Your Company</span>
                       <img
-                        className="h-8 w-auto"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                        className="h-16 w-auto "
+                        src={images.logo} 
                         alt=""
                       />
                     </ComLink>

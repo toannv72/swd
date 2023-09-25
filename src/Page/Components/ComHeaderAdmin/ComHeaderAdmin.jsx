@@ -11,6 +11,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { getData } from '../../../api/api'
 import { Affix } from 'antd'
 import { useCookies } from 'react-cookie'
+import images from '../../../img'
 
 const products = [
   { name: 'Create Product', href: '/createProduct', },
@@ -42,6 +43,7 @@ export default function ComHeaderAdmin() {
       })
       .catch((error) => {
         console.log(error);
+        navigate('/login')
       })
 
   }, [navigate]);
@@ -52,7 +54,7 @@ export default function ComHeaderAdmin() {
           <div className="flex lg:flex-1">
             <a href="#" className="-m-1.5 p-1.5">
               <span className="sr-only">Your Company</span>
-              <img className="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="" />
+              <img className="h-8 w-auto" src={images.logo} alt="" />
             </a>
           </div>
           <div className="flex lg:hidden">
