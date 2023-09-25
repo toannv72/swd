@@ -128,6 +128,9 @@ export const textApp = {
     },
     Footer:{
         title:"Thông tin liên hệ",
+        adress: "Địa chỉ: LôE2a Đường D1, Thành phố Thủ Đức",
+        email: "banlongchim@gmail.com",
+        phone: "(0123) 456-7890",
     }
 
 }
