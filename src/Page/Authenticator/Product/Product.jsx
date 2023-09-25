@@ -102,7 +102,7 @@ export default function Product() {
                     
 
                         {/* Options */}
-                        <ComImage product={image} />
+                        <div className='product' ><ComImage product={image} /></div>
 
                         <div className="mt-4 lg:row-span-3 lg:mt-0">
                             <h3 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{Product.name}</h3>

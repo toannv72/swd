@@ -3,14 +3,8 @@
 @tailwind utilities;
 @import "~react-image-gallery/styles/css/image-gallery.css";
 
-.image-gallery-swipe {
-  height: 400px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 
-.image-gallery-image{
+.product .image-gallery-image{
     max-height: 400px!important;
 }
 .image-gallery-thumbnail-image{
@@ -45,63 +39,3 @@
 
 
 
-
-
-
-
-
-
-footer {
-  background-color: #00a5e1; 
-  color: #fff; 
-  padding: 40px 0; 
-}
-
-
-footer h3 {
-  color: #fff;
-}
-
-
-footer a {
-  color: #fff; 
-  text-decoration: none; 
-}
-
-
-footer a:hover {
-  text-decoration: underline; 
-}
-
-
-footer .row {
-  margin-top: 20px; 
-}
-
-
-footer .col-md-4,
-footer .col-md-6 {
-  margin-bottom: 20px;
-}
-
-
-footer ul {
-  list-style-type: none; 
-  padding: 0; 
-}
-
-footer ul li {
-  margin-bottom: 10px;
-}
-
-
-footer .partner-logos {
-  display: flex; 
-  align-items: center; 
-  justify-content: center;
-}
-
-footer .partner-logos img {
-  max-width: 100px; 
-  margin: 0 10px; 
-}

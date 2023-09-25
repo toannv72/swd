@@ -12,10 +12,12 @@ import { getData } from '../../../api/api'
 import { Affix } from 'antd'
 import { useCookies } from 'react-cookie'
 import images from '../../../img'
+import { routs } from '../../../constants/ROUT'
+import { textApp } from '../../../TextContent/textApp'
 
 const products = [
-  { name: 'Create Product', href: '/createProduct', },
-  { name: 'table Product', href: '/tableProduct', },
+  { name:routs['/createProduct'].name, href:routs['/createProduct'].link, },
+  { name:routs['/tableProduct'].name, href: routs['/tableProduct'].link, },
 ]
 
 
@@ -50,11 +52,11 @@ export default function ComHeaderAdmin() {
   return (
     <Affix offsetTop={0} onChange={(affixed) => console.log(affixed)}>
       <header className="bg-white border-b border-gray-200">
-        <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
+        <nav className="mx-auto flex max-w-7xl items-center justify-between  lg:px-8" aria-label="Global">
           <div className="flex lg:flex-1">
             <a href="#" className="-m-1.5 p-1.5">
               <span className="sr-only">Your Company</span>
-              <img className="h-8 w-auto" src={images.logo} alt="" />
+              <img className="h-16 w-auto" src={images.logo} alt="" />
             </a>
           </div>
           <div className="flex lg:hidden">
@@ -69,9 +71,9 @@ export default function ComHeaderAdmin() {
           </div>
           <Popover.Group className="hidden lg:flex lg:gap-x-12">
             <Popover className="relative">
-              <Popover.Button className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">
-                Product
-                <ChevronDownIcon className="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
+              <Popover.Button className="flex items-center gap-x-1 text-sm font-semibold leading-6  text-indigo-600 hover:text-indigo-500 ">
+                {textApp.HeaderAdmin.product}
+                <ChevronDownIcon className="h-5 w-5 flex-none font-semibold text-indigo-600 hover:text-indigo-500 " aria-hidden="true" />
               </Popover.Button>
 
               <Transition
@@ -128,8 +130,8 @@ export default function ComHeaderAdmin() {
               <a href="#" className="-m-1.5 p-1.5">
                 <span className="sr-only">Your Company</span>
                 <img
-                  className="h-8 w-auto"
-                  src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                  className="h-16 w-auto"
+                  src={images.logo}
                   alt=""
                 />
               </a>
@@ -148,7 +150,7 @@ export default function ComHeaderAdmin() {
                   <Disclosure as="div" className="-mx-3">
                     {({ open }) => (
                       <>
-                        <Disclosure.Button className="flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                        <Disclosure.Button className="flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base  leading-7 hover:bg-gray-50 font-semibold text-indigo-600 hover:text-indigo-500 ">
                           Product
                           <ChevronDownIcon
                             className={classNames(open ? 'rotate-180' : '', 'h-5 w-5 flex-none')}
@@ -157,14 +159,14 @@ export default function ComHeaderAdmin() {
                         </Disclosure.Button>
                         <Disclosure.Panel className="mt-2 space-y-2">
                           {[...products].map((item) => (
-                            <Disclosure.Button
+                            <ComLink
                               key={item.name}
                               as="a"
-                              href={item.href}
+                              to={item.href}
                               className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                             >
                               {item.name}
-                            </Disclosure.Button>
+                            </ComLink>
                           ))}
                         </Disclosure.Panel>
                       </>
