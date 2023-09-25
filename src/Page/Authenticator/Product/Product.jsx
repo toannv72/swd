@@ -11,7 +11,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import * as yup from "yup"
 import { yupResolver } from '@hookform/resolvers/yup'
 import ComNumber from '../../Components/ComInput/ComNumber'
-import { InputNumber } from 'antd'
+
 const product = {
 
     sizes: [
@@ -44,7 +44,7 @@ function classNames(...classes) {
 export default function Product() {
     const [selectedSize, setSelectedSize] = useState(product.sizes[2])
     const [Product, setProduct] = useState([])
-    const [images, setImages] = useState([])
+    const [image, setImage] = useState([])
     const { slug } = useParams();
 
 
@@ -80,7 +80,7 @@ export default function Product() {
     useEffect(() => {
 
         if (Product?.image) {
-            setImages(Product?.image.map(image => ({
+            setImage(Product?.image.map(image => ({
 
                 original: image,
                 thumbnail: image,
@@ -89,24 +89,20 @@ export default function Product() {
             ))
         }
     }, [Product])
-
     return (
         <>
             <ComHeader />
             <div className="bg-white">
-                <div className="pt-6">
+                <div className="">
                     {/* Image gallery */}
-                    <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-1 lg:gap-x-8 lg:px-8">
-
-                    </div>
+               
 
                     {/* Product info */}
-                    <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
-                        <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
-                        </div>
+                    <div className="mx-auto max-w-2xl px-4 pb-16 pt-8 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-8">
+                    
 
                         {/* Options */}
-                        <ComImage product={images} />
+                        <ComImage product={image} />
 
                         <div className="mt-4 lg:row-span-3 lg:mt-0">
                             <h3 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{Product.name}</h3>
