@@ -56,11 +56,13 @@ export const textApp = {
         pageTitle: "Create Product",
         label: {
             name: "Product Name",
-            price: "Price",
+            price: "Giá tiền gốc",
+            reducedPrice: "Giá tiền giảm",
+            shape:"Hình dáng",
             quantity: "Quantity",
             detail: "detail",
             models: "models",
-            material: "material",
+            material: "Chất liệu",
             accessory: "accessory",
             sold: "sold",
             image: 'Img',
@@ -70,6 +72,7 @@ export const textApp = {
             name: "Please enter Product Name",
             price: "Please enter price",
             quantity: "Please enter quantity",
+            shape:"Vui lòng nhập hình dáng sản phẩm",
             detail: "Please enter detail",
             models: "Please enter models",
             material: "Please enter material",
@@ -82,6 +85,7 @@ export const textApp = {
             name: "name is required item",
             price: "price is required item",
             priceMin: "phải lớn hơn hoặc bằng 1",
+            shape:"Yêu cầu này là bắt buộc",
             priceDecimal: "Số tiền không được là số thập phân ",
             quantity: "quantity is required item",
             quantityMin: "phải lớn hơn hoặc bằng 1",
@@ -111,7 +115,8 @@ export const textApp = {
         },
         page:{
             quantity:"Số lượng",
-
+            material:"Chất Liệu :",
+            shape:"Hình Dáng :"
         },
         message: {
             name: "name is required item",

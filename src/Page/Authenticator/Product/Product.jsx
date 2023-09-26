@@ -42,19 +42,15 @@ function classNames(...classes) {
 }
 
 export default function Product() {
-    const [selectedSize, setSelectedSize] = useState(product.sizes[2])
     const [Product, setProduct] = useState([])
     const [image, setImage] = useState([])
     const { slug } = useParams();
-
-
 
     const productQuantity = yup.object({
         quantity: yup.number().max(Product.quantity, `Số lượng bạn chọn đã đạt mức tối đa của sản phẩm này`).min(1, "phải lớn hơn hoặc bằng 1").required("Trường số lượng là bắt buộc").typeError("vui lòng chọn nhập vào đây"),
     })
     const LoginRequestDefault = {
         quantity: "1",
-
     };
     const methods = useForm({
         resolver: yupResolver(productQuantity),
@@ -89,17 +85,18 @@ export default function Product() {
             ))
         }
     }, [Product])
+    console.log(Product);
     return (
         <>
             <ComHeader />
             <div className="bg-white">
                 <div className="">
                     {/* Image gallery */}
-               
+
 
                     {/* Product info */}
                     <div className="mx-auto max-w-2xl px-4 pb-16 pt-8 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-8">
-                    
+
 
                         {/* Options */}
                         <div className='product' ><ComImage product={image} /></div>
@@ -131,12 +128,17 @@ export default function Product() {
                                     </a>
                                 </div>
                             </div>
+
+                            <div className='flex pt-2'>{textApp.Product.page.shape} <h2 className='text-indigo-600 '>{Product?.shape}</h2>                             </div>
+                            <div className='flex pt-2'>{textApp.Product.page.material}<div className='text-indigo-600 '>{Product?.material?.map((e) => ` ${e}`)}</div>
+                                {/* {Product?.material?.[1]},{Product?.material?.[2]}. */}
+                            </div>
                             <FormProvider {...methods} >
                                 <form className="mt-10" onSubmit={handleSubmit(onSubmit)}>
 
                                     <div>
                                         <div className='flex gap-4'>
-                                        <h3 className="text-sm font-medium text-gray-900 mt-2">{textApp.Product.page.quantity}</h3>
+                                            <h3 className="text-sm font-medium text-gray-900 mt-2">{textApp.Product.page.quantity}</h3>
                                             {/* <ComInput
                                                 className=" w-56"
                                                 placeholder={textApp.Product.page.quantity}
@@ -155,40 +157,11 @@ export default function Product() {
                                             />
                                             <div className='mt-2'> {Product.quantity} sản phẩm có sẵn</div>
                                         </div>
-                                        {/* <RadioGroup value={selectedColor} onChange={setSelectedColor} className="mt-4">
-                                        <RadioGroup.Label className="sr-only">Choose a color</RadioGroup.Label>
-                                        <div className="flex items-center space-x-3">
-                                            {product.colors.map((color) => (
-                                                <RadioGroup.Option
-                                                    key={color.name}
-                                                    value={color}
-                                                    className={({ active, checked }) =>
-                                                        classNames(
-                                                            color.selectedClass,
-                                                            active && checked ? 'ring ring-offset-1' : '',
-                                                            !active && checked ? 'ring-2' : '',
-                                                            'relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none'
-                                                        )
-                                                    }
-                                                >
-                                                    <RadioGroup.Label as="span" className="sr-only">
-                                                        {color.name}
-                                                    </RadioGroup.Label>
-                                                    <span
-                                                        aria-hidden="true"
-                                                        className={classNames(
-                                                            color.class,
-                                                            'h-8 w-8 rounded-full border border-black border-opacity-10'
-                                                        )}
-                                                    />
-                                                </RadioGroup.Option>
-                                            ))}
-                                        </div>
-                                    </RadioGroup> */}
+
 
                                     </div>
 
-                                    {/* Sizes */}
+                                    {/* Sizes
                                     <div className="mt-10">
                                         <div className="flex items-center justify-between">
                                             <h3 className="text-sm font-medium text-gray-900">Size</h3>
@@ -246,7 +219,7 @@ export default function Product() {
                                                 ))}
                                             </div>
                                         </RadioGroup>
-                                    </div>
+                                    </div> */}
 
                                     <button
                                         type="submit"
