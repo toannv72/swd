@@ -127,10 +127,25 @@ export const textApp = {
         }
     },
     Footer:{
+        contact:{
         title:"Thông tin liên hệ",
         adress: "Địa chỉ: LôE2a Đường D1, Thành phố Thủ Đức",
-        email: "banlongchim@gmail.com",
-        phone: "(0123) 456-7890",
+        email: "Email: banlongchim@gmail.com",
+        phone: "Số điện thoại: (0123) 456-7890",
+        },
+
+        aboutUs:{
+            title:"Thông tin",
+            infor:"Về chúng tôi",
+            info1:"Sản phẩm",
+            info2:"Chính sách bảo mật",
+            info3:"Điều khoản sử dụng"
+        },
+        ship:{
+            title:"Thông tin vận chuyển",
+            freeShip:"Miễn phí vận chuyển cho đơn hàng trên 1.000.000 VND",
+            time:"Thời gian vận chuyển: 3-5 ngày làm việc"
+        }
     }
 
 }
