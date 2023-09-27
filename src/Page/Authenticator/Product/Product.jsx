@@ -85,7 +85,6 @@ export default function Product() {
             ))
         }
     }, [Product])
-    console.log(Product);
     return (
         <>
             <ComHeader />
@@ -149,9 +148,9 @@ export default function Product() {
                                             /> */}
                                             <ComNumber
                                                 className="w-56"
-                                                // min={1} 
+                                                min={1} 
                                                 defaultValue={1}
-                                                // max={Product.quantity} 
+                                                max={Product.quantity} 
                                                 {...register("quantity")}
 
                                             />
@@ -233,8 +232,8 @@ export default function Product() {
 
                     </div>
                     <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
-                        <div className="py-10 lg:col-span-2 lg:col-start-1   lg:pb-16  lg:pt-6 whitespace-pre-line">
-                            <pre>
+                        <div className="py-10 lg:col-span-2 lg:col-start-1   lg:pb-16  lg:pt-6 ">
+                            <pre style={{ whiteSpace: "pre-wrap", wordWrap: "break-word" }}>
                                 {Product.description}
                             </pre>
                         </div>

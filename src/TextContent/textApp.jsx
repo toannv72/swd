@@ -5,7 +5,7 @@ export const textApp = {
         button: {
             login: "Đăng nhập",
             reissue: "Reissue",
-            createProduct: "Create Product"
+            createProduct: "Tạo sản phẩm"
         }
     },
     Login: {
@@ -55,18 +55,18 @@ export const textApp = {
     CreateProduct: {
         pageTitle: "Create Product",
         label: {
-            name: "Product Name",
+            name: "Tên sản phẩm",
             price: "Giá tiền gốc",
             reducedPrice: "Giá tiền giảm",
             shape:"Hình dáng",
-            quantity: "Quantity",
+            quantity: "Số lượng sản phẩm",
             detail: "detail",
             models: "models",
             material: "Chất liệu",
             accessory: "accessory",
             sold: "sold",
             image: 'Img',
-            description: "Description",
+            description: "Chi tiết sản phẩm",
         },
         placeholder: {
             name: "Please enter Product Name",
@@ -96,6 +96,24 @@ export const textApp = {
             sold: "sold is required item",
             image: "image is required item",
             description: "description is required item",
+        },
+        Notification:{
+            m1:{
+                message:"Lỗi",
+                description:"Giá tiền phải là số nguyên!"
+            },
+            m2:{
+                message:"Thành công",
+                description:"Tạo sản phẩm thành công!"
+            },
+            m3:{
+                message:"Lỗi",
+                description:"Tạo sản phẩm không thành công!"
+            },
+            m4:{
+                message:"Lỗi",
+                description:"Vui lòng chọn Chất liệu sản phẩm!"
+            }
         }
     },
     TableProduct: {
@@ -155,6 +173,9 @@ export const textApp = {
             field:"Nhập địa chỉ email",
             submit:"Gửi"
         }
+    },
+    HeaderAdmin:{
+        product:"Sản phẩm",
     }
 
 }

@@ -14,6 +14,7 @@ import ComUpImg from '../Components/ComUpImg/ComUpImg';
 import ComInput from '../Components/ComInput/ComInput';
 import ComTextArea from '../Components/ComInput/ComTextArea';
 import ComNumber from '../Components/ComInput/ComNumber';
+import ComSelect from '../Components/ComInput/ComSelect';
 
 
 export default function TableProduct() {
@@ -72,11 +73,7 @@ export default function TableProduct() {
         console.log(value);
         setValue("reducedPrice", value, { shouldValidate: true });
     };
-    const handleChange = (value) => {
-        setSelectedMaterials(value);
-        setMaterial(value)
-        console.log([value]);
-    };
+  
 
     const CreateProductMessenger = yup.object({
 
@@ -86,18 +83,14 @@ export default function TableProduct() {
         reducedPrice: yup.number().min(1, textApp.CreateProduct.message.priceMin).typeError(textApp.CreateProduct.message.price),
         reducedPrice1: yup.string().required(textApp.CreateProduct.message.price).min(1, textApp.CreateProduct.message.priceMin).test('no-dots', textApp.CreateProduct.message.priceDecimal, value => !value.includes('.')),
         quantity: yup.number().min(1, textApp.CreateProduct.message.quantityMin).typeError(textApp.CreateProduct.message.quantity),
-        detail: yup.string().required(textApp.CreateProduct.message.detail),
+        // detail: yup.string().required(textApp.CreateProduct.message.detail),
         shape: yup.string().required(textApp.CreateProduct.message.shape),
-        models: yup.string().required(textApp.CreateProduct.message.models),
-        // material: yup.string().required(textApp.CreateProduct.message.material),
-        accessory: yup.string().required(textApp.CreateProduct.message.accessory),
+        // models: yup.string().required(textApp.CreateProduct.message.models),
+        material: yup.array().required(textApp.CreateProduct.message.material),
+        // accessory: yup.string().required(textApp.CreateProduct.message.accessory),
         description: yup.string().required(textApp.CreateProduct.message.description),
     })
-    const createProductRequestDefault = {
-        price: 1000,
-        reducedPrice: 1000,
-
-    };
+   
     const methods = useForm({
         resolver: yupResolver(CreateProductMessenger),
         defaultValues: {
@@ -121,7 +114,7 @@ export default function TableProduct() {
                 if (Array.isArray(image) && image.length === 0) {
                     const updatedData = {
                         ...data, // Giữ lại các trường dữ liệu hiện có trong data
-                        material
+                        
                     };
 
                     putData(`/product`, productRequestDefault.id, updatedData, {})
@@ -139,7 +132,6 @@ export default function TableProduct() {
                 } else {
                     const updatedData = {
                         ...data, // Giữ lại các trường dữ liệu hiện có trong data
-                        material,
                         image: dataImg, // Thêm trường images chứa đường dẫn ảnh
                     };
                     putData(`/product`, productRequestDefault.id, updatedData, {})
@@ -283,6 +275,27 @@ export default function TableProduct() {
     const handleChangeSelect = (value) => {
         setSelectedMaterials(value);
       };
+      const handleValueChangeSelect = (e, value) => {
+
+        if (value.length === 0) {
+            setValue("material", null, { shouldValidate: true });
+        } else {
+            setValue("material", value, { shouldValidate: true });
+
+        }
+    };
+    const handleChange = (e,value) => {
+        console.log(value);
+        setSelectedMaterials(value);
+        setMaterial(value)
+        if (value.length === 0) {
+            setValue("material", null, { shouldValidate: true });
+        } else {
+            setValue("material", value, { shouldValidate: true });
+
+        }
+        console.log([value]);
+    };
     return (
         <>
             {contextHolder}
@@ -365,7 +378,7 @@ export default function TableProduct() {
 
                             </div>
 
-                            <div className="">
+                            {/* <div className="">
                             {selectedMaterials}
                                 <Select
                                     size={"large"}
@@ -378,6 +391,23 @@ export default function TableProduct() {
                                     onChange={handleChange}
                                     options={options}
                                 />
+                            </div> */}
+
+                            <div className="">
+                                <ComSelect
+                                    size={"large"}
+                                    style={{
+                                        width: '100%',
+                                    }}
+                                    label={textApp.CreateProduct.label.material}
+                                    placeholder={textApp.CreateProduct.placeholder.material}
+                                    required
+                                    onChangeValue={handleChange}
+                                    value={selectedMaterials}
+                                    options={options}
+                                    {...register("material")}
+
+                                />
                             </div>
                             <div className="sm:col-span-2">
                                 <ComInput
@@ -388,7 +418,7 @@ export default function TableProduct() {
                                     {...register("shape")}
                                 />
                             </div>
-                            <div className="sm:col-span-2">
+                            {/* <div className="sm:col-span-2">
                                 <ComInput
                                     label={textApp.CreateProduct.label.detail}
                                     placeholder={textApp.CreateProduct.placeholder.detail}
@@ -396,8 +426,8 @@ export default function TableProduct() {
                                     type="text"
                                     {...register("detail")}
                                 />
-                            </div>
-                            <div className="sm:col-span-2">
+                            </div> */}
+                            {/* <div className="sm:col-span-2">
                                 <ComInput
                                     label={textApp.CreateProduct.label.models}
                                     placeholder={textApp.CreateProduct.placeholder.models}
@@ -415,7 +445,7 @@ export default function TableProduct() {
                                     type="text"
                                     {...register("accessory")}
                                 />
-                            </div>
+                            </div> */}
 
 
                             <div className="sm:col-span-2">

@@ -19,7 +19,18 @@ export default function Home() {
             });
         console.log(products);
     }, []);
+    function formatCurrency(number) {
+        // Sử dụng hàm toLocaleString() để định dạng số thành chuỗi với ngăn cách hàng nghìn và mặc định là USD.
+        if (number) {
+            
+        }
 
+        return number.toLocaleString('en-US', {
+          style: 'currency',
+          currency: 'VND',
+        });
+      }
+      
     return (
         <>
             <ComHeader />
@@ -41,7 +52,10 @@ export default function Home() {
                                     />
                                 </div>
                                 <h3 className="mt-4 text-sm text-gray-700 line-clamp-2">{product.name}</h3>
-                                <p className="mt-1 text-lg font-medium text-gray-900">{product.price}</p>
+                                <div className="flex justify-between">
+                                <p className="mt-1 ml-2 text-lg font-medium line-through text-slate-600">{formatCurrency(product.price)}</p> 
+                                <p className="mt-1 mr-2 text-lg font-medium  text-slate-950">{formatCurrency(product.reducedPrice)}</p>
+                                </div>
                             </ComLink>
                         ))}
                     </div>
