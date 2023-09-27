@@ -150,6 +150,10 @@ export const textApp = {
             title:"Thông tin vận chuyển",
             freeShip:"Miễn phí vận chuyển cho đơn hàng trên 1.000.000 VND",
             time:"Thời gian vận chuyển: 3-5 ngày làm việc"
+        },
+        send:{
+            field:"Nhập địa chỉ email",
+            submit:"Gửi"
         }
     }
 
