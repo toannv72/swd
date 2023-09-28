@@ -14,15 +14,19 @@ import { postData } from "../../../api/api";
 import ComHeader from "../../Components/ComHeader/ComHeader";
 import { useNavigate } from "react-router-dom";
 import { FieldError } from "../../Components/FieldError/FieldError";
+import { useCookies } from "react-cookie";
 
 
 export default function Login() {
     const [token, setToken] = useStorage("user", null);
     const [disabled, setDisabled] = useState(false);
     const [Login, setLogin] = useState(false);
+    const [cookies, setCookie, removeCookie] = useCookies(['accessToken']);
 
     const navigate = useNavigate();
-
+    useEffect(() => {
+        removeCookie('accessToken');
+    }, []);
     const loginMessenger = yup.object({
         // code: yup.string().required(textApp.Login.message.username).min(5, "Username must be at least 5 characters"),
         username: yup.string().required(textApp.Login.message.username),
@@ -48,6 +52,7 @@ export default function Login() {
     })
     const { handleSubmit, register, setFocus, watch, setValue } = methods
     const onSubmit = (data) => {
+
         setLogin(false)
         setDisabled(true)
         postData('/login', data, {})

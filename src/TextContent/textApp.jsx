@@ -194,6 +194,9 @@ export const textApp = {
     },
     HeaderAdmin: {
         product: "Sản phẩm",
+    },
+    Header: {
+        search: "Tìm kiếm...",
     }
 
 }

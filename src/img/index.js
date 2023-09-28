@@ -24,7 +24,9 @@ const images = {
             className: 'w-24 h-24',
         }
 
-    ]
+    ],
+    avatar:require('./user.jpg')
+    
 };
 
 export default images;
