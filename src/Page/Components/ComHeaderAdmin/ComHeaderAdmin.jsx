@@ -50,7 +50,7 @@ export default function ComHeaderAdmin() {
 
   }, [navigate]);
   return (
-    <Affix offsetTop={0} onChange={(affixed) => console.log(affixed)}>
+    <Affix offsetTop={0}>
       <header className="bg-white border-b border-gray-200">
         <nav className="mx-auto flex max-w-7xl items-center justify-between  lg:px-8" aria-label="Global">
           <div className="flex lg:flex-1">

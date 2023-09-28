@@ -48,8 +48,8 @@ export const textApp = {
             password2: "Password is required item",
             passwordMIn: "Mật khẩu phải lớn hơn hoặc bằng 5 kí tự",
             email: "Email is required item",
-            emailFormat:"Định dạng mail không hợp lệ.",
-            passwordCheck:"Mật khẩu nhập lại không khớp.",
+            emailFormat: "Định dạng mail không hợp lệ.",
+            passwordCheck: "Mật khẩu nhập lại không khớp.",
         }
     },
     CreateProduct: {
@@ -58,7 +58,7 @@ export const textApp = {
             name: "Tên sản phẩm",
             price: "Giá tiền gốc",
             reducedPrice: "Giá tiền giảm",
-            shape:"Hình dáng",
+            shape: "Hình dáng",
             quantity: "Số lượng sản phẩm",
             detail: "detail",
             models: "models",
@@ -72,7 +72,7 @@ export const textApp = {
             name: "Please enter Product Name",
             price: "Please enter price",
             quantity: "Please enter quantity",
-            shape:"Vui lòng nhập hình dáng sản phẩm",
+            shape: "Vui lòng nhập hình dáng sản phẩm",
             detail: "Please enter detail",
             models: "Please enter models",
             material: "Please enter material",
@@ -85,7 +85,7 @@ export const textApp = {
             name: "name is required item",
             price: "price is required item",
             priceMin: "phải lớn hơn hoặc bằng 1",
-            shape:"Yêu cầu này là bắt buộc",
+            shape: "Yêu cầu này là bắt buộc",
             priceDecimal: "Số tiền không được là số thập phân ",
             quantity: "quantity is required item",
             quantityMin: "phải lớn hơn hoặc bằng 1",
@@ -97,44 +97,62 @@ export const textApp = {
             image: "image is required item",
             description: "description is required item",
         },
-        Notification:{
-            m1:{
-                message:"Lỗi",
-                description:"Giá tiền phải là số nguyên!"
+        Notification: {
+            m1: {
+                message: "Lỗi",
+                description: "Giá tiền phải là số nguyên!"
             },
-            m2:{
-                message:"Thành công",
-                description:"Tạo sản phẩm thành công!"
+            m2: {
+                message: "Thành công",
+                description: "Tạo sản phẩm thành công!"
             },
-            m3:{
-                message:"Lỗi",
-                description:"Tạo sản phẩm không thành công!"
+            m3: {
+                message: "Lỗi",
+                description: "Tạo sản phẩm không thành công!"
             },
-            m4:{
-                message:"Lỗi",
-                description:"Vui lòng chọn Chất liệu sản phẩm!"
+            m4: {
+                message: "Lỗi",
+                description: "Vui lòng chọn Chất liệu sản phẩm!"
+            },
+            m5: {
+                message: "Lỗi",
+                description: "Vui lòng chọn ít nhất một ảnh cho sản phẩm!"
             }
         }
     },
     TableProduct: {
-        title:{
-            change:"Chỉnh sửa",
-            delete:'Xóa sản phẩm'
+        title: {
+            change: "Chỉnh sửa",
+            delete: 'Xóa sản phẩm'
         },
         modal: {
             cancel: "Hủy",
             submitChange: "Thay đổi",
             submitDelete: "Xóa"
+        },
+        Notification: {
+            delete: {
+                message: "Thành công!",
+                description: "Đã xóa sản phẩm!"
+            },
+            deleteError: {
+                message: "Thất bại!",
+                description: "Vui lòng kiểm tra lại hoặc báo cho kĩ thuật!"
+            },
+            change: {
+                message: "Thành công!",
+                description: "Vui lòng chọn Chất liệu sản phẩm!"
+            }
         }
     },
-    Product:{
-        title:{
-            
+    Product: {
+        title: {
+
         },
-        page:{
-            quantity:"Số lượng",
-            material:"Chất Liệu :",
-            shape:"Hình Dáng :"
+        page: {
+            quantity: "Số lượng",
+            material: "Chất Liệu :",
+            shape: "Hình Dáng :"
         },
         message: {
             name: "name is required item",
@@ -149,33 +167,33 @@ export const textApp = {
             description: "description is required item",
         }
     },
-    Footer:{
-        contact:{
-        title:"Thông tin liên hệ",
-        adress: "Địa chỉ: LôE2a Đường D1, Thành phố Thủ Đức",
-        email: "Email: banlongchim@gmail.com",
-        phone: "Số điện thoại: (0123) 456-7890",
+    Footer: {
+        contact: {
+            title: "Thông tin liên hệ",
+            adress: "Địa chỉ: LôE2a Đường D1, Thành phố Thủ Đức",
+            email: "Email: banlongchim@gmail.com",
+            phone: "Số điện thoại: (0123) 456-7890",
         },
 
-        aboutUs:{
-            title:"Thông tin",
-            infor:"Về chúng tôi",
-            info1:"Sản phẩm",
-            info2:"Chính sách bảo mật",
-            info3:"Điều khoản sử dụng"
+        aboutUs: {
+            title: "Thông tin",
+            infor: "Về chúng tôi",
+            info1: "Sản phẩm",
+            info2: "Chính sách bảo mật",
+            info3: "Điều khoản sử dụng"
         },
-        ship:{
-            title:"Thông tin vận chuyển",
-            freeShip:"Miễn phí vận chuyển cho đơn hàng trên 1.000.000 VND",
-            time:"Thời gian vận chuyển: 3-5 ngày làm việc"
+        ship: {
+            title: "Thông tin vận chuyển",
+            freeShip: "Miễn phí vận chuyển cho đơn hàng trên 1.000.000 VND",
+            time: "Thời gian vận chuyển: 3-5 ngày làm việc"
         },
-        send:{
-            field:"Nhập địa chỉ email",
-            submit:"Gửi"
+        send: {
+            field: "Nhập địa chỉ email",
+            submit: "Gửi"
         }
     },
-    HeaderAdmin:{
-        product:"Sản phẩm",
+    HeaderAdmin: {
+        product: "Sản phẩm",
     }
 
 }

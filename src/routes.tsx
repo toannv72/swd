@@ -38,7 +38,6 @@ export const routers = createBrowserRouter([
     path: "/tableProduct",
     element: <TableProduct />,
   },
-
   {
     path: "/payment",
     element: <PaymentPage />,
