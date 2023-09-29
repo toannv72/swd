@@ -27,49 +27,49 @@ const products = [
     imageAlt:
       "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
   },
-    {
-      id: 3,
-      name: "Medium Stuff Satchel",
-      href: "#",
-      color: "Blue",
-      price: "$32.00",
-      quantity: 1,
-      imageSrc:
-        "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg",
-      imageAlt:
-        "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
-    },
-    {
-      id: 4,
-      name: "Medium Stuff Satchel",
-      href: "#",
-      color: "Blue",
-      price: "$32.00",
-      quantity: 1,
-      imageSrc:
-        "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg",
-      imageAlt:
-        "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
-    },
-    {
-      id: 5,
-      name: "Medium Stuff Satchel",
-      href: "#",
-      color: "Blue",
-      price: "$32.00",
-      quantity: 1,
-      imageSrc:
-        "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg",
-      imageAlt:
-        "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
-    },
+  {
+    id: 3,
+    name: "Medium Stuff Satchel",
+    href: "#",
+    color: "Blue",
+    price: "$32.00",
+    quantity: 1,
+    imageSrc:
+      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg",
+    imageAlt:
+      "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
+  },
+  {
+    id: 4,
+    name: "Medium Stuff Satchel",
+    href: "#",
+    color: "Blue",
+    price: "$32.00",
+    quantity: 1,
+    imageSrc:
+      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg",
+    imageAlt:
+      "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
+  },
+  {
+    id: 5,
+    name: "Medium Stuff Satchel",
+    href: "#",
+    color: "Blue",
+    price: "$32.00",
+    quantity: 1,
+    imageSrc:
+      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg",
+    imageAlt:
+      "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
+  },
   // More products...
 ];
 
 export default function ShoppingCart({ show, updateShoppingCart }) {
   const [open, setOpen] = useState(show);
-  const [selectAll, setSelectAll] = useState(false); // State cho checkbox "Chọn tất cả"
-  const [selectedProducts, setSelectedProducts] = useState([]); // State cho checkbox sản phẩm riêng lẻ
+  const [selectAll, setSelectAll] = useState(false);
+  const [selectedProducts, setSelectedProducts] = useState([]);
   const [cartProducts, setCartProducts] = useState(products);
 
   const handleRemoveProduct = (productId) => {
@@ -111,11 +111,17 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
 
   const handleProductCheckboxChange = (productId) => {
     if (selectedProducts.includes(productId)) {
-      // Nếu sản phẩm đã được chọn, hãy bỏ chọn nó
       setSelectedProducts(selectedProducts.filter((id) => id !== productId));
     } else {
-      // Nếu sản phẩm chưa được chọn, hãy chọn nó
       setSelectedProducts([...selectedProducts, productId]);
+    }
+
+    if (selectedProducts.length === products.length) {
+      setSelectAll(true);
+    }
+    // Nếu ít nhất một sản phẩm chưa được chọn, hãy bỏ chọn "Chọn tất cả"
+    else {
+      setSelectAll(false);
     }
   };
 
@@ -124,7 +130,7 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
       <label className="inline-flex items-center">
         <input
           type="checkbox"
-          className="form-checkbox text-indigo-600 border-indigo-600"
+          className="form-checkbox text-indigo-600 border-indigo-600 h-5 w-5"
           checked={selectAll}
           onChange={handleSelectAllChange}
         />
@@ -138,6 +144,17 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
     <ul role="list" className="-my-6 divide-y divide-gray-200">
       {products.map((product) => (
         <li key={product.id} className="flex py-6">
+          <div className="flex items-center space-x-2 px-1s sm:px-1">
+            <label className="inline-flex items-center">
+              <input
+                type="checkbox"
+                className="form-checkbox text-indigo-600 border-indigo-600 h-5 w-5"
+                checked={selectedProducts.includes(product.id)}
+                onChange={() => handleProductCheckboxChange(product.id)}
+              />
+              {/* <span className="ml-2 text-gray-700">{product.name}</span>{" "} */}
+            </label>
+          </div>
           <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
             <img
               src={product.imageSrc}
@@ -176,16 +193,6 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
                 >
                   Remove
                 </button>
-              </div>
-              <div className="flex items-center">
-                <label className="inline-flex items-center ml-4">
-                  <input
-                    type="checkbox"
-                    className="form-checkbox text-indigo-600 border-indigo-600"
-                    checked={selectedProducts.includes(product.id)}
-                    onChange={() => handleProductCheckboxChange(product.id)}
-                  />
-                </label>
               </div>
             </div>
           </div>

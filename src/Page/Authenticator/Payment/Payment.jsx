@@ -1,60 +1,108 @@
 import { useState } from "react";
 import "./Payment.css";
 import ComHeader from "../../Components/ComHeader/ComHeader";
-function LeftComponent() {
-  const [fullName, setFullName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [address, setAddress] = useState("");
-  const [email, setEmail] = useState("");
-  const [additionalInfo, setAdditionalInfo] = useState("");
+import * as Yup from "yup";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 
+const validationSchema = Yup.object({
+  fullName: Yup.string().required("Vui lòng nhập họ tên"),
+  phoneNumber: Yup.string()
+    .required("Vui lòng nhập số điện thoại")
+    .length(10, "SĐT phải đủ 10 số")
+    .matches(/^[0-9]+$/, "SĐT không hợp lệ"),
+  email: Yup.string()
+    .email("Email không hợp lệ")
+    .required("Vui lòng nhập email"),
+  address: Yup.string().required("Vui lòng nhập địa chỉ"),
+  paymentMethod: Yup.string().required("Vui lòng chọn hình thức thanh toán"),
+  cardNumber: Yup.string()
+    .required("Vui lòng nhập số thẻ")
+    .matches(/^\d{16}$/, "Số thẻ không hợp lệ (16 chữ số)"),
+  expirationDate: Yup.string()
+    .required("Vui lòng nhập ngày hết hạn")
+    .matches(/^(0[1-9]|1[0-2])\/\d{2}$/, "Ngày hết hạn không hợp lệ (MM/YY)"),
+  cvv: Yup.string()
+    .required("Vui lòng nhập mã CVV")
+    .matches(/^\d{3}$/, "Mã CVV không hợp lệ (3 chữ số)"),
+});
+
+function LeftComponent() {
   return (
     <div className="left-component">
       <h2>Thông tin thanh toán</h2>
-      <div className="input-group">
-        <label>Họ tên:</label>
-        <input
-          placeholder="Nhập họ tên của bạn"
-          type="text"
-          value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
-        />
-      </div>
-      <div className="input-group">
-        <label>Số điện thoại:</label>
-        <input
-          placeholder="Nhập số điện thoại của bạn"
-          type="tel"
-          value={phoneNumber}
-          onChange={(e) => setPhoneNumber(e.target.value)}
-        />
-      </div>
-      <div className="input-group">
-        <label>Địa chỉ:</label>
-        <input
-          placeholder="Nhập địa chỉ của bạn"
-          type="text"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-        />
-      </div>
-      <div className="input-group">
-        <label>Email:</label>
-        <input
-          placeholder="Nhập email của bạn"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </div>
-      <div className="input-group">
-        <label>Thông tin bổ sung:</label>
-        <textarea
-          placeholder="Nhập thông tin bổ sung (nếu có)"
-          value={additionalInfo}
-          onChange={(e) => setAdditionalInfo(e.target.value)}
-        />
-      </div>
+      <Formik
+        initialValues={{
+          fullName: "",
+          phoneNumber: "",
+          address: "",
+          email: "",
+          additionalInfo: "",
+          paymentMethod: "",
+          cardNumber: "",
+          expirationDate: "",
+          cvv: "",
+        }}
+        validationSchema={validationSchema}
+        onSubmit={(values, { setSubmitting }) => {
+          // Handle form submission logic here
+          // You can access form values via the 'values' parameter
+          // Set 'setSubmitting' to true when submitting and false after submission
+          console.log(values);
+          setSubmitting(false);
+        }}
+      >
+        <Form>
+          <div className="input-group">
+            <label>Họ tên:</label>
+            <Field
+              type="text"
+              name="fullName"
+              placeholder="Nhập họ tên của bạn"
+            />
+            <ErrorMessage name="fullName" component="div" className="error" />
+          </div>
+          <div className="input-group">
+            <label>Số điện thoại:</label>
+            <Field
+              type="tel"
+              name="phoneNumber"
+              placeholder="Nhập số điện thoại của bạn"
+            />
+            <ErrorMessage
+              name="phoneNumber"
+              component="div"
+              className="error"
+            />
+          </div>
+          <div className="input-group">
+            <label>Địa chỉ:</label>
+            <Field
+              type="text"
+              name="address"
+              placeholder="Nhập địa chỉ của bạn"
+            />
+            <ErrorMessage name="address" component="div" className="error" />
+          </div>
+          <div className="input-group">
+            <label>Email:</label>
+            <Field type="email" name="email" placeholder="Nhập email của bạn" />
+            <ErrorMessage name="email" component="div" className="error" />
+          </div>
+          <div className="input-group">
+            <label>Thông tin bổ sung:</label>
+            <Field
+              as="textarea"
+              name="additionalInfo"
+              placeholder="Nhập thông tin bổ sung (nếu có)"
+            />
+            <ErrorMessage
+              name="additionalInfo"
+              component="div"
+              className="error"
+            />
+          </div>
+        </Form>
+      </Formik>
     </div>
   );
 }
@@ -76,68 +124,67 @@ function RightComponent() {
       >
         Đơn hàng của bạn
       </h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Sản Phẩm</th>
-            <th>Tạm tính</th>
-          </tr>
-        </thead>
-        <tbody>
-          {/* Dòng mẫu, bạn có thể thêm nhiều dòng sản phẩm ở đây */}
-          <tr>
-            <td>Tên sản phẩm 1</td>
-            <td>$100</td>
-          </tr>
-          <tr>
-            <td>Tên sản phẩm 2</td>
-            <td>$150</td>
-          </tr>
-        </tbody>
-      </table>
-      <div className="payment-options">
-        <h3
-          // in đậm
-          style={{ fontWeight: "bold" }}
-        >
-          Phương thức thanh toán
-        </h3>
-        <label>
-          <input
-            type="radio"
-            value="chuyenkhoan"
-            checked={paymentMethod === "chuyenkhoan"}
-            onChange={handlePaymentMethodChange}
-          />
-          Chuyển khoản
-        </label>
-        <label>
-          <input
-            type="radio"
-            value="tienmat"
-            checked={paymentMethod === "tienmat"}
-            onChange={handlePaymentMethodChange}
-          />
-          Trả tiền mặt khi nhận hàng
-        </label>
+      <Formik
+        initialValues={{
+          fullName: "",
+          phoneNumber: "",
+          address: "",
+          email: "",
+          additionalInfo: "",
+          paymentMethod: "",
+        }}
+        validationSchema={validationSchema}
+        onSubmit={(values, { setSubmitting }) => {
+          // Handle form submission logic here
+          // You can access form values via the 'values' parameter
+          // Set 'setSubmitting' to true when submitting and false after submission
+          console.log(values);
+          setSubmitting(false);
+        }}
+      >
+        {({ isValid, isSubmitting }) => (
+          <Form>
+            <table></table>
+            <div className="payment-options">
+              <h3 style={{ fontWeight: "bold" }}>Phương thức thanh toán</h3>
+              <label>
+                <input
+                  type="radio"
+                  value="chuyenkhoan"
+                  checked={paymentMethod === "chuyenkhoan"}
+                  onChange={handlePaymentMethodChange}
+                />
+                Chuyển khoản
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  value="tienmat"
+                  checked={paymentMethod === "tienmat"}
+                  onChange={handlePaymentMethodChange}
+                />
+                Trả tiền mặt khi nhận hàng
+              </label>
 
-        {/* thông báo xác nhận */}
-        {paymentMethod === "chuyenkhoan" && (
-          <div className="payment-confirm">
-            <p>
-              Vui lòng chuyển khoản đến tài khoản sau: <br />
-              <b>Ngân hàng A, chi nhánh B</b>
-              <br />
-              Số tài khoản: <b>123456789</b>
-              <br />
-              Chủ tài khoản: <b>Nguyễn Văn A</b>
-              <br />
-              Nội dung chuyển khoản: <b>Thanh toan don hang #123456</b>
-            </p>
-          </div>
+              {/* thông báo xác nhận */}
+              {paymentMethod === "chuyenkhoan" && (
+                <div className="payment-confirm">
+                  <p>
+                    Vui lòng chuyển khoản vào tài khoản sau để hoàn tất đơn hàng
+                  </p>
+                </div>
+              )}
+            </div>
+            <button
+              type="submit"
+              className="order-button"
+              disabled={!isValid || isSubmitting}
+            >
+              Đặt hàng
+            </button>
+          </Form>
         )}
-      </div>
-      <button className="order-button">Đặt hàng</button>
+      </Formik>
     </div>
   );
 }
