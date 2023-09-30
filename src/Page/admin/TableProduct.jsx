@@ -15,6 +15,7 @@ import ComInput from '../Components/ComInput/ComInput';
 import ComTextArea from '../Components/ComInput/ComTextArea';
 import ComNumber from '../Components/ComInput/ComNumber';
 import ComSelect from '../Components/ComInput/ComSelect';
+import moment from 'moment/moment';
 
 
 export default function TableProduct() {
@@ -269,14 +270,32 @@ export default function TableProduct() {
         {
             title: 'Ngày tạo',
             dataIndex: 'createdAt',
+            width: 110,
             key: 'createdAt',
-            sorter: (a, b) => a.price - b.price,
+            sorter: (a, b) => moment(a).startOf('hour').fromNow() - moment(b).startOf('hour').fromNow(),
+            render: (_, record) => (    
+
+                <div className="text-sm text-gray-700 line-clamp-4">
+                    <p>{moment(record.createdAt).format('l')}</p>
+                </div>
+
+
+            )
         },
         {
             title: 'Ngày chỉnh sửa',
             dataIndex: 'updatedAt',
+            width: 110,
             key: 'updatedAt',
-            sorter: (a, b) => a.price - b.price,
+            sorter: (a, b) => a.updatedAt - b.updatedAt,
+            render: (_, record) => (
+
+                <div className="text-sm text-gray-700 line-clamp-4">
+                    <p>{moment(record.updatedAt).format('l')}</p>
+                </div>
+
+
+            )
         },
         {
             title: 'Chất liệu',
@@ -364,7 +383,7 @@ export default function TableProduct() {
                     columns={columns}
                     dataSource={products}
                     scroll={{
-                        x: 1500,
+                        x: 1520,
                         // y: 500,
                     }}
                     bordered
@@ -378,153 +397,156 @@ export default function TableProduct() {
                 okType="primary text-black border-gray-700"
                 open={isModalOpen}
 
-                width={1000}
+                width={800}
                 style={{ top: 20 }}
 
                 onCancel={handleCancel}>
                 <FormProvider {...methods} >
                     <form onSubmit={handleSubmit(onSubmit)} className="mx-auto mt-4 max-w-xl sm:mt-8">
-                        <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
-                            <div className="sm:col-span-2">
-                                <div className="mt-2.5">
+                       <div className=' overflow-y-auto p-4'>
+                            <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2"
+                                style={{height: "65vh"}}>
+                                <div className="sm:col-span-2">
+                                    <div className="mt-2.5">
+                                        <ComInput
+                                            type="text"
+                                            label={textApp.CreateProduct.label.name}
+                                            placeholder={textApp.CreateProduct.placeholder.name}
+                                            {...register("name")}
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                                <div>
+                                    <ComNumber
+                                        label={textApp.CreateProduct.label.price}
+                                        placeholder={textApp.CreateProduct.placeholder.price}
+                                        // type="money"
+                                        defaultValue={1000}
+                                        min={1000}
+                                        money
+                                        onChangeValue={handleValueChange}
+                                        {...register("price1")}
+                                        required
+                                    />
+    
+                                </div>
+                                <div>
+                                    <ComNumber
+                                        label={textApp.CreateProduct.label.reducedPrice}
+                                        placeholder={textApp.CreateProduct.placeholder.reducedPrice}
+                                        // type="money"
+                                        defaultValue={1000}
+                                        min={1000}
+                                        money
+                                        onChangeValue={handleValueChange1}
+                                        {...register("reducedPrice1")}
+                                        required
+                                    />
+    
+                                </div>
+                                <div>
+                                    <ComNumber
+                                        label={textApp.CreateProduct.label.quantity}
+                                        placeholder={textApp.CreateProduct.placeholder.quantity}
+                                        // type="numbers"
+                                        defaultValue={1}
+                                        {...register("quantity")}
+                                        required
+                                    />
+    
+                                </div>
+    
+                                {/* <div className="">
+                                {selectedMaterials}
+                                    <Select
+                                        size={"large"}
+                                        style={{
+                                            width: '100%',
+                                        }}
+                                        value={selectedMaterials}
+                                        mode="multiple"
+                                        placeholder={textApp.CreateProduct.placeholder.material}
+                                        onChange={handleChange}
+                                        options={options}
+                                    />
+                                </div> */}
+    
+                                <div className="">
+                                    <ComSelect
+                                        size={"large"}
+                                        style={{
+                                            width: '100%',
+                                        }}
+                                        label={textApp.CreateProduct.label.material}
+                                        placeholder={textApp.CreateProduct.placeholder.material}
+                                        required
+                                        onChangeValue={handleChange}
+                                        value={selectedMaterials}
+                                        options={options}
+                                        {...register("material")}
+    
+                                    />
+                                </div>
+                                <div className="sm:col-span-2">
                                     <ComInput
+                                        label={textApp.CreateProduct.label.shape}
+                                        placeholder={textApp.CreateProduct.placeholder.shape}
+                                        required
                                         type="text"
-                                        label={textApp.CreateProduct.label.name}
-                                        placeholder={textApp.CreateProduct.placeholder.name}
-                                        {...register("name")}
-                                        required
+                                        {...register("shape")}
                                     />
                                 </div>
-                            </div>
-                            <div>
-                                <ComNumber
-                                    label={textApp.CreateProduct.label.price}
-                                    placeholder={textApp.CreateProduct.placeholder.price}
-                                    // type="money"
-                                    defaultValue={1000}
-                                    min={1000}
-                                    money
-                                    onChangeValue={handleValueChange}
-                                    {...register("price1")}
-                                    required
-                                />
-
-                            </div>
-                            <div>
-                                <ComNumber
-                                    label={textApp.CreateProduct.label.reducedPrice}
-                                    placeholder={textApp.CreateProduct.placeholder.reducedPrice}
-                                    // type="money"
-                                    defaultValue={1000}
-                                    min={1000}
-                                    money
-                                    onChangeValue={handleValueChange1}
-                                    {...register("reducedPrice1")}
-                                    required
-                                />
-
-                            </div>
-                            <div>
-                                <ComNumber
-                                    label={textApp.CreateProduct.label.quantity}
-                                    placeholder={textApp.CreateProduct.placeholder.quantity}
-                                    // type="numbers"
-                                    defaultValue={1}
-                                    {...register("quantity")}
-                                    required
-                                />
-
-                            </div>
-
-                            {/* <div className="">
-                            {selectedMaterials}
-                                <Select
-                                    size={"large"}
-                                    style={{
-                                        width: '100%',
-                                    }}
-                                    value={selectedMaterials}
-                                    mode="multiple"
-                                    placeholder={textApp.CreateProduct.placeholder.material}
-                                    onChange={handleChange}
-                                    options={options}
-                                />
-                            </div> */}
-
-                            <div className="">
-                                <ComSelect
-                                    size={"large"}
-                                    style={{
-                                        width: '100%',
-                                    }}
-                                    label={textApp.CreateProduct.label.material}
-                                    placeholder={textApp.CreateProduct.placeholder.material}
-                                    required
-                                    onChangeValue={handleChange}
-                                    value={selectedMaterials}
-                                    options={options}
-                                    {...register("material")}
-
-                                />
-                            </div>
-                            <div className="sm:col-span-2">
-                                <ComInput
-                                    label={textApp.CreateProduct.label.shape}
-                                    placeholder={textApp.CreateProduct.placeholder.shape}
-                                    required
-                                    type="text"
-                                    {...register("shape")}
-                                />
-                            </div>
-                            {/* <div className="sm:col-span-2">
-                                <ComInput
-                                    label={textApp.CreateProduct.label.detail}
-                                    placeholder={textApp.CreateProduct.placeholder.detail}
-                                    required
-                                    type="text"
-                                    {...register("detail")}
-                                />
-                            </div> */}
-                            {/* <div className="sm:col-span-2">
-                                <ComInput
-                                    label={textApp.CreateProduct.label.models}
-                                    placeholder={textApp.CreateProduct.placeholder.models}
-                                    required
-                                    type="text"
-                                    {...register("models")}
-                                />
-                            </div>
-
-                            <div className="sm:col-span-2">
-                                <ComInput
-                                    label={textApp.CreateProduct.label.accessory}
-                                    placeholder={textApp.CreateProduct.placeholder.accessory}
-                                    required
-                                    type="text"
-                                    {...register("accessory")}
-                                />
-                            </div> */}
-
-
-                            <div className="sm:col-span-2">
-
-                                <div className="mt-2.5">
-
-                                    <ComTextArea
-                                        label={textApp.CreateProduct.label.description}
-                                        placeholder={textApp.CreateProduct.placeholder.description}
-                                        rows={4}
-                                        defaultValue={''}
+                                {/* <div className="sm:col-span-2">
+                                    <ComInput
+                                        label={textApp.CreateProduct.label.detail}
+                                        placeholder={textApp.CreateProduct.placeholder.detail}
                                         required
-                                        maxLength={1000}
-                                        {...register("description")}
+                                        type="text"
+                                        {...register("detail")}
+                                    />
+                                </div> */}
+                                {/* <div className="sm:col-span-2">
+                                    <ComInput
+                                        label={textApp.CreateProduct.label.models}
+                                        placeholder={textApp.CreateProduct.placeholder.models}
+                                        required
+                                        type="text"
+                                        {...register("models")}
                                     />
                                 </div>
+    
+                                <div className="sm:col-span-2">
+                                    <ComInput
+                                        label={textApp.CreateProduct.label.accessory}
+                                        placeholder={textApp.CreateProduct.placeholder.accessory}
+                                        required
+                                        type="text"
+                                        {...register("accessory")}
+                                    />
+                                </div> */}
+    
+    
+                                <div className="sm:col-span-2">
+    
+                                    <div className="mt-2.5">
+    
+                                        <ComTextArea
+                                            label={textApp.CreateProduct.label.description}
+                                            placeholder={textApp.CreateProduct.placeholder.description}
+                                            rows={4}
+                                            defaultValue={''}
+                                            required
+                                            maxLength={1000}
+                                            {...register("description")}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="sm:col-span-1">
+                                    <ComUpImg onChange={onChange} />
+                                </div>
                             </div>
-                            <div className="sm:col-span-1">
-                                <ComUpImg onChange={onChange} />
-                            </div>
-                        </div>
+                       </div>
                         <div className="mt-10">
                             <ComButton
 

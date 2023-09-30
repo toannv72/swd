@@ -11,7 +11,7 @@ export const textApp = {
     Login: {
         pageTitle: "Đăng nhập",
         label: {
-            username: "Login ID",
+            username: "Tài khoản",
             password: "Password"
         },
         placeholder: {
