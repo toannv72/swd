@@ -266,20 +266,19 @@ export default function TableProduct() {
             width: 100,
             dataIndex: 'quantity',
             key: 'quantity',
+            sorter: (a, b) => a.quantity - b.quantity,
         },
         {
             title: 'Ngày tạo',
             dataIndex: 'createdAt',
             width: 110,
             key: 'createdAt',
-            sorter: (a, b) => moment(a).startOf('hour').fromNow() - moment(b).startOf('hour').fromNow(),
+            sorter: (a, b) => moment(a.createdAt).unix() - moment(b.createdAt).unix(),
             render: (_, record) => (    
 
                 <div className="text-sm text-gray-700 line-clamp-4">
                     <p>{moment(record.createdAt).format('l')}</p>
                 </div>
-
-
             )
         },
         {
@@ -287,14 +286,11 @@ export default function TableProduct() {
             dataIndex: 'updatedAt',
             width: 110,
             key: 'updatedAt',
-            sorter: (a, b) => a.updatedAt - b.updatedAt,
+            sorter: (a, b) => moment(a.updatedAt).unix() - moment(b.updatedAt).unix(),
             render: (_, record) => (
-
                 <div className="text-sm text-gray-700 line-clamp-4">
                     <p>{moment(record.updatedAt).format('l')}</p>
                 </div>
-
-
             )
         },
         {

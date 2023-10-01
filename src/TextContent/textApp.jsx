@@ -21,7 +21,8 @@ export const textApp = {
         message: {
             username: "Login ID is required item",
             password: "Password is required item",
-            error: "Tài khoản hoặc mật khẩu sai"
+            error: "Tài khoản hoặc mật khẩu sai",
+            error1: "Đang có lỗi máy chủ vui lòng liên hệ quản lý.",
         }
     },
     Reissue: {
@@ -53,7 +54,7 @@ export const textApp = {
         }
     },
     CreateProduct: {
-        pageTitle: "Create Product",
+        pageTitle: "Tạo sản phẩm",
         label: {
             name: "Tên sản phẩm",
             price: "Giá tiền gốc",
@@ -117,6 +118,18 @@ export const textApp = {
             m5: {
                 message: "Lỗi",
                 description: "Vui lòng chọn ít nhất một ảnh cho sản phẩm!"
+            },
+            m6: {
+                message: "Lỗi",
+                description: "Giá tiền giảm phải nhỏ hơn giá tiền gốc !"
+            },
+            m7: {
+                message: "Lỗi",
+                description: "Giá tiền gốc phải hợp lý!"
+            },
+            m8: {
+                message: "Lỗi",
+                description: "Giá tiền giảm phải hợp lý!"
             }
         }
     },
@@ -155,16 +168,9 @@ export const textApp = {
             shape: "Hình Dáng :"
         },
         message: {
-            name: "name is required item",
-            price: "price is required item",
-            quantity: "quantity is required item",
-            detail: "detail is required item",
-            models: "models is required item",
-            material: "material is required item",
-            accessory: "accessory is required item",
-            sold: "sold is required item",
-            image: "image is required item",
-            description: "description is required item",
+            quantity: "Số lượng không đúng.",
+            min: "Số lượng phải lớn hơn hoặc bằng 1.",
+         
         }
     },
     Footer: {
@@ -197,6 +203,10 @@ export const textApp = {
     },
     Header: {
         search: "Tìm kiếm...",
+    },
+    Home: {
+        getAll: "Xem thêm...",
+        text:"Sản phẩm mới"
     }
 
 }

@@ -29,12 +29,6 @@ const options = [
         value: "Kim loại"
     },
 ];
-// for (let i = 10; i < 36; i++) {
-//     options.push({
-//         value: i.toString(36) + i,
-//         label: i.toString(36) + i,
-//     });
-// }
 
 export default function CreateProduct() {
     const [disabled, setDisabled] = useState(false);
@@ -43,25 +37,19 @@ export default function CreateProduct() {
 
 
     const CreateProductMessenger = yup.object({
-
         name: yup.string().required(textApp.CreateProduct.message.name),
         price: yup.number().min(1, textApp.CreateProduct.message.priceMin).typeError(textApp.CreateProduct.message.price),
         price1: yup.string().required(textApp.CreateProduct.message.price).min(1, textApp.CreateProduct.message.priceMin).test('no-dots', textApp.CreateProduct.message.priceDecimal, value => !value.includes('.')),
         reducedPrice: yup.number().min(1, textApp.CreateProduct.message.priceMin).typeError(textApp.CreateProduct.message.price),
         reducedPrice1: yup.string().required(textApp.CreateProduct.message.price).min(1, textApp.CreateProduct.message.priceMin).test('no-dots', textApp.CreateProduct.message.priceDecimal, value => !value.includes('.')),
         quantity: yup.number().min(1, textApp.CreateProduct.message.quantityMin).typeError(textApp.CreateProduct.message.quantity),
-
         shape: yup.string().required(textApp.CreateProduct.message.shape),
-        // models: yup.string().required(textApp.CreateProduct.message.models),
         material: yup.array().required(textApp.CreateProduct.message.material),
-        // accessory: yup.string().required(textApp.CreateProduct.message.accessory),
         description: yup.string().required(textApp.CreateProduct.message.description),
     })
     const createProductRequestDefault = {
         price: 1000,
         reducedPrice: 1000,
-
-
     };
     const methods = useForm({
         resolver: yupResolver(CreateProductMessenger),
@@ -84,8 +72,25 @@ export default function CreateProduct() {
     }
     const onSubmit = (data) => {
         console.log(data);
+        console.log(data.reducedPrice%1000!==0);
+        console.log(data.reducedPrice%1000);
 
-
+        if (data.price%1000!==0) {
+            api["error"]({
+                message: textApp.CreateProduct.Notification.m7.message,
+                description:
+                    textApp.CreateProduct.Notification.m7.description
+            });
+            return
+        }
+        if (data.reducedPrice%1000!==0) {
+            api["error"]({
+                message: textApp.CreateProduct.Notification.m8.message,
+                description:
+                    textApp.CreateProduct.Notification.m8.description
+            });
+            return
+        }
         if (!isInteger(data.price)) {
 
             api["error"]({
@@ -97,7 +102,6 @@ export default function CreateProduct() {
         }
 
         if (data.material.length === 0) {
-
             api["error"]({
                 message: textApp.CreateProduct.Notification.m4.message,
                 description:
@@ -106,7 +110,6 @@ export default function CreateProduct() {
             return
         }
         if (image.length === 0) {
-
             api["error"]({
                 message: textApp.CreateProduct.Notification.m5.message,
                 description:
@@ -114,6 +117,16 @@ export default function CreateProduct() {
             });
             return
         }
+
+        if (data.price <= data.reducedPrice) {
+            api["error"]({
+                message: textApp.CreateProduct.Notification.m6.message,
+                description:
+                    textApp.CreateProduct.Notification.m6.description
+            });
+            return
+        }
+       
         setDisabled(true)
         firebaseImgs(image)
             .then((dataImg) => {
@@ -132,7 +145,6 @@ export default function CreateProduct() {
                             message: textApp.CreateProduct.Notification.m2.message,
                             description:
                                 textApp.CreateProduct.Notification.m2.description
-
                         });
                     })
                     .catch((error) => {
@@ -144,8 +156,7 @@ export default function CreateProduct() {
                         console.error("Error fetching items:", error);
                         setDisabled(false)
                     });
-            }
-            )
+            })
             .catch((error) => {
                 console.log(error)
             });
@@ -153,19 +164,16 @@ export default function CreateProduct() {
 
     }
     const onChange = (data) => {
-
         const selectedImages = data;
-
         // Tạo một mảng chứa đối tượng 'originFileObj' của các tệp đã chọn
         const newImages = selectedImages.map((file) => file.originFileObj);
-
         // Cập nhật trạng thái 'image' bằng danh sách tệp mới
         setImages(newImages);
         console.log(image);
         // setFileList(data);
     }
     const handleValueChange = (e, value) => {
-        console.log(value);
+       
         setValue("price", value, { shouldValidate: true });
     };
 
@@ -175,12 +183,10 @@ export default function CreateProduct() {
     };
 
     const handleValueChangeSelect = (e, value) => {
-
         if (value.length === 0) {
             setValue("material", null, { shouldValidate: true });
         } else {
             setValue("material", value, { shouldValidate: true });
-
         }
     };
     return (

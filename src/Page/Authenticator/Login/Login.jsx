@@ -21,12 +21,9 @@ export default function Login() {
     const [token, setToken] = useStorage("user", null);
     const [disabled, setDisabled] = useState(false);
     const [Login, setLogin] = useState(false);
-    const [cookies, setCookie, removeCookie] = useCookies(['accessToken']);
-
+    const [LoginError, setLoginError] = useState(false);
     const navigate = useNavigate();
-    useEffect(() => {
-        removeCookie('accessToken');
-    }, []);
+
     const loginMessenger = yup.object({
         // code: yup.string().required(textApp.Login.message.username).min(5, "Username must be at least 5 characters"),
         username: yup.string().required(textApp.Login.message.username),
@@ -52,6 +49,7 @@ export default function Login() {
     })
     const { handleSubmit, register, setFocus, watch, setValue } = methods
     const onSubmit = (data) => {
+        setLoginError(false)
 
         setLogin(false)
         setDisabled(true)
@@ -70,7 +68,13 @@ export default function Login() {
             .catch((error) => {
                 console.error("Error fetching items:", error);
                 setDisabled(false)
-                setLogin(true)
+                if (error?.response?.status === 401) {
+
+                    setLogin(true)
+                } else {
+                    setLoginError(true)
+
+                }
             });
     }
     // console.log(disableds);
@@ -151,6 +155,7 @@ export default function Login() {
                             />
 
                             <FieldError className="text-red-500 text-center">{Login ? textApp.Login.message.error : ''}</FieldError>
+                            <FieldError className="text-red-500 text-center">{LoginError ? textApp.Login.message.error1 : ''}</FieldError>
                             <ComButton
 
                                 disabled={disabled}

@@ -18,6 +18,8 @@ import * as yup from "yup"
 import { textApp } from "../../../TextContent/textApp";
 import { TypeAnimation } from "react-type-animation";
 import { getData } from "../../../api/api";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 
 const navigation = {
   categories: [
@@ -149,10 +151,7 @@ const navigation = {
     { name: "Payment", href: "/payment" },
   ],
 };
-const userNavigation = [
-  { name: 'Đơn hàng', href: '#' },
-  { name: 'Đăng xuất', href: '/login' },
-]
+
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
@@ -160,7 +159,11 @@ function classNames(...classes) {
 export default function ComHeader() {
   const [open, setOpen] = useState(false);
   const [shoppingCart, setShoppingCart] = useState(false);
-  const [sttLogin, setSttLogin] = useState(false);
+  const [sttLogin, setSttLogin] = useState([]);
+  const location = useLocation();
+  const [cookies, setCookie, removeCookie] = useCookies(['accessToken']);
+  const navigate = useNavigate();
+
   const updateShoppingCartStatus = (newStatus) => {
     setShoppingCart(newStatus);
   };
@@ -176,7 +179,12 @@ export default function ComHeader() {
   useEffect(() => {
     getData('/login')
       .then((data) => {
-        setSttLogin(data.data.login);
+        console.log(data.login);
+        setSttLogin(data.data);
+        if (location.pathname==='/login'&& data.data.login) {
+          navigate('/')
+
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -184,11 +192,13 @@ export default function ComHeader() {
       });
   }, []);
   const { handleSubmit, register } = methods
-
   const onSubmit = (data) => {
     console.log(data);
   }
 
+  const logout=()=>{
+    removeCookie('accessToken');
+  }
   return (
     <>
       <ShoppingCart
@@ -552,7 +562,7 @@ export default function ComHeader() {
                       </button>
                     </div>
                     {/* login */}
-                    {!sttLogin && <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6 lg:ml-6">
+                    {!sttLogin?.login && <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6 lg:ml-6">
                       <ComLink
                         to={routs["/login"].link}
                         className="text-sm font-medium text-gray-700 hover:text-gray-800"
@@ -568,7 +578,7 @@ export default function ComHeader() {
                       </ComLink>
                     </div>}
 
-                    {sttLogin && <div>
+                    {sttLogin?.login && <div>
                       <Menu as="div" className="relative ml-3">
                         <div>
                           <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
@@ -587,21 +597,35 @@ export default function ComHeader() {
                           leaveTo="transform opacity-0 scale-95"
                         >
                           <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                            {userNavigation.map((item) => (
-                              <Menu.Item key={item.name}>
+
+                            {sttLogin?.user?.admin&&<Menu.Item >
                                 {({ active }) => (
                                   <ComLink
-                                    to={item.href}
+                                    to={routs['/createProduct'].link}
                                     className={classNames(
                                       active ? 'bg-gray-100' : '',
                                       'block px-4 py-2 text-sm text-gray-700'
                                     )}
                                   >
-                                    {item.name}
+                                   {routs['/createProduct'].name2}
+                                  </ComLink>
+                                )}
+                              </Menu.Item>}
+                              <Menu.Item >
+                                {({ active }) => (
+                                  <ComLink
+                                  onClick={logout()}
+                                    to={routs['/logout'].link}
+                                    className={classNames(
+                                      active ? 'bg-gray-100' : '',
+                                      'block px-4 py-2 text-sm text-gray-700'
+                                    )}
+                                  >
+                                   {routs['/logout'].name}
                                   </ComLink>
                                 )}
                               </Menu.Item>
-                            ))}
+
                           </Menu.Items>
                         </Transition>
                       </Menu>

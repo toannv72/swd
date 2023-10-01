@@ -72,8 +72,10 @@ const ComNumber = React.forwardRef(
     const inputId = v4();
 
     const onlyChangeWithCondition = (e) => {
+     
       let value = '';
-      value =e;
+      value =e
+   
       switch (props.type) {
         case 'emails':
           if (!isHalfSize(value) || !value.match(emailRegex)) {
@@ -90,11 +92,21 @@ const ComNumber = React.forwardRef(
             return;
           }
           break;
+        case 'numbers':
+          // if (!checkValidType(positiveIntegerStr, value)) {
+          //   return;
+          // }
+        if (e==='') {
+          const numericValue = e.toString();
+          value = numericValue.replace(/[^0-9]/g, '')
+        }
+         console.log(value);
+          break;
         default:
           break;
       }
-    setValue(props.name, e);
-    onChangeValue?.(props.name, value);
+      setValue(props.name, e);
+      onChangeValue?.(props.name, value);
     };
 
     return (
