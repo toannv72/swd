@@ -5,7 +5,7 @@ import { RadioGroup } from '@headlessui/react'
 import ComHeader from '../../Components/ComHeader/ComHeader'
 import ComImage from '../../Components/ComImage/ComImage'
 import { getData } from '../../../api/api'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { textApp } from '../../../TextContent/textApp'
 import { FormProvider, useForm } from 'react-hook-form'
 import * as yup from "yup"
@@ -23,7 +23,7 @@ export default function Product() {
     const [Product, setProduct] = useState([])
     const [image, setImage] = useState([])
     const { slug } = useParams();
-
+    const navigate = useNavigate();
     const productQuantity = yup.object({
         quantity: yup.number().max(Product.quantity, `Số lượng bạn chọn đã đạt mức tối đa của sản phẩm này`).min(1, textApp.Product.message.min).typeError(textApp.Product.message.quantity),
     })
@@ -38,9 +38,7 @@ export default function Product() {
         values: LoginRequestDefault
     })
     const { handleSubmit, register, setFocus, watch, setValue } = methods
-    const onSubmit = (data) => {
-        console.log(data);
-    }
+
     useEffect(() => {
         getData(`/product/${slug}`)
             .then(product =>
@@ -52,7 +50,6 @@ export default function Product() {
     }, [slug]);
 
     useEffect(() => {
-
         if (Product?.image) {
             setImage(Product?.image.map(image => ({
 
@@ -64,6 +61,7 @@ export default function Product() {
         }
     }, [Product])
 
+    console.log(Product);
     function formatCurrency(number) {
         // Sử dụng hàm toLocaleString() để định dạng số thành chuỗi với ngăn cách hàng nghìn và mặc định là USD.
         return number.toLocaleString('en-US', {
@@ -71,20 +69,17 @@ export default function Product() {
             currency: 'VND',
         });
     }
-    console.log(formatCurrency(123213213));
+    const onSubmit = (data) => {
+        const product = [{ ...Product, data }];
+        navigate('/payment', { state: { formData: product } })
+    }
     return (
         <>
             <ComHeader />
             <div className="bg-white">
                 <div className="">
-                    {/* Image gallery */}
-
-
-                    {/* Product info */}
                     <div className="mx-auto max-w-2xl px-4 pb-16 pt-8 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-8">
 
-
-                        {/* Options */}
                         <div className='product' ><ComImage product={image} /></div>
 
                         <div className="mt-4 lg:row-span-3 lg:mt-0">
@@ -138,12 +133,9 @@ export default function Product() {
                                                 defaultValue={1}
                                                 max={Product.quantity}
                                                 {...register("quantity")}
-
                                             />
                                             <div className='mt-2'> {Product.quantity} sản phẩm có sẵn</div>
                                         </div>
-
-
                                     </div>
 
                                     <button

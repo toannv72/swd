@@ -9,9 +9,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
 import ComInput from "../../Components/ComInput/ComInput";
 import ComTextArea from "../../Components/ComInput/ComTextArea";
-import ComButton from "../../Components/ComButton/ComButton";
-export default function Payment() {
+import { useLocation, useNavigate } from "react-router-dom";
+export default function Payment(props) {
     const [disabled, setDisabled] = useState(false);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const formData = location.state?.formData || null;
 
     const loginMessenger = yup.object({
         name: yup.string().required(textApp.Payment.information.message.name),
@@ -21,14 +24,11 @@ export default function Payment() {
     })
     const LoginRequestDefault = {
         // code: "",
-
-
     };
     const methods = useForm({
         resolver: yupResolver(loginMessenger),
         defaultValues: {
             // code: "",
-
         },
         values: LoginRequestDefault
     })
@@ -39,9 +39,21 @@ export default function Payment() {
     const { handleSubmit1, register1, setFocus1, watch1, setValue1 } = promotion
     const onSubmit = (data) => {
         console.log(data);
+        navigate('/')
         setDisabled(true)
 
     }
+    function formatCurrency(number) {
+        // Sử dụng hàm toLocaleString() để định dạng số thành chuỗi với ngăn cách hàng nghìn và mặc định là USD.
+        return number.toLocaleString('en-US', {
+            style: 'currency',
+            currency: 'VND',
+        });
+    }
+    const totalAmount = formData?.reduce((total, data) => {
+        const itemTotal = data.reducedPrice * data?.data?.quantity;
+        return total + itemTotal;
+      }, 0)||0;
     return (
         <>
             <ComHeader />
@@ -55,32 +67,28 @@ export default function Payment() {
 
                 <div className="flex flex-col p-4 md:w-1/3 order-1 md:order-2 mb-4 md:mb-0">
                     <FormProvider {...promotion} >
-                        <form onSubmit={(onSubmit)}>
+                        <form onSubmit={(onSubmit)} className="text-black text-lg">
                             <h4 className="flex justify-between items-center mb-3 text-gray-600">
                                 <span>Giỏ hàng</span>
-                                <span className="bg-blue-500 text-white rounded-full py-1 px-2">2</span>
+                                <span className="bg-blue-500 text-white rounded-full py-1 px-2">{formData?.length}</span>
                             </h4>
                             <ul className="list-group mb-3">
-                                <li className="list-group-item flex justify-between items-center">
-                                    <div>
-                                        <h6 className="my-0">Apple Ipad 4 Wifi 16GB</h6>
-                                        <small className="text-gray-500">11800000.00 x 2</small>
-                                    </div>
-                                    <span className="text-gray-500">23600000</span>
-                                </li>
-                                <li className="list-group-item flex justify-between items-center">
-                                    <div>
-                                        <h6 className="my-0">Apple iPhone 5 16GB White</h6>
-                                        <small className="text-gray-500">14990000.00 x 8</small>
-                                    </div>
-                                    <span className="text-gray-500">119920000</span>
-                                </li>
-                                <li className="list-group-item flex justify-between items-center">
+                           
+                                {formData?.map((data, index) => (
+                                    <li key={index} className="list-group-item flex justify-between items-center">
+                                        <div>
+                                            <h6 className="my-0">{data.name}</h6>
+                                            <small className="text-gray-500">{formatCurrency(data.reducedPrice)} x {data?.data?.quantity}</small>
+                                        </div>
+                                        <span className="text-gray-500">{formatCurrency(data.reducedPrice*data?.data?.quantity)}</span>
+                                    </li>
+                                ))}
+                                <li className="list-group-item flex justify-between items-center text-black text-xl">
                                     <span>Tổng thành tiền</span>
-                                    <strong>143520000</strong>
+                                    <strong>{formatCurrency(totalAmount)}</strong>
                                 </li>
                             </ul>
-                            <div className="input-group mb-4">
+                            {/* <div className="input-group mb-4">
                                 <ComInput
                                     placeholder={textApp.Payment.information.placeholder.promotion}
                                     label={textApp.Payment.information.label.promotion}
@@ -91,7 +99,7 @@ export default function Payment() {
                                 <div className="input-group-append">
                                     <button className="bg-blue-500 mt-2 text-white py-2 px-4 ">Xác nhận</button>
                                 </div>
-                            </div>
+                            </div> */}
                         </form>
                     </FormProvider>
                 </div>
@@ -99,8 +107,8 @@ export default function Payment() {
                 <div className="flex flex-col p-4 md:w-2/3 md:order-1 order-2 md:pl-8">
                     <FormProvider {...methods} >
                         <form onSubmit={handleSubmit(onSubmit)}>
-                            <h4 className="mb-6 text-gray-600 text-lg">{textApp.Payment.information.title}</h4>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                            <h4 className="mb-6 text-black text-2xl">{textApp.Payment.information.title}</h4>
+                            <div className="grid grid-cols-1 md:grid-cols-2 sm:grid-cols-2 gap-4 mb-6">
                                 <div>
                                     <ComInput
                                         placeholder={textApp.Payment.information.placeholder.name}
@@ -135,8 +143,6 @@ export default function Payment() {
                                     />
                                 </div>
                                 <div className="sm:col-span-2">
-
-
                                     <ComTextArea
                                         placeholder={textApp.Payment.information.placeholder.description}
                                         label={textApp.Payment.information.label.description}
@@ -164,16 +170,17 @@ export default function Payment() {
                                 </div>
                             </div>
                             <hr className="my-4" />
-                            <ComButton
+                            {/* <ComButton
                                 disabled={disabled}
                                 htmlType="submit"
                                 type="primary"
-                            >
-                                {/* {textApp.Login.pageTitle} */}
+                            >=
                                 Đặt hàng
-                            </ComButton>
-                            <button className="bg-blue-500 text-white py-3 px-6 rounded-lg w-full md:w-auto" type="submit"
-                                name="btnDatHang">Đặt hàng</button>
+                            </ComButton> */}
+                            <div>
+                                <button className="bg-blue-500 text-white py-3 px-6 rounded-lg w-full " type="submit"
+                                    name="btnDatHang">Đặt hàng</button>
+                            </div>
                         </form>
                     </FormProvider>
                 </div>

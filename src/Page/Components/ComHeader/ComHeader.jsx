@@ -160,7 +160,6 @@ export default function ComHeader() {
   const [shoppingCart, setShoppingCart] = useState(false);
   const [sttLogin, setSttLogin] = useState([]);
   const location = useLocation();
-  const [cookies, setCookie, removeCookie] = useCookies(['accessToken']);
   const navigate = useNavigate();
 
   const updateShoppingCartStatus = (newStatus) => {
@@ -178,7 +177,6 @@ export default function ComHeader() {
   useEffect(() => {
     getData('/login')
       .then((data) => {
-        console.log(data.login);
         setSttLogin(data.data);
         if (location.pathname === '/login' && data.data.login) {
           navigate('/')
@@ -633,7 +631,6 @@ export default function ComHeader() {
                                 >
                                   {routs['/logout'].name}
                                 </ComLink>
-
                               )}
                             </Menu.Item>
 
