@@ -9,14 +9,13 @@ import {
 import ShoppingCart from "../../Authenticator/ShoppingCart/ShoppingCart";
 import { routs } from "../../../constants/ROUT";
 import { ComLink } from "../ComLink/ComLink";
-import { Affix, } from "antd";
+import { Affix, FloatButton, } from "antd";
 import images from "../../../img";
 import ComInput from "../ComInput/ComInput";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup"
 import { textApp } from "../../../TextContent/textApp";
-import { TypeAnimation } from "react-type-animation";
 import { getData } from "../../../api/api";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
@@ -181,7 +180,7 @@ export default function ComHeader() {
       .then((data) => {
         console.log(data.login);
         setSttLogin(data.data);
-        if (location.pathname==='/login'&& data.data.login) {
+        if (location.pathname === '/login' && data.data.login) {
           navigate('/')
 
         }
@@ -196,9 +195,7 @@ export default function ComHeader() {
     console.log(data);
   }
 
-  const logout=()=>{
-    removeCookie('accessToken');
-  }
+
   return (
     <>
       <ShoppingCart
@@ -206,7 +203,7 @@ export default function ComHeader() {
         updateShoppingCart={updateShoppingCartStatus}
       ></ShoppingCart>
       <Affix offsetTop={0} >
-        <div className="bg-white">
+        <div className="bg-white ">
           {/* Mobile menu */}
           <Transition.Root show={open} as={Fragment}>
             <Dialog
@@ -579,12 +576,12 @@ export default function ComHeader() {
                     </div>}
 
                     {sttLogin?.login && <div>
-                      <Menu as="div" className="relative ml-3">
+                      <Menu as="div" className="relative ml-3 z-50">
                         <div>
                           <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                             <span className="absolute -inset-1.5" />
                             <span className="sr-only">Open user menu</span>
-                            <img className="h-8 w-8 rounded-full" src={images.avatar} alt="" />
+                            <img on className="h-8 w-8 rounded-full" src={images.avatar} alt="" />
                           </Menu.Button>
                         </div>
                         <Transition
@@ -598,33 +595,47 @@ export default function ComHeader() {
                         >
                           <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
 
-                            {sttLogin?.user?.admin&&<Menu.Item >
-                                {({ active }) => (
-                                  <ComLink
-                                    to={routs['/createProduct'].link}
-                                    className={classNames(
-                                      active ? 'bg-gray-100' : '',
-                                      'block px-4 py-2 text-sm text-gray-700'
-                                    )}
-                                  >
-                                   {routs['/createProduct'].name2}
-                                  </ComLink>
-                                )}
-                              </Menu.Item>}
-                              <Menu.Item >
-                                {({ active }) => (
-                                  <ComLink
-                                  onClick={logout()}
-                                    to={routs['/logout'].link}
-                                    className={classNames(
-                                      active ? 'bg-gray-100' : '',
-                                      'block px-4 py-2 text-sm text-gray-700'
-                                    )}
-                                  >
-                                   {routs['/logout'].name}
-                                  </ComLink>
-                                )}
-                              </Menu.Item>
+                            {sttLogin?.user?.admin && <Menu.Item >
+                              {({ active }) => (
+                                <ComLink
+                                  to={routs['/createProduct'].link}
+                                  className={classNames(
+                                    active ? 'bg-gray-100' : '',
+                                    'block px-4 py-2 text-sm text-gray-700'
+                                  )}
+                                >
+                                  {routs['/createProduct'].name2}
+                                </ComLink>
+                              )}
+                            </Menu.Item>}
+                            <Menu.Item >
+                              {({ active }) => (
+                                <ComLink
+                                  to={routs['/oder'].link}
+                                  className={classNames(
+                                    active ? 'bg-gray-100' : '',
+                                    'block px-4 py-2 text-sm text-gray-700'
+                                  )}
+                                >
+                                  {routs['/oder'].name}
+                                </ComLink>
+
+                              )}
+                            </Menu.Item>
+                            <Menu.Item >
+                              {({ active }) => (
+                                <ComLink
+                                  to={routs['/logout'].link}
+                                  className={classNames(
+                                    active ? 'bg-gray-100' : '',
+                                    'block px-4 py-2 text-sm text-gray-700'
+                                  )}
+                                >
+                                  {routs['/logout'].name}
+                                </ComLink>
+
+                              )}
+                            </Menu.Item>
 
                           </Menu.Items>
                         </Transition>
@@ -638,6 +649,7 @@ export default function ComHeader() {
           </header>
         </div>
       </Affix>
+      <FloatButton.BackTop />
     </>
   );
 }

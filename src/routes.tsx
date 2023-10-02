@@ -8,6 +8,8 @@ import Reissue from "./Page/Authenticator/Reissue/Reissue";
 import PaymentPage from "./Page/Authenticator/Payment/Payment";
 import TableProduct from "./Page/admin/TableProduct";
 import CreateProduct from "./Page/admin/CreateProduct";
+import Oder from "./Page/Authenticator/Oder/Oder";
+import Logout from "./Page/Authenticator/Logout/Logout";
 
 export const routers = createBrowserRouter([
   {
@@ -21,6 +23,10 @@ export const routers = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/logout",
+    element: <Logout />,
   },
   {
     path: "/reissue",
@@ -41,5 +47,8 @@ export const routers = createBrowserRouter([
   {
     path: "/payment",
     element: <PaymentPage />,
+  },{
+    path: "/oder",
+    element: <Oder />,
   },
 ]);

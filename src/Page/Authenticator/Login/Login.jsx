@@ -15,6 +15,7 @@ import ComHeader from "../../Components/ComHeader/ComHeader";
 import { useNavigate } from "react-router-dom";
 import { FieldError } from "../../Components/FieldError/FieldError";
 import { useCookies } from "react-cookie";
+import ComFooter from "../../Components/ComFooter/ComFooter";
 
 
 export default function Login() {
@@ -95,46 +96,7 @@ export default function Login() {
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                     <FormProvider {...methods} >
                         <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
-                            {/* 
-                            <ComInput
-                                placeholder={textApp.Login.label.username}
-                                label={textApp.Login.pageTitle}
-                                type="numbers"
-                                search
-                                maxLength={5}
-                                // minLength={4}
-                                {...register("code")}
-                                required
-                            />
-
-                            <ComInput
-                                placeholder='question'
-                                label='qưe'
-                                type="text"
-                                // search
-                                maxLength={5}
-                                {...register("username")}
-                                required
-                            />
-
-                            <ComInput
-                                placeholder='email'
-                                label='email'
-                                type="emails"
-                                // search
-                                {...register("email")}
-                                required
-                            />
-
-                            <ComInput
-                                placeholder='question'
-                                label='qưe'
-                                type="password"
-                                maxLength={16}
-                                {...register("password")}
-                                required
-                            /> */}
-
+                           
                             <ComInput
                                 placeholder={textApp.Login.placeholder.username}
                                 label={textApp.Login.label.username}
@@ -183,7 +145,7 @@ export default function Login() {
                     </p>
                 </div>
             </div>
-
+            <ComFooter />
         </>
     )
 

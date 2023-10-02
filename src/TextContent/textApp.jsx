@@ -170,7 +170,7 @@ export const textApp = {
         message: {
             quantity: "Số lượng không đúng.",
             min: "Số lượng phải lớn hơn hoặc bằng 1.",
-         
+
         }
     },
     Footer: {
@@ -206,7 +206,39 @@ export const textApp = {
     },
     Home: {
         getAll: "Xem thêm...",
-        text:"Sản phẩm mới"
+        text: "Sản phẩm mới"
+    },
+    Payment: {
+        title: "Thanh toán",
+        message: "Vui lòng kiểm tra thông tin Khách hàng, thông tin Giỏ hàng trước khi Đặt hàng.",
+        information: {
+            title: "Thông tin khách hàng",
+            label: {
+                name: "Họ và tên",
+                address: "Địa chỉ",
+                phone: "Số điện thoại",
+                email: "Email",
+                promotion: "Mã khuyễn mãi",
+                description: "Thông tin bổ sung"
+            },
+            placeholder: {
+                name: "Vui lòng nhập họ và tên",
+                address: "Vui lòng nhập địa chỉ",
+                phone: "Vui lòng số điện thoại",
+                email: "Vui lòng Email",
+                promotion: "Mã khuyễn mãi",
+                description: "Vui lòng thông tin bổ sung"
+
+            },
+            message: {
+                name: "Trường này là bắt buộc",
+                address: "Trường này là bắt buộc",
+                phone: "Trường này là bắt buộc",
+                email: "Trường này là bắt buộc",
+                emailError: "Mail không hợp lệ",
+            },
+        },
+        text: "Sản phẩm mới"
     }
 
 }
