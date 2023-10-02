@@ -239,6 +239,10 @@ export const textApp = {
             },
         },
         text: "Sản phẩm mới"
-    }
+    },
+    ShoppingCart: {
+        tile: "Giỏ hàng",
+        checkbox: "Chọn tất cả"
+    },
 
 }
