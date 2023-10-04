@@ -1,79 +1,26 @@
 import { Fragment, useEffect, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
-import { Button, Checkbox } from 'antd'
+import { Button, Checkbox, InputNumber } from 'antd'
 import { textApp } from '../../../TextContent/textApp'
 import { ComLink } from '../../Components/ComLink/ComLink'
 import ComButton from '../../Components/ComButton/ComButton'
+import ComNumber from '../../Components/ComInput/ComNumber'
+import { Link } from 'react-router-dom'
 
-const products = [
-  {
-    id: 1,
-    name: 'Throwback Hip Bag',
-    href: '#',
-    color: 'Salmon',
-    price: '$90.00',
-    quantity: 1,
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg',
-    imageAlt: 'Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.',
-  },
-  {
-    id: 2,
-    name: 'Medium Stuff Satchel',
-    href: '#',
-    color: 'Blue',
-    price: '$32.00',
-    quantity: 1,
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg',
-    imageAlt:
-      'Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.',
-  }, {
-    id: 2,
-    name: 'Medium Stuff Satchel',
-    href: '#',
-    color: 'Blue',
-    price: '$32.00',
-    quantity: 1,
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg',
-    imageAlt:
-      'Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.',
-  }, {
-    id: 2,
-    name: 'Medium Stuff Satchel',
-    href: '#',
-    color: 'Blue',
-    price: '$32.00',
-    quantity: 1,
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg',
-    imageAlt:
-      'Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.',
-  }, {
-    id: 2,
-    name: 'Medium Stuff Satchel',
-    href: '#',
-    color: 'Blue',
-    price: '$32.00',
-    quantity: 1,
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg',
-    imageAlt:
-      'Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.',
-  },
-  // More products...
-]
 
-export default function  ShoppingCart({ show, updateShoppingCart }) {
+export default function ShoppingCart({ show, updateShoppingCart }) {
   const [open, setOpen] = useState(show)
-  const [checkedList, setCheckedList] = useState([products]);
-  const checkAll = products.length === checkedList.length;
-  const indeterminate = checkedList.length > 0 && checkedList.length < products.length;
+  const [checkedList, setCheckedList] = useState([]);
+  const [cart, setCart] = useState(JSON.parse(localStorage.getItem('cart')) || []);
+
+  const checkAll = cart.length === checkedList.length;
+  const indeterminate = checkedList.length > 0 && checkedList.length < cart.length;
   const onChange = (list) => {
     setCheckedList(list);
-    console.log(list);
   };
   const onCheckAllChange = (e) => {
-
-    console.log(e.target.checked);
-    setCheckedList(e.target.checked ? products : []);
+    setCheckedList(e.target.checked ? cart : []);
   };
 
   useEffect(
@@ -82,10 +29,19 @@ export default function  ShoppingCart({ show, updateShoppingCart }) {
       if (show) {
         // updateShoppingCart(true);
       }
+      setCart(JSON.parse(localStorage.getItem('cart')))
     }, [show]);
   const handleCartClose = () => {
     // Gọi hàm callback để cập nhật giá trị shoppingCart thành false
     updateShoppingCart(false);
+  };
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }, [cart])
+  const removeFromCart = (productId) => {
+    const updatedCart = cart.filter(item => item._id !== productId);
+    setCart(updatedCart);
+  
   };
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -132,20 +88,20 @@ export default function  ShoppingCart({ show, updateShoppingCart }) {
                         </div>
                       </div>
                       <Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll}>
-                      {textApp.ShoppingCart.checkbox}
+                        {textApp.ShoppingCart.checkbox}
                       </Checkbox>
                       <div className="mt-8">
                         <div className="flow-root">
                           <ul role="list" className="-my-6 divide-y divide-gray-200">
                             <Checkbox.Group style={{ width: '100%' }} value={checkedList} onChange={onChange}>
-                              {products.map((product) => (
+                              {cart.slice().reverse().map((product) => (
                                 <div className='flex gap-2'>
                                   <Checkbox value={product} />
                                   <li key={product.id} className="flex py-4">
                                     <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                       <img
-                                        src={product.imageSrc}
-                                        alt={product.imageAlt}
+                                        src={product.image}
+                                        alt={product.image}
                                         className="h-full w-full object-cover object-center"
                                       />
                                     </div>
@@ -153,19 +109,29 @@ export default function  ShoppingCart({ show, updateShoppingCart }) {
                                     <div className="ml-4 flex flex-1 flex-col">
                                       <div>
                                         <div className="flex justify-between text-base font-medium text-gray-900">
-                                          <h3>
-                                            <a href={product.href}>{product.name}</a>
+                                          <h3 className='w-44'>
+                                            <Link onClick={() => { setOpen(false); handleCartClose(); }} to={`/product/${product._id}`}
+
+                                            >{product.name}</Link>
                                           </h3>
                                           <p className="ml-4">{product.price}</p>
                                         </div>
                                         <p className="mt-1 text-sm text-gray-500">{product.color}</p>
                                       </div>
                                       <div className="flex flex-1 items-end justify-between text-sm">
-                                        <p className="text-gray-500">Qty {product.quantity}</p>
+                                        <div className="flex items-center gap-2 text-gray-500">
+                                          <InputNumber
+                                            className="w-14 text-sm"
+                                            min={1}
+                                            defaultValue={product.quantityCart || 1}
+                                            max={product.quantity}
+                                          />
+                                          {product.quantity} Sản phẩm
+                                        </div>
 
                                         <div className="flex">
                                           <button
-                                            type="button"
+                                            onClick={() => removeFromCart(product._id)}
                                             className="font-medium text-indigo-600 hover:text-indigo-500"
                                           >
                                             Remove
@@ -189,7 +155,7 @@ export default function  ShoppingCart({ show, updateShoppingCart }) {
                       </div>
                       <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                       <div className="mt-6">
-                        <button 
+                        <button
                           to="#"
                           disabled={true}
                           className="flex items-center w-full justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"

@@ -11,6 +11,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import * as yup from "yup"
 import { yupResolver } from '@hookform/resolvers/yup'
 import ComNumber from '../../Components/ComInput/ComNumber'
+import { notification } from 'antd'
 
 
 const reviews = { href: '#', average: 4, totalCount: 117 }
@@ -23,7 +24,11 @@ export default function Product() {
     const [Product, setProduct] = useState([])
     const [image, setImage] = useState([])
     const { slug } = useParams();
+    const [cart, setCart] = useState(JSON.parse(localStorage.getItem('cart')) || []);
+    const [sttCart, setSttCart] = useState(true)
+    const [api, contextHolder] = notification.useNotification();
     const navigate = useNavigate();
+
     const productQuantity = yup.object({
         quantity: yup.number().max(Product.quantity, `Số lượng bạn chọn đã đạt mức tối đa của sản phẩm này`).min(1, textApp.Product.message.min).typeError(textApp.Product.message.quantity),
     })
@@ -61,7 +66,6 @@ export default function Product() {
         }
     }, [Product])
 
-    console.log(Product);
     function formatCurrency(number) {
         // Sử dụng hàm toLocaleString() để định dạng số thành chuỗi với ngăn cách hàng nghìn và mặc định là USD.
         return number.toLocaleString('en-US', {
@@ -73,9 +77,55 @@ export default function Product() {
         const product = [{ ...Product, data }];
         navigate('/payment', { state: { formData: product } })
     }
+    const addToCart = (data) => {
+        const existingProductIndex = cart.findIndex(item => item._id === Product._id);
+        const updatedCart = [...cart];
+        if (existingProductIndex !== -1) {
+            if (updatedCart[existingProductIndex].quantityCart === data.quantity) {
+
+                api["warning"]({
+                    message: textApp.Product.Notification.m3.message,
+                    description:
+                        textApp.Product.Notification.m3.description
+                });
+                return;
+            }
+
+            updatedCart[existingProductIndex].quantityCart = data.quantity;
+            setCart(updatedCart);
+            api["success"]({
+                message: textApp.Product.Notification.m2.message,
+                description:
+                    textApp.Product.Notification.m2.description
+            });
+        }
+        if (existingProductIndex === -1) {
+            const updatedCart = [...cart, { ...Product, quantityCart: data.quantity }];
+            setCart(updatedCart);
+            api["success"]({
+                message: textApp.Product.Notification.m1.message,
+                description:
+                    textApp.Product.Notification.m1.description
+            });
+        }
+
+
+    }
+    const updateCart = (data) => {
+        setSttCart(!sttCart)
+    }
+    useEffect(() => {
+        localStorage.setItem('cart', JSON.stringify(cart));
+
+    }, [cart]);
+    useEffect(() => {
+        setCart(JSON.parse(localStorage.getItem('cart')))
+
+    }, [sttCart]);
     return (
         <>
-            <ComHeader />
+            {contextHolder}
+            <ComHeader dataCart={cart} updateCart={updateCart} />
             <div className="bg-white">
                 <div className="">
                     <div className="mx-auto max-w-2xl px-4 pb-16 pt-8 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-8">
@@ -124,8 +174,8 @@ export default function Product() {
                                 <form className="mt-10" onSubmit={handleSubmit(onSubmit)}>
 
                                     <div>
-                                        <div className='flex gap-4'>
-                                            <h3 className="text-sm font-medium text-gray-900 mt-2">{textApp.Product.page.quantity}</h3>
+                                        <div className='flex gap-4 items-center'>
+                                            <h3 className="text-sm font-medium text-gray-900 ">{textApp.Product.page.quantity}</h3>
 
                                             <ComNumber
                                                 className="w-24 text-sm"
@@ -134,16 +184,25 @@ export default function Product() {
                                                 max={Product.quantity}
                                                 {...register("quantity")}
                                             />
-                                            <div className='mt-2'> {Product.quantity} sản phẩm có sẵn</div>
+                                            <div className=''> {Product.quantity} sản phẩm có sẵn</div>
+                                            <button
+                                                type='button'
+                                                onClick={handleSubmit(addToCart)}
+                                                className="flex items-center justify-center rounded-md border border-transparent  px-4 py-2 text-base font-medium text-white  focus:outline-none 
+                                                 hover:to-orange-500 hover:from-orange-600 bg-gradient-to-b from-orange-400 to-orange-500"
+                                            >
+                                                {textApp.Product.button.add}
+                                            </button>
                                         </div>
                                     </div>
 
                                     <button
                                         type="submit"
-                                        className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                        className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent  px-8 py-3 text-base font-medium text-white hover:to-sky-700 hover:from-sky-800 bg-gradient-to-b from-sky-600 to-sky-700 "
                                     >
-                                        Add to bag
+                                        {textApp.Product.button.pay}
                                     </button>
+
                                 </form>
                             </FormProvider>
                         </div>

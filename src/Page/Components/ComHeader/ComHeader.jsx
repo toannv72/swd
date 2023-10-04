@@ -147,7 +147,6 @@ const navigation = {
   pages: [
     { name: "Company", href: "#" },
     { name: "Stores", href: "#" },
-    { name: "Payment", href: "/payment" },
   ],
 };
 
@@ -155,16 +154,21 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function ComHeader() {
+export default function ComHeader({ dataCart, updateCart }) {
   const [open, setOpen] = useState(false);
   const [shoppingCart, setShoppingCart] = useState(false);
   const [sttLogin, setSttLogin] = useState([]);
+  const [cart, setCart] = useState(JSON.parse(localStorage.getItem('cart')) || []);
   const location = useLocation();
   const navigate = useNavigate();
 
   const updateShoppingCartStatus = (newStatus) => {
-    setShoppingCart(newStatus);
-  };
+    setShoppingCart(newStatus); 
+    updateCart&&updateCart(newStatus)
+
+  
+  }; 
+
   const CreateProductMessenger = yup.object({
     search: yup.string(),
   })
@@ -188,17 +192,21 @@ export default function ComHeader() {
 
       });
   }, []);
+  useEffect(() => {
+    setCart(JSON.parse(localStorage.getItem('cart')))
+  }, [dataCart, shoppingCart]);
+
   const { handleSubmit, register } = methods
   const onSubmit = (data) => {
     console.log(data);
   }
-
-
+  console.log(cart);
   return (
     <>
       <ShoppingCart
         show={shoppingCart}
         updateShoppingCart={updateShoppingCartStatus}
+
       ></ShoppingCart>
       <Affix offsetTop={0} >
         <div className="bg-white ">
@@ -551,7 +559,7 @@ export default function ComHeader() {
                           aria-hidden="true"
                         />
                         <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                          0
+                          {dataCart?.length || cart.length}
                         </span>
                         <span className="sr-only">items in cart, view bag</span>
                       </button>

@@ -25,7 +25,8 @@ const images = {
         }
 
     ],
-    avatar:require('./user.jpg')
+    avatar:require('./user.jpg'),
+    discount:require('./discount.png'),
     
 };
 

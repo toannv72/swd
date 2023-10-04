@@ -12,7 +12,7 @@ export const textApp = {
         pageTitle: "Đăng nhập",
         label: {
             username: "Tài khoản",
-            password: "Password"
+            password: "Mật khẩu"
         },
         placeholder: {
             username: "Please enter you Login ID",
@@ -162,6 +162,11 @@ export const textApp = {
         title: {
 
         },
+        button: {
+            add: 'Thêm vào giỏ hàng',
+            pay: 'Thanh toán'
+
+        },
         page: {
             quantity: "Số lượng",
             material: "Chất Liệu :",
@@ -171,6 +176,20 @@ export const textApp = {
             quantity: "Số lượng không đúng.",
             min: "Số lượng phải lớn hơn hoặc bằng 1.",
 
+        },
+        Notification: {
+            m1: {
+                message: "Thành công!",
+                description: "Đã thêm vào giỏ hàng!"
+            },
+            m2: {
+                message: "Thành công!",
+                description: "Cập nhật số lượng sản phẩm thành công"
+            },
+            m3: {
+                message: "Thất bại!",
+                description: "Đã có sản phẩm trong giỏ hàng"
+            },
         }
     },
     Footer: {
