@@ -61,7 +61,7 @@ export default function Login() {
                 setDisabled(false)
                 // navigate('/')
                 if (data._doc.admin) {
-                    navigate('/createProduct')
+                    navigate('/admin/product/create')
                 } else {
                     navigate('/')
                 }

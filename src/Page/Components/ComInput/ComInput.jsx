@@ -150,6 +150,7 @@ const ComInput = React.forwardRef(
               }
               id={inputId}
               ref={ref}
+              className="12"
               size="large"
               {...props}
               value={props.value ?? valueWatch}

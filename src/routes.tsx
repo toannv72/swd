@@ -10,6 +10,7 @@ import TableProduct from "./Page/admin/TableProduct";
 import CreateProduct from "./Page/admin/CreateProduct";
 import Oder from "./Page/Authenticator/Oder/Oder";
 import Logout from "./Page/Authenticator/Logout/Logout";
+import TableOrder from "./Page/admin/TableOrder";
 
 export const routers = createBrowserRouter([
   {
@@ -37,18 +38,23 @@ export const routers = createBrowserRouter([
     element: <Product />,
   },
   {
-    path: "/createProduct",
+    path: "/admin/product/create",
     element: <CreateProduct />,
   },
   {
-    path: "/tableProduct",
+    path: "/admin/product/table",
     element: <TableProduct />,
   },
   {
     path: "/payment",
     element: <PaymentPage />,
-  },{
+  },
+  {
     path: "/oder",
     element: <Oder />,
+  },
+  {
+    path: "/admin/oder",
+    element: <TableOrder />,
   },
 ]);

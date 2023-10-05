@@ -538,6 +538,7 @@ export default function ComHeader({ dataCart, updateCart }) {
                           <ComInput
                             placeholder={textApp.Header.search}
                             search
+                         
                             type="text"
 
                             {...register("search")}

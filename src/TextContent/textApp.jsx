@@ -155,6 +155,14 @@ export const textApp = {
             change: {
                 message: "Thành công!",
                 description: "Vui lòng chọn Chất liệu sản phẩm!"
+            },
+            update: {
+                message: "Thành công!",
+                description: "Chỉnh sửa sản phẩm thành công!"
+            }, 
+            updateFail: {
+                message: "Thất bại!",
+                description: "Chỉnh sửa sản phẩm thất bại!"
             }
         }
     },

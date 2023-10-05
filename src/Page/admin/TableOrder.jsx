@@ -5,7 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import Highlighter from 'react-highlight-words';
 import * as yup from "yup"
 import { SearchOutlined } from '@ant-design/icons';
-import { Button, Input, Modal, Select, Space, Table, Tooltip, Typography, notification } from 'antd';
+import { Button, Input, Modal, Select, Space, Table, Typography, notification } from 'antd';
 import { textApp } from '../../TextContent/textApp';
 import { deleteData, getData, postData, putData } from '../../api/api';
 import { firebaseImgs } from '../../upImgFirebase/firebaseImgs';
@@ -19,7 +19,7 @@ import ComSelect from '../Components/ComInput/ComSelect';
 import moment from 'moment/moment';
 
 
-export default function TableProduct() {
+export default function TableOrder() {
     const [disabled, setDisabled] = useState(false);
     const [image, setImages] = useState([]);
     const [products, setProducts] = useState([]);
@@ -27,15 +27,11 @@ export default function TableProduct() {
     const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
     const [dataRun, setDataRun] = useState(false);
     const [productRequestDefault, setProductRequestDefault] = useState({});
-    const [productPrice, setProductPrice] = useState(1000);
-    const [productReducedPrice, setProductReducedPrice] = useState(1000);
-    const [productQuantity, setProductQuantity] = useState(1);
     const [api, contextHolder] = notification.useNotification();
     const [selectedMaterials, setSelectedMaterials] = useState();
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
     const searchInput = useRef(null);
-
     const handleSearch = (selectedKeys, confirm, dataIndex) => {
         confirm();
         setSearchText(selectedKeys[0]);
@@ -45,18 +41,11 @@ export default function TableProduct() {
         clearFilters();
         setSearchText('');
     };
-    console.log(productRequestDefault);
     const showModalEdit = (e) => {
         setSelectedMaterials(e.material)
-        setProductPrice(e.price)
-        setProductReducedPrice(e.reducedPrice)
-        setProductQuantity(e.quantity)
         setProductRequestDefault({
             name: e.name,
             price: e.price,
-            price1: e.price,
-            reducedPrice1:e.reducedPrice,
-            reducedPrice:e.reducedPrice,
             quantity: e.quantity,
             detail: e.detail,
             shape: e.shape,
@@ -99,18 +88,16 @@ export default function TableProduct() {
 
     };
     const handleValueChange = (e, value) => {
-        setProductPrice(value)
+        console.log(value);
+
         setValue("price", value, { shouldValidate: true });
     };
 
     const handleValueChange1 = (e, value) => {
-        setProductReducedPrice(value)
+        console.log(value);
         setValue("reducedPrice", value, { shouldValidate: true });
     };
-    const handleValueChangeQuantity = (e, value) => {
-        setProductQuantity(value)
-        setValue("reducedPrice", value, { shouldValidate: true });
-    };
+
     function formatCurrency(number) {
         // Sử dụng hàm toLocaleString() để định dạng số thành chuỗi với ngăn cách hàng nghìn và mặc định là USD.
         return number.toLocaleString('en-US', {
@@ -149,55 +136,8 @@ export default function TableProduct() {
         values: productRequestDefault
     })
     const { handleSubmit, register, setFocus, watch, setValue } = methods
-    function isInteger(number) {
-        return typeof number === 'number' && isFinite(number) && Math.floor(number) === number;
-    }
+
     const onSubmit = (data) => {
-        if (data.price%1000!==0) {
-            api["error"]({
-                message: textApp.CreateProduct.Notification.m7.message,
-                description:
-                    textApp.CreateProduct.Notification.m7.description
-            });
-            return
-        }
-        if (data.reducedPrice%1000!==0) {
-            api["error"]({
-                message: textApp.CreateProduct.Notification.m8.message,
-                description:
-                    textApp.CreateProduct.Notification.m8.description
-            });
-            return
-        }
-        if (!isInteger(data.price)) {
-
-            api["error"]({
-                message: textApp.CreateProduct.Notification.m1.message,
-                description:
-                    textApp.CreateProduct.Notification.m1.description
-            });
-            return
-        }
-
-        if (data.material.length === 0) {
-            api["error"]({
-                message: textApp.CreateProduct.Notification.m4.message,
-                description:
-                    textApp.CreateProduct.Notification.m4.description
-            });
-            return
-        }
-      
-
-        if (data.price <= data.reducedPrice) {
-            api["error"]({
-                message: textApp.CreateProduct.Notification.m6.message,
-                description:
-                    textApp.CreateProduct.Notification.m6.description
-            });
-            return
-        }
-       
         setDisabled(true)
         firebaseImgs(image)
             .then((dataImg) => {
@@ -210,17 +150,12 @@ export default function TableProduct() {
                     putData(`/product`, productRequestDefault.id, updatedData, {})
                         .then((dataS) => {
                             api["success"]({
-                                message: textApp.TableProduct.Notification.update.message,
+                                message: 'Notification Title',
                                 description:
-                                    textApp.TableProduct.Notification.update.description
+                                    'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
                             });
                         })
                         .catch((error) => {
-                            api["error"]({
-                                message: textApp.TableProduct.Notification.updateFail.message,
-                                description:
-                                    textApp.TableProduct.Notification.updateFail.description
-                            });
                             console.error("Error fetching items:", error);
                             setDisabled(false)
                         });
@@ -240,11 +175,6 @@ export default function TableProduct() {
                         .catch((error) => {
                             console.error("Error fetching items:", error);
                             setDisabled(false)
-                            api["error"]({
-                                message: textApp.TableProduct.Notification.updateFail.message,
-                                description:
-                                    textApp.TableProduct.Notification.updateFail.description
-                            });
                         });
                 }
 
@@ -277,9 +207,9 @@ export default function TableProduct() {
                 setDisabled(false)
                 handleCancelDelete()
                 api["error"]({
-                    message: textApp.TableProduct.Notification.deleteError.message,
+                    message: textApp.TableProduct.Notification.delete.message,
                     description:
-                        textApp.TableProduct.Notification.deleteError.description
+                        textApp.TableProduct.Notification.delete.description
                 });
             })
         setDataRun(!dataRun)
@@ -510,22 +440,13 @@ export default function TableProduct() {
             dataIndex: 'description',
             key: 'description',
             width: 300,
-            ...getColumnSearchProps('description', "chi tiết"),
-            // render: (_, record) => (
-                
-                //     <div className="text-sm text-gray-700 line-clamp-4">
-                //         <p className="text-sm text-gray-700 line-clamp-4">{record.description}</p>
-                //     </div>
-                
-                // ),
-            ellipsis: {
-                showTitle: false,
-            },
-            render: (record) => (
-                <Tooltip placement="topLeft" title={record}>
-                    {record}
-                 
-                </Tooltip>
+                    ...getColumnSearchProps('description', "chi tiết"),
+            render: (_, record) => (
+
+                <div className="text-sm text-gray-700 line-clamp-4">
+                    <p className="text-sm text-gray-700 line-clamp-4">{record.description}</p>
+                </div>
+
             ),
 
         },
@@ -623,8 +544,7 @@ export default function TableProduct() {
                                         label={textApp.CreateProduct.label.price}
                                         placeholder={textApp.CreateProduct.placeholder.price}
                                         // type="money"
-                                        value={productPrice}
-                                        defaultValue={productRequestDefault.price}
+                                        defaultValue={1000}
                                         min={1000}
                                         money
                                         onChangeValue={handleValueChange}
@@ -638,9 +558,8 @@ export default function TableProduct() {
                                         label={textApp.CreateProduct.label.reducedPrice}
                                         placeholder={textApp.CreateProduct.placeholder.reducedPrice}
                                         // type="money"
-                                        // defaultValue={productRequestDefault.reducedPrice}
+                                        defaultValue={1000}
                                         min={1000}
-                                        value={productReducedPrice}
                                         money
                                         onChangeValue={handleValueChange1}
                                         {...register("reducedPrice1")}
@@ -653,9 +572,7 @@ export default function TableProduct() {
                                         label={textApp.CreateProduct.label.quantity}
                                         placeholder={textApp.CreateProduct.placeholder.quantity}
                                         // type="numbers"
-                                        min={0}
-                                        value={productQuantity}
-                                        onChangeValue={handleValueChangeQuantity}
+                                        defaultValue={1}
                                         {...register("quantity")}
                                         required
                                     />
@@ -783,6 +700,7 @@ export default function TableProduct() {
                         type="primary"
                         danger
                         onClick={deleteById}
+
                     >
                         {textApp.TableProduct.modal.submitDelete}
                     </ComButton>
