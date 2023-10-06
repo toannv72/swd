@@ -10,11 +10,12 @@ import { useState } from "react";
 import ComInput from "../../Components/ComInput/ComInput";
 import ComTextArea from "../../Components/ComInput/ComTextArea";
 import { useLocation, useNavigate } from "react-router-dom";
+import { postData } from "../../../api/api";
 export default function Payment(props) {
     const [disabled, setDisabled] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
-    const formData = location.state?.formData || null;
+    const dataProduct = location.state?.dataProduct || null;
 
     const loginMessenger = yup.object({
         name: yup.string().required(textApp.Payment.information.message.name),
@@ -38,11 +39,23 @@ export default function Payment(props) {
     const { handleSubmit, register, setFocus, watch, setValue } = methods
     const { handleSubmit1, register1, setFocus1, watch1, setValue1 } = promotion
     const onSubmit = (data) => {
-        console.log(data);
-        navigate('/')
+        // console.log(data);
+        // navigate('/')
         setDisabled(true)
-
+        const ProductPost = dataProduct.map((e, index) => {
+            return { ...e, product: e._id, quantity: e?.data?.quantity };
+        })
+        console.log(ProductPost);
+        const dataPost = { data, products: ProductPost,totalAmount: totalAmount}
+        postData('/order', dataPost)
+            .then((data) => {
+                console.log(data);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
     }
+
     function formatCurrency(number) {
         // Sử dụng hàm toLocaleString() để định dạng số thành chuỗi với ngăn cách hàng nghìn và mặc định là USD.
         return number.toLocaleString('en-US', {
@@ -50,10 +63,10 @@ export default function Payment(props) {
             currency: 'VND',
         });
     }
-    const totalAmount = formData?.reduce((total, data) => {
+    const totalAmount = dataProduct?.reduce((total, data) => {
         const itemTotal = data.reducedPrice * data?.data?.quantity;
         return total + itemTotal;
-      }, 0)||0;
+    }, 0) || 0;
     return (
         <>
             <ComHeader />
@@ -70,17 +83,17 @@ export default function Payment(props) {
                         <form onSubmit={(onSubmit)} className="text-black text-lg">
                             <h4 className="flex justify-between items-center mb-3 text-gray-600">
                                 <span>Giỏ hàng</span>
-                                <span className="bg-blue-500 text-white rounded-full py-1 px-2">{formData?.length}</span>
+                                <span className="bg-blue-500 text-white rounded-full py-1 px-2">{dataProduct?.length}</span>
                             </h4>
                             <ul className="list-group mb-3">
-                           
-                                {formData?.map((data, index) => (
+
+                                {dataProduct?.map((data, index) => (
                                     <li key={index} className="list-group-item flex justify-between items-center">
                                         <div>
                                             <h6 className="my-0">{data.name}</h6>
                                             <small className="text-gray-500">{formatCurrency(data.reducedPrice)} x {data?.data?.quantity}</small>
                                         </div>
-                                        <span className="text-gray-500">{formatCurrency(data.reducedPrice*data?.data?.quantity)}</span>
+                                        <span className="text-gray-500">{formatCurrency(data.reducedPrice * data?.data?.quantity)}</span>
                                     </li>
                                 ))}
                                 <li className="list-group-item flex justify-between items-center text-black text-xl">

@@ -163,11 +163,11 @@ export default function ComHeader({ dataCart, updateCart }) {
   const navigate = useNavigate();
 
   const updateShoppingCartStatus = (newStatus) => {
-    setShoppingCart(newStatus); 
-    updateCart&&updateCart(newStatus)
+    setShoppingCart(newStatus);
+    updateCart && updateCart(newStatus)
 
-  
-  }; 
+
+  };
 
   const CreateProductMessenger = yup.object({
     search: yup.string(),
@@ -184,12 +184,10 @@ export default function ComHeader({ dataCart, updateCart }) {
         setSttLogin(data.data);
         if (location.pathname === '/login' && data.data.login) {
           navigate('/')
-
         }
       })
       .catch((error) => {
         console.log(error);
-
       });
   }, []);
   useEffect(() => {
@@ -200,7 +198,7 @@ export default function ComHeader({ dataCart, updateCart }) {
   const onSubmit = (data) => {
     console.log(data);
   }
-  console.log(cart);
+
   return (
     <>
       <ShoppingCart
@@ -538,7 +536,7 @@ export default function ComHeader({ dataCart, updateCart }) {
                           <ComInput
                             placeholder={textApp.Header.search}
                             search
-                         
+
                             type="text"
 
                             {...register("search")}

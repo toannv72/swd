@@ -75,7 +75,7 @@ export default function Product() {
     }
     const onSubmit = (data) => {
         const product = [{ ...Product, data }];
-        navigate('/payment', { state: { formData: product } })
+        navigate('/payment', { state: { dataProduct: product } })
     }
     const addToCart = (data) => {
         const existingProductIndex = cart.findIndex(item => item._id === Product._id);
