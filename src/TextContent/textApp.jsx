@@ -202,6 +202,9 @@ export const textApp = {
         product: "Sản phẩm",
     },
     Header: {
+        home: "Trang chủ",
+        category:"Danh mục",
+        allProduct:"Sản phẩm",
         search: "Tìm kiếm...",
     },
     Home: {
@@ -244,5 +247,33 @@ export const textApp = {
         tile: "Giỏ hàng",
         checkbox: "Chọn tất cả"
     },
+    OrderHistory:{
+        label:{
+        status: "Chờ duyệt",
+        status1:"Đang xử lí",
+        status2:"Đang vận chuyển",
+        status3:"Hoàn thành",
+        status4:"Đã hủy",
+        status5:"Trả hàng",
+        status6:"Tất cả",
+    },
+    value:{
+        status: "pending",
+        status1:"processing",
+        status2:"transporting",
+        status3:"done",
+        status4:"cancel",
+        status5:"return",
+        status6:"all",
+    },
+    title:"Danh sách đơn hàng",
+    button:{
+        contact:"Liên hệ người bán",
+        reBuy: "Mua lại",
+        cancel:"Hủy đơn hàng"
+        
+    }
+
+}
 
 }
