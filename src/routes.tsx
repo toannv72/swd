@@ -53,7 +53,7 @@ export const routers = createBrowserRouter([
     element: <Order />,
   }, 
   {
-    path: "/admin/oder",
+    path: "/admin/order",
     element: <TableOrder />,
   },
 ]); 

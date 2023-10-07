@@ -240,6 +240,7 @@ export const textApp = {
     },
     Payment: {
         title: "Thanh toán",
+        error:"Lỗi",
         message: "Vui lòng kiểm tra thông tin Khách hàng, thông tin Giỏ hàng trước khi Đặt hàng.",
         information: {
             title: "Thông tin khách hàng",

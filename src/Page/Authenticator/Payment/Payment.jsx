@@ -11,12 +11,15 @@ import ComInput from "../../Components/ComInput/ComInput";
 import ComTextArea from "../../Components/ComInput/ComTextArea";
 import { useLocation, useNavigate } from "react-router-dom";
 import { postData } from "../../../api/api";
+import { notification } from "antd";
 export default function Payment(props) {
     const [disabled, setDisabled] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
-    const dataProduct = location.state?.dataProduct || null;
+    const [api, contextHolder] = notification.useNotification();
 
+    const dataProduct = location?.state?.dataProduct || null;
+    console.log(dataProduct);
     const loginMessenger = yup.object({
         name: yup.string().required(textApp.Payment.information.message.name),
         address: yup.string().required(textApp.Payment.information.message.address),
@@ -40,32 +43,38 @@ export default function Payment(props) {
     const onSubmit = (data) => {
         setDisabled(true)
         const ProductPost = dataProduct.map((e, index) => {
-            return { ...e, product: e._id, quantity: e?.data?.quantity };
+            return { ...e, product: e._id, quantity: e?.data };
         })
-        console.log(ProductPost);
+
         const dataPost = { data, products: ProductPost, totalAmount: totalAmount }
         postData('/order', dataPost)
             .then((data) => {
                 console.log(data);
             })
             .catch((error) => {
-                console.log(error);
+                console.log(error.response.data.error);
+                api["error"]({
+                    message: textApp.Payment.error,
+                    description: error.response.data.error
+                });
             })
     }
 
     function formatCurrency(number) {
         // Sử dụng hàm toLocaleString() để định dạng số thành chuỗi với ngăn cách hàng nghìn và mặc định là USD.
-        return number.toLocaleString('en-US', {
-            style: 'currency',
-            currency: 'VND',
-        });
+        return number
+            .toLocaleString('en-US', {
+                style: 'currency',
+                currency: 'VND',
+            });
     }
     const totalAmount = dataProduct?.reduce((total, data) => {
-        const itemTotal = data.reducedPrice * data?.data?.quantity;
+        const itemTotal = data.reducedPrice * data?.data;
         return total + itemTotal;
     }, 0) || 0;
     return (
         <>
+            {contextHolder}
             <ComHeader />
             <div className="flex justify-center flex-col py-5 text-center">
                 <FontAwesomeIcon icon={faCreditCard} size="7x" style={{ color: "#6e7887", }} />
@@ -88,9 +97,9 @@ export default function Payment(props) {
                                     <li key={index} className="list-group-item flex justify-between items-center">
                                         <div>
                                             <h6 className="my-0">{data.name}</h6>
-                                            <small className="text-gray-500">{formatCurrency(data.reducedPrice)} x {data?.data?.quantity}</small>
+                                            <small className="text-gray-500">{formatCurrency(data.reducedPrice)} x {data?.data}</small>
                                         </div>
-                                        <span className="text-gray-500">{formatCurrency(data.reducedPrice * data?.data?.quantity)}</span>
+                                        <span className="text-gray-500">{formatCurrency(data.reducedPrice * data?.data)}</span>
                                     </li>
                                 ))}
                                 <li className="list-group-item flex justify-between items-center text-black text-xl">

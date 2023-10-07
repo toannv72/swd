@@ -1,26 +1,25 @@
 import { Fragment, useEffect, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
-import { Button, Checkbox, InputNumber } from 'antd'
+import {  Checkbox, InputNumber } from 'antd'
 import { textApp } from '../../../TextContent/textApp'
-import { ComLink } from '../../Components/ComLink/ComLink'
-import ComButton from '../../Components/ComButton/ComButton'
-import ComNumber from '../../Components/ComInput/ComNumber'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 
 export default function ShoppingCart({ show, updateShoppingCart }) {
   const [open, setOpen] = useState(show)
   const [checkedList, setCheckedList] = useState([]);
   const [cart, setCart] = useState(JSON.parse(localStorage.getItem('cart')) || []);
-
-  const checkAll = cart.length === checkedList.length;
-  const indeterminate = checkedList.length > 0 && checkedList.length < cart.length;
+  const navigate = useNavigate();
+  const nonDisabledProducts = cart.filter(product => product.quantity > 0);
+  const checkAll = nonDisabledProducts.length === checkedList.length;
+  const indeterminate = checkedList.length > 0 && checkedList.length < nonDisabledProducts.length;
   const onChange = (list) => {
     setCheckedList(list);
   };
   const onCheckAllChange = (e) => {
-    setCheckedList(e.target.checked ? cart : []);
+    const nonDisabledProducts = cart.filter(product => product.quantity > 0);
+    setCheckedList(e.target.checked ? nonDisabledProducts : []);
   };
 
   useEffect(
@@ -41,8 +40,34 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
   const removeFromCart = (productId) => {
     const updatedCart = cart.filter(item => item._id !== productId);
     setCart(updatedCart);
-  
+
   };
+  const selectedProducts = checkedList.map(product => {
+    const cartProduct = cart.find(item => item._id === product._id);
+    return {
+      ...cartProduct, quantityCart: product.quantityCart  // Cập nhật quantityCart theo giá trị từ checkedList
+    };
+  });
+  const onSubmit = () => {
+    setOpen(false); handleCartClose();
+    console.log(selectedProducts);
+    navigate('/payment', { state: { dataProduct: selectedProducts } })
+  }
+
+  const handleQuantityChange = (productId, newQuantity) => {
+    console.log(productId);
+
+    // Tìm sản phẩm trong cart có id là productId và cập nhật giá trị quantityCart
+    const updatedCart = cart.slice().map(product => {
+      if (product._id === productId) {
+        return { ...product, data: newQuantity };
+      }
+      return product;
+    });
+    console.log(updatedCart);
+    setCart(updatedCart);
+  };
+
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={() => { setOpen(false); handleCartClose(); }}>
@@ -94,9 +119,9 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
                         <div className="flow-root">
                           <ul role="list" className="-my-6 divide-y divide-gray-200">
                             <Checkbox.Group style={{ width: '100%' }} value={checkedList} onChange={onChange}>
-                              {cart.slice().reverse().map((product,index) => (
+                              {cart.slice().reverse().map((product, index) => (
                                 <div className='flex gap-2' key={index}>
-                                  <Checkbox value={product} />
+                                  <Checkbox value={product } disabled={product.quantity === 0 ? true : false} />
                                   <li key={product.id} className="flex py-4">
                                     <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                       <img
@@ -111,7 +136,6 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
                                         <div className="flex justify-between text-base font-medium text-gray-900">
                                           <h3 className='w-44'>
                                             <Link onClick={() => { setOpen(false); handleCartClose(); }} to={`/product/${product._id}`}
-
                                             >{product.name}</Link>
                                           </h3>
                                           <p className="ml-4">{product.price}</p>
@@ -123,7 +147,8 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
                                           <InputNumber
                                             className="w-14 text-sm"
                                             min={1}
-                                            defaultValue={product.quantityCart || 1}
+                                            onChange={(newQuantity) => handleQuantityChange(product._id, newQuantity)}
+                                            defaultValue={product?.data || 1}
                                             max={product.quantity}
                                           />
                                           {product.quantity} Sản phẩm
@@ -156,8 +181,9 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
                       <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                       <div className="mt-6">
                         <button
-                          to="#"
-                          disabled={true}
+                          onClick={() => { onSubmit() }}
+                          // onClick={() => { setOpen(false); handleCartClose(); }}
+                          // disabled={true}
                           className="flex items-center w-full justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                         >
                           Checkout

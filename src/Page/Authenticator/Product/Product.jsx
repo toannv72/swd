@@ -78,12 +78,15 @@ export default function Product() {
         });
     }
     const onSubmit = (data) => {
-        const product = [{ ...Product, data }];
+        console.log(data);
+        const product = [{ ...Product, data:data.quantity }];
         navigate('/payment', { state: { dataProduct: product } })
     }
     const addToCart = (data) => {
         const existingProductIndex = cart.findIndex(item => item._id === Product._id);
         const updatedCart = [...cart];
+        console.log(existingProductIndex);
+        console.log(updatedCart);
         if (existingProductIndex !== -1) {
             if (updatedCart[existingProductIndex].quantityCart === data.quantity) {
 
@@ -95,7 +98,7 @@ export default function Product() {
                 return;
             }
 
-            updatedCart[existingProductIndex].quantityCart = data.quantity;
+            updatedCart[existingProductIndex].data =1;
             setCart(updatedCart);
             api["success"]({
                 message: textApp.Product.Notification.m2.message,
@@ -104,7 +107,7 @@ export default function Product() {
             });
         }
         if (existingProductIndex === -1) {
-            const updatedCart = [...cart, { ...Product, quantityCart: data.quantity }];
+            const updatedCart = [...cart, { ...Product, data:1 }];
             setCart(updatedCart);
             api["success"]({
                 message: textApp.Product.Notification.m1.message,
@@ -182,7 +185,7 @@ export default function Product() {
 
                                             <ComNumber
                                                 className="w-24 text-sm"
-                                                min={disabled?0:1}
+                                                min={disabled ? 0 : 1}
                                                 defaultValue={1}
                                                 max={Product.quantity}
                                                 {...register("quantity")}
@@ -199,11 +202,11 @@ export default function Product() {
                                         </div>
                                     </div>
 
-                                    <Button 
+                                    <Button
                                         disabled={disabled}
                                         htmlType='submit'
                                         type="primary"
-                                        className={`mt-10 flex w-full h-12 items-center justify-center rounded-md border border-transparent  px-8 py-3 text-base font-medium text-white ${disabled?" bg-slate-700":"hover:to-sky-700 hover:from-sky-800 bg-gradient-to-b from-sky-600 to-sky-700"}  `}
+                                        className={`mt-10 flex w-full h-12 items-center justify-center rounded-md border border-transparent  px-8 py-3 text-base font-medium text-white ${disabled ? " bg-slate-700" : "hover:to-sky-700 hover:from-sky-800 bg-gradient-to-b from-sky-600 to-sky-700"}  `}
                                     >
                                         {textApp.Product.button.pay}
                                     </Button>
