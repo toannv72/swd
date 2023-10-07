@@ -101,7 +101,7 @@ export default function All() {
               </div>
               <div className="col-span-1 mt-4 md:mt-0"> 
                 <div className="flex flex-col items-end mb-4"> 
-                  <div className="flex-none bg-emerald-500 text-white rounded-full px-3 py-1 mb-2">
+                  <div className={`flex-none ${order.status === textApp.OrderHistory.label.status3 ? 'bg-emerald-500' : 'bg-red-500'} text-white rounded-full px-3 py-1 mb-2`}>
                     {order.status}
                   </div>
                 </div>
