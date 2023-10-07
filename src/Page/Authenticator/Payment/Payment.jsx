@@ -37,16 +37,13 @@ export default function Payment(props) {
 
     })
     const { handleSubmit, register, setFocus, watch, setValue } = methods
-    const { handleSubmit1, register1, setFocus1, watch1, setValue1 } = promotion
     const onSubmit = (data) => {
-        // console.log(data);
-        // navigate('/')
         setDisabled(true)
         const ProductPost = dataProduct.map((e, index) => {
             return { ...e, product: e._id, quantity: e?.data?.quantity };
         })
         console.log(ProductPost);
-        const dataPost = { data, products: ProductPost,totalAmount: totalAmount}
+        const dataPost = { data, products: ProductPost, totalAmount: totalAmount }
         postData('/order', dataPost)
             .then((data) => {
                 console.log(data);
@@ -82,7 +79,7 @@ export default function Payment(props) {
                     <FormProvider {...promotion} >
                         <form onSubmit={(onSubmit)} className="text-black text-lg">
                             <h4 className="flex justify-between items-center mb-3 text-gray-600">
-                                <span>Giỏ hàng</span>
+                                <span>{textApp.Payment.quantity}</span>
                                 <span className="bg-blue-500 text-white rounded-full py-1 px-2">{dataProduct?.length}</span>
                             </h4>
                             <ul className="list-group mb-3">
@@ -97,22 +94,10 @@ export default function Payment(props) {
                                     </li>
                                 ))}
                                 <li className="list-group-item flex justify-between items-center text-black text-xl">
-                                    <span>Tổng thành tiền</span>
+                                    <span>{textApp.Payment.totalMoney}</span>
                                     <strong>{formatCurrency(totalAmount)}</strong>
                                 </li>
                             </ul>
-                            {/* <div className="input-group mb-4">
-                                <ComInput
-                                    placeholder={textApp.Payment.information.placeholder.promotion}
-                                    label={textApp.Payment.information.label.promotion}
-
-                                    {...register("promotion")}
-                                    required
-                                />
-                                <div className="input-group-append">
-                                    <button className="bg-blue-500 mt-2 text-white py-2 px-4 ">Xác nhận</button>
-                                </div>
-                            </div> */}
                         </form>
                     </FormProvider>
                 </div>
@@ -143,6 +128,7 @@ export default function Payment(props) {
                                     <ComInput
                                         placeholder={textApp.Payment.information.placeholder.phone}
                                         label={textApp.Payment.information.label.phone}
+                                        type={"numbers"}
                                         {...register("phone")}
                                         required
                                     />
@@ -165,34 +151,17 @@ export default function Payment(props) {
                                         {...register("description")}
                                     />
                                 </div>
-
                             </div>
-                            <h4 className="mb-3 text-gray-600 text-lg">Hình thức thanh toán</h4>
+                            <h4 className="mb-3 text-gray-600 text-lg">{textApp.Payment.payments}</h4>
                             <div className="space-y-2">
-                                <div className="flex items-center">
-                                    <input id="httt-1" name="httt_ma" type="radio" className="form-radio" required value="1" />
-                                    <label htmlFor="httt-1" className="ml-2">Tiền mặt</label>
-                                </div>
-                                <div className="flex items-center">
-                                    <input id="httt-2" name="httt_ma" type="radio" className="form-radio" required value="2" />
-                                    <label htmlFor="httt-2" className="ml-2">Chuyển khoản</label>
-                                </div>
-                                <div className="flex items-center">
-                                    <input id="httt-3" name="httt_ma" type="radio" className="form-radio" required value="3" />
-                                    <label htmlFor="httt-3" className="ml-2">Ship COD</label>
+                                <div className="flex items-center mb-2">
+                                    <input type="radio" defaultChecked className="form-radio" required value="1" />
+                                    <label className="ml-2">{textApp.Payment.cash}</label>
                                 </div>
                             </div>
-                            <hr className="my-4" />
-                            {/* <ComButton
-                                disabled={disabled}
-                                htmlType="submit"
-                                type="primary"
-                            >=
-                                Đặt hàng
-                            </ComButton> */}
                             <div>
                                 <button className="bg-blue-500 text-white py-3 px-6 rounded-lg w-full " type="submit"
-                                    name="btnDatHang">Đặt hàng</button>
+                                    name="btnDatHang">{textApp.Payment.orderButton}</button>
                             </div>
                         </form>
                     </FormProvider>

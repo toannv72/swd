@@ -1,7 +1,6 @@
 
 import { useEffect, useState } from 'react'
 import { StarIcon } from '@heroicons/react/20/solid'
-import { RadioGroup } from '@headlessui/react'
 import ComHeader from '../../Components/ComHeader/ComHeader'
 import ComImage from '../../Components/ComImage/ComImage'
 import { getData } from '../../../api/api'
@@ -11,7 +10,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import * as yup from "yup"
 import { yupResolver } from '@hookform/resolvers/yup'
 import ComNumber from '../../Components/ComInput/ComNumber'
-import { notification } from 'antd'
+import { Button, notification } from 'antd'
 
 
 const reviews = { href: '#', average: 4, totalCount: 117 }
@@ -23,6 +22,7 @@ function classNames(...classes) {
 export default function Product() {
     const [Product, setProduct] = useState([])
     const [image, setImage] = useState([])
+    const [disabled, setDisabled] = useState(false);
     const { slug } = useParams();
     const [cart, setCart] = useState(JSON.parse(localStorage.getItem('cart')) || []);
     const [sttCart, setSttCart] = useState(true)
@@ -33,7 +33,7 @@ export default function Product() {
         quantity: yup.number().max(Product.quantity, `Số lượng bạn chọn đã đạt mức tối đa của sản phẩm này`).min(1, textApp.Product.message.min).typeError(textApp.Product.message.quantity),
     })
     const LoginRequestDefault = {
-        quantity: "1",
+        // quantity: "1",
     };
     const methods = useForm({
         resolver: yupResolver(productQuantity),
@@ -46,8 +46,12 @@ export default function Product() {
 
     useEffect(() => {
         getData(`/product/${slug}`)
-            .then(product =>
-                setProduct(product.data))
+            .then((product) => {
+                setProduct(product.data)
+                if (product.data.quantity < 1) {
+                    setDisabled(true)
+                }
+            })
             .catch((error) => {
                 console.log(error);
             })
@@ -172,36 +176,37 @@ export default function Product() {
                             </div>
                             <FormProvider {...methods} >
                                 <form className="mt-10" onSubmit={handleSubmit(onSubmit)}>
-
                                     <div>
                                         <div className='flex gap-4 items-center'>
                                             <h3 className="text-sm font-medium text-gray-900 ">{textApp.Product.page.quantity}</h3>
 
                                             <ComNumber
                                                 className="w-24 text-sm"
-                                                min={1}
+                                                min={disabled?0:1}
                                                 defaultValue={1}
                                                 max={Product.quantity}
                                                 {...register("quantity")}
                                             />
                                             <div className=''> {Product.quantity} sản phẩm có sẵn</div>
-                                            <button
+                                            <Button
                                                 type='button'
-                                                onClick={handleSubmit(addToCart)}
-                                                className="flex items-center justify-center rounded-md border border-transparent  px-4 py-2 text-base font-medium text-white  focus:outline-none 
-                                                 hover:to-orange-500 hover:from-orange-600 bg-gradient-to-b from-orange-400 to-orange-500"
+                                                onClick={(addToCart)}
+                                                className={`flex h-10 items-center justify-center rounded-md border border-transparent  px-4 py-2 text-base font-medium text-white  focus:outline-none 
+                                                 hover:to-orange-500 hover:from-orange-600 bg-gradient-to-b from-orange-400 to-orange-500`}
                                             >
                                                 {textApp.Product.button.add}
-                                            </button>
+                                            </Button>
                                         </div>
                                     </div>
 
-                                    <button
-                                        type="submit"
-                                        className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent  px-8 py-3 text-base font-medium text-white hover:to-sky-700 hover:from-sky-800 bg-gradient-to-b from-sky-600 to-sky-700 "
+                                    <Button 
+                                        disabled={disabled}
+                                        htmlType='submit'
+                                        type="primary"
+                                        className={`mt-10 flex w-full h-12 items-center justify-center rounded-md border border-transparent  px-8 py-3 text-base font-medium text-white ${disabled?" bg-slate-700":"hover:to-sky-700 hover:from-sky-800 bg-gradient-to-b from-sky-600 to-sky-700"}  `}
                                     >
                                         {textApp.Product.button.pay}
-                                    </button>
+                                    </Button>
 
                                 </form>
                             </FormProvider>

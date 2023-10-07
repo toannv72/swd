@@ -161,7 +161,9 @@ export default function ComHeader({ dataCart, updateCart }) {
   const [cart, setCart] = useState(JSON.parse(localStorage.getItem('cart')) || []);
   const location = useLocation();
   const navigate = useNavigate();
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const updateShoppingCartStatus = (newStatus) => {
     setShoppingCart(newStatus);
     updateCart && updateCart(newStatus)

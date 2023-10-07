@@ -12,6 +12,7 @@ import { useStorage } from "../../../hooks/useLocalStorage";
 import { useEffect, useState } from "react";
 import { postData } from "../../../api/api";
 import ComHeader from "../../Components/ComHeader/ComHeader";
+import ComFooter from "../../Components/ComFooter/ComFooter";
 
 
 
@@ -70,15 +71,12 @@ export default function Reissue() {
             });
 
     }
-    // console.log(disableds);
-    // useEffect(() => {
 
-    // }, [disableds]);
     console.log(disabled);
     return (
         <>
             <ComHeader />
-            <div className="flex min-h-full flex-1 flex-col justify-center px-6 lg:px-8">
+            <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
 
                     <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
@@ -153,6 +151,7 @@ export default function Reissue() {
                     </p>
                 </div>
             </div>
+            <ComFooter />
 
         </>
     )

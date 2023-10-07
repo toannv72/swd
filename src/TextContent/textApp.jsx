@@ -265,7 +265,12 @@ export const textApp = {
                 emailError: "Mail không hợp lệ",
             },
         },
-        text: "Sản phẩm mới"
+        text: "Sản phẩm mới",
+        payments:"Hình thức thanh toán",
+        orderButton:"Đặt hàng",
+        cash:"Tiền mặt",
+        totalMoney:'Tổng thành tiền',
+        quantity:'Tổng số lượng'
     },
     ShoppingCart: {
         tile: "Giỏ hàng",

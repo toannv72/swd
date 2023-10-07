@@ -94,8 +94,8 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
                         <div className="flow-root">
                           <ul role="list" className="-my-6 divide-y divide-gray-200">
                             <Checkbox.Group style={{ width: '100%' }} value={checkedList} onChange={onChange}>
-                              {cart.slice().reverse().map((product) => (
-                                <div className='flex gap-2'>
+                              {cart.slice().reverse().map((product,index) => (
+                                <div className='flex gap-2' key={index}>
                                   <Checkbox value={product} />
                                   <li key={product.id} className="flex py-4">
                                     <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">

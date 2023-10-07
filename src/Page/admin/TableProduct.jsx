@@ -55,8 +55,8 @@ export default function TableProduct() {
             name: e.name,
             price: e.price,
             price1: e.price,
-            reducedPrice1:e.reducedPrice,
-            reducedPrice:e.reducedPrice,
+            reducedPrice1: e.reducedPrice,
+            reducedPrice: e.reducedPrice,
             quantity: e.quantity,
             detail: e.detail,
             shape: e.shape,
@@ -153,7 +153,7 @@ export default function TableProduct() {
         return typeof number === 'number' && isFinite(number) && Math.floor(number) === number;
     }
     const onSubmit = (data) => {
-        if (data.price%1000!==0) {
+        if (data.price % 1000 !== 0) {
             api["error"]({
                 message: textApp.CreateProduct.Notification.m7.message,
                 description:
@@ -161,7 +161,7 @@ export default function TableProduct() {
             });
             return
         }
-        if (data.reducedPrice%1000!==0) {
+        if (data.reducedPrice % 1000 !== 0) {
             api["error"]({
                 message: textApp.CreateProduct.Notification.m8.message,
                 description:
@@ -187,7 +187,7 @@ export default function TableProduct() {
             });
             return
         }
-      
+
 
         if (data.price <= data.reducedPrice) {
             api["error"]({
@@ -197,7 +197,7 @@ export default function TableProduct() {
             });
             return
         }
-       
+
         setDisabled(true)
         firebaseImgs(image)
             .then((dataImg) => {
@@ -512,19 +512,19 @@ export default function TableProduct() {
             width: 300,
             ...getColumnSearchProps('description', "chi tiết"),
             // render: (_, record) => (
-                
-                //     <div className="text-sm text-gray-700 line-clamp-4">
-                //         <p className="text-sm text-gray-700 line-clamp-4">{record.description}</p>
-                //     </div>
-                
-                // ),
+
+            //     <div className="text-sm text-gray-700 line-clamp-4">
+            //         <p className="text-sm text-gray-700 line-clamp-4">{record.description}</p>
+            //     </div>
+
+            // ),
             ellipsis: {
                 showTitle: false,
             },
             render: (record) => (
                 <Tooltip placement="topLeft" title={record}>
                     {record}
-                 
+
                 </Tooltip>
             ),
 

@@ -11,7 +11,7 @@ export default function Logout() {
     useEffect(() => {
         removeCookie('accessToken');
         navigate('/login')
-    },[]);
+    });
 
     return (
         <>

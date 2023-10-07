@@ -2,7 +2,14 @@ import { Fragment, useEffect, useState } from 'react'
 import { Dialog, Disclosure, Popover, Transition } from '@headlessui/react'
 import {
   Bars3Icon,
+  ShoppingBagIcon,
   XMarkIcon,
+  PresentationChartBarIcon,
+
+  UserCircleIcon,
+  Cog6ToothIcon,
+  InboxIcon,
+  PowerIcon,
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, } from '@heroicons/react/20/solid'
 import { ComLink } from '../ComLink/ComLink'
@@ -13,10 +20,21 @@ import { useCookies } from 'react-cookie'
 import images from '../../../img'
 import { routs } from '../../../constants/ROUT'
 import { textApp } from '../../../TextContent/textApp'
+import { AccordionBody, AccordionHeader, ListItem, ListItemPrefix, Typography } from '@material-tailwind/react'
+import React from "react";
+import {
+  Card,
+  List,
+  ListItemSuffix,
+  Chip,
+  Accordion,
+} from "@material-tailwind/react";
+
+import { ChevronRightIcon } from "@heroicons/react/24/outline";
 
 const products = [
-  { name:routs['/createProduct'].name, href:routs['/createProduct'].link, },
-  { name:routs['/tableProduct'].name, href: routs['/tableProduct'].link, },
+  { name: routs['/createProduct'].name, href: routs['/createProduct'].link, },
+  { name: routs['/tableProduct'].name, href: routs['/tableProduct'].link, },
 ]
 
 
@@ -28,9 +46,16 @@ export default function ComHeaderAdmin() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [cookies, setCookie, removeCookie] = useCookies(['accessToken']);
   const navigate = useNavigate();
+  const [open, setOpen] = useState(0);
 
+  const handleOpen = (value) => {
+    setOpen(open === value ? 0 : value);
+  };
   const handleDeleteCookie = () => {
-    removeCookie('accessToken');
+    removeCookie()
+   
+      navigate('/login')
+ 
   };
   useEffect(() => {
     getData('/admin')
@@ -50,13 +75,10 @@ export default function ComHeaderAdmin() {
   }, [navigate]);
   return (
     <Affix offsetTop={0}>
-      <header className="bg-white border-b border-gray-200">
+      <header className="bg-white border-b border-gray-200  ">
         <nav className="mx-auto flex max-w-7xl items-center justify-between  lg:px-8" aria-label="Global">
           <div className="flex lg:flex-1">
-          
-              <span className="sr-only">Your Company</span>
-              <img className="h-16 w-auto" src={images.logo} alt="" />
-           
+            <img className="h-16 w-auto" src={images.logo} alt="" />
           </div>
           <div className="flex lg:hidden">
             <button
@@ -106,33 +128,24 @@ export default function ComHeaderAdmin() {
               </Transition>
             </Popover>
 
-            <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-              Features
-            </a>
-            <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-              Marketplace
-            </a>
-            <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-              Company
-            </a>
           </Popover.Group>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-            <Link onClick={() => handleDeleteCookie()} to="/login" className="text-sm font-semibold leading-6 text-gray-900">
-              Logout
+            <Link to={routs['/logout'].link} className="text-sm font-semibold leading-6 text-gray-900">
+            {routs['/logout'].name}
             </Link>
           </div>
         </nav>
         <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
           <div className="fixed inset-0 z-10" />
-          <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
-            <div className="flex items-center justify-between">
-          
-                <img
-                  className="h-16 w-auto"
-                  src={images.logo}
-                  alt=""
-                />
-             
+          <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-0 py-0 sm:max-w-xs sm:ring-1 sm:ring-gray-900/10">
+            {/* <div className="flex items-center justify-between">
+
+              <img
+                className="h-16 w-auto"
+                src={images.logo}
+                alt=""
+              />
+
               <button
                 type="button"
                 className="-m-2.5 rounded-md p-2.5 text-gray-700"
@@ -170,24 +183,7 @@ export default function ComHeaderAdmin() {
                       </>
                     )}
                   </Disclosure>
-                  <a
-                    href="#"
-                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                  >
-                    Features
-                  </a>
-                  <a
-                    href="#"
-                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                  >
-                    Marketplace
-                  </a>
-                  <a
-                    href="#"
-                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                  >
-                    Company
-                  </a>
+                  
                 </div>
                 <div className="py-6">
                   <Link onClick={() => handleDeleteCookie()} to="/login" className="text-sm font-semibold leading-6 text-gray-900">
@@ -195,10 +191,241 @@ export default function ComHeaderAdmin() {
                   </Link>
                 </div>
               </div>
-            </div>
+            </div> */}
+            <Card className="h-[calc(100vh)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
+              <div className="mb-2 p-4">
+                <Typography variant="h5" color="blue-gray">
+                  Sidebar
+                </Typography>
+              </div>
+              <List>
+                <Accordion
+                  open={open === 1}
+                  icon={
+                    <ChevronDownIcon
+                      strokeWidth={2.5}
+                      className={`mx-auto h-4 w-4 transition-transform ${open === 1 ? "rotate-180" : ""}`}
+                    />
+                  }
+                >
+                  <ListItem className="p-0" selected={open === 1}>
+                    <AccordionHeader onClick={() => handleOpen(1)} className="border-b-0 p-3">
+                      <ListItemPrefix>
+                        <PresentationChartBarIcon className="h-5 w-5" />
+                      </ListItemPrefix>
+                      <Typography color="blue-gray" className="mr-auto font-normal">
+                        Dashboard
+                      </Typography>
+                    </AccordionHeader>
+                  </ListItem>
+                  <AccordionBody className="py-1">
+                    <List className="p-0">
+                      <ListItem>
+                        <ListItemPrefix>
+                          <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                        </ListItemPrefix>
+                        Analytics
+                      </ListItem>
+                      <ListItem>
+                        <ListItemPrefix>
+                          <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                        </ListItemPrefix>
+                        Reporting
+                      </ListItem>
+                      <ListItem>
+                        <ListItemPrefix>
+                          <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                        </ListItemPrefix>
+                        Projects
+                      </ListItem>
+                    </List>
+                  </AccordionBody>
+                </Accordion>
+                <Accordion
+                  open={open === 2}
+                  icon={
+                    <ChevronDownIcon
+                      strokeWidth={2.5}
+                      className={`mx-auto h-4 w-4 transition-transform ${open === 2 ? "rotate-180" : ""}`}
+                    />
+                  }
+                >
+                  <ListItem className="p-0" selected={open === 2}>
+                    <AccordionHeader onClick={() => handleOpen(2)} className="border-b-0 p-3">
+                      <ListItemPrefix>
+                        <ShoppingBagIcon className="h-5 w-5" />
+                      </ListItemPrefix>
+                      <Typography color="blue-gray" className="mr-auto font-normal">
+                        E-Commerce
+                      </Typography>
+                    </AccordionHeader>
+                  </ListItem>
+                  <AccordionBody className="py-1">
+                    <List className="p-0">
+                      <ListItem>
+                        <ListItemPrefix>
+                          <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                        </ListItemPrefix>
+                        Orders
+                      </ListItem>
+                      <ListItem>
+                        <ListItemPrefix>
+                          <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                        </ListItemPrefix>
+                        Products
+                      </ListItem>
+                    </List>
+                  </AccordionBody>
+                </Accordion>
+                <hr className="my-2 border-blue-gray-50" />
+                <ListItem>
+                  <ListItemPrefix>
+                    <InboxIcon className="h-5 w-5" />
+                  </ListItemPrefix>
+                  Inbox
+                  <ListItemSuffix>
+                    <Chip value="14" size="sm" variant="ghost" color="blue-gray" className="rounded-full" />
+                  </ListItemSuffix>
+                </ListItem>
+                <ListItem>
+                  <ListItemPrefix>
+                    <UserCircleIcon className="h-5 w-5" />
+                  </ListItemPrefix>
+                  Profile
+                </ListItem>
+                <ListItem>
+                  <ListItemPrefix>
+                    <Cog6ToothIcon className="h-5 w-5" />
+                  </ListItemPrefix>
+                  Settings
+                </ListItem>
+                <ListItem>
+                  <ListItemPrefix>
+                    <PowerIcon className="h-5 w-5" />
+                  </ListItemPrefix>
+                  Log Out
+                </ListItem>
+              </List>
+            </Card>
           </Dialog.Panel>
         </Dialog>
       </header>
+
+      {/* <Card className="h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
+        <div className="mb-2 p-4">
+          <Typography variant="h5" color="blue-gray">
+            Sidebar
+          </Typography>
+        </div>
+        <List>
+          <Accordion
+            open={open === 1}
+            icon={
+              <ChevronDownIcon
+                strokeWidth={2.5}
+                className={`mx-auto h-4 w-4 transition-transform ${open === 1 ? "rotate-180" : ""}`}
+              />
+            }
+          >
+            <ListItem className="p-0" selected={open === 1}>
+              <AccordionHeader onClick={() => handleOpen(1)} className="border-b-0 p-3">
+                <ListItemPrefix>
+                  <PresentationChartBarIcon className="h-5 w-5" />
+                </ListItemPrefix>
+                <Typography color="blue-gray" className="mr-auto font-normal">
+                  Dashboard
+                </Typography>
+              </AccordionHeader>
+            </ListItem>
+            <AccordionBody className="py-1">
+              <List className="p-0">
+                <ListItem>
+                  <ListItemPrefix>
+                    <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                  </ListItemPrefix>
+                  Analytics
+                </ListItem>
+                <ListItem>
+                  <ListItemPrefix>
+                    <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                  </ListItemPrefix>
+                  Reporting
+                </ListItem>
+                <ListItem>
+                  <ListItemPrefix>
+                    <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                  </ListItemPrefix>
+                  Projects
+                </ListItem>
+              </List>
+            </AccordionBody>
+          </Accordion>
+          <Accordion
+            open={open === 2}
+            icon={
+              <ChevronDownIcon
+                strokeWidth={2.5}
+                className={`mx-auto h-4 w-4 transition-transform ${open === 2 ? "rotate-180" : ""}`}
+              />
+            }
+          >
+            <ListItem className="p-0" selected={open === 2}>
+              <AccordionHeader onClick={() => handleOpen(2)} className="border-b-0 p-3">
+                <ListItemPrefix>
+                  <ShoppingBagIcon className="h-5 w-5" />
+                </ListItemPrefix>
+                <Typography color="blue-gray" className="mr-auto font-normal">
+                  E-Commerce
+                </Typography>
+              </AccordionHeader>
+            </ListItem>
+            <AccordionBody className="py-1">
+              <List className="p-0">
+                <ListItem>
+                  <ListItemPrefix>
+                    <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                  </ListItemPrefix>
+                  Orders
+                </ListItem>
+                <ListItem>
+                  <ListItemPrefix>
+                    <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                  </ListItemPrefix>
+                  Products
+                </ListItem>
+              </List>
+            </AccordionBody>
+          </Accordion>
+          <hr className="my-2 border-blue-gray-50" />
+          <ListItem>
+            <ListItemPrefix>
+              <InboxIcon className="h-5 w-5" />
+            </ListItemPrefix>
+            Inbox
+            <ListItemSuffix>
+              <Chip value="14" size="sm" variant="ghost" color="blue-gray" className="rounded-full" />
+            </ListItemSuffix>
+          </ListItem>
+          <ListItem>
+            <ListItemPrefix>
+              <UserCircleIcon className="h-5 w-5" />
+            </ListItemPrefix>
+            Profile
+          </ListItem>
+          <ListItem>
+            <ListItemPrefix>
+              <Cog6ToothIcon className="h-5 w-5" />
+            </ListItemPrefix>
+            Settings
+          </ListItem>
+          <ListItem>
+            <ListItemPrefix>
+              <PowerIcon className="h-5 w-5" />
+            </ListItemPrefix>
+            Log Out
+          </ListItem>
+        </List>
+      </Card> */}
     </Affix>
   )
 }

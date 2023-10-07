@@ -96,10 +96,10 @@ const ComNumber = React.forwardRef(
           // if (!checkValidType(positiveIntegerStr, value)) {
           //   return;
           // }
-        if (e==='') {
+        // if (e==='') {
           const numericValue = e.toString();
           value = numericValue.replace(/[^0-9]/g, '')
-        }
+        // }
          console.log(value);
           break;
         default:
