@@ -226,8 +226,6 @@ export default function TableOrder() {
                 });
 
         }, 100);
-
-
     }, [dataRun]);
 
     const onChange = (data) => {

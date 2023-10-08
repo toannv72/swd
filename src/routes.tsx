@@ -56,4 +56,8 @@ export const routers = createBrowserRouter([
     path: "/admin/order",
     element: <TableOrder />,
   },
+  {
+    path: "/bill/:id",
+    element: <Order />,
+  },
 ]); 

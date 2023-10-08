@@ -109,7 +109,7 @@ export default function TableProduct() {
     };
     const handleValueChangeQuantity = (e, value) => {
         setProductQuantity(value)
-        setValue("reducedPrice", value, { shouldValidate: true });
+        setValue("quantity", value, { shouldValidate: true });
     };
     function formatCurrency(number) {
         // Sử dụng hàm toLocaleString() để định dạng số thành chuỗi với ngăn cách hàng nghìn và mặc định là USD.
@@ -125,12 +125,9 @@ export default function TableProduct() {
         price1: yup.string().required(textApp.CreateProduct.message.price).min(1, textApp.CreateProduct.message.priceMin).test('no-dots', textApp.CreateProduct.message.priceDecimal, value => !value.includes('.')),
         reducedPrice: yup.number().min(1, textApp.CreateProduct.message.priceMin).typeError(textApp.CreateProduct.message.price),
         reducedPrice1: yup.string().required(textApp.CreateProduct.message.price).min(1, textApp.CreateProduct.message.priceMin).test('no-dots', textApp.CreateProduct.message.priceDecimal, value => !value.includes('.')),
-        quantity: yup.number().min(1, textApp.CreateProduct.message.quantityMin).typeError(textApp.CreateProduct.message.quantity),
-        // detail: yup.string().required(textApp.CreateProduct.message.detail),
+        quantity: yup.number().min(0, textApp.CreateProduct.message.quantityMin).typeError(textApp.CreateProduct.message.quantity),
         shape: yup.string().required(textApp.CreateProduct.message.shape),
-        // models: yup.string().required(textApp.CreateProduct.message.models),
         material: yup.array().required(textApp.CreateProduct.message.material),
-        // accessory: yup.string().required(textApp.CreateProduct.message.accessory),
         description: yup.string().required(textApp.CreateProduct.message.description),
     })
 
@@ -662,20 +659,6 @@ export default function TableProduct() {
 
                                 </div>
 
-                                {/* <div className="">
-                                {selectedMaterials}
-                                    <Select
-                                        size={"large"}
-                                        style={{
-                                            width: '100%',
-                                        }}
-                                        value={selectedMaterials}
-                                        mode="multiple"
-                                        placeholder={textApp.CreateProduct.placeholder.material}
-                                        onChange={handleChange}
-                                        options={options}
-                                    />
-                                </div> */}
 
                                 <div className="">
                                     <ComSelect

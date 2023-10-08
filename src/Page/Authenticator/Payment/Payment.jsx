@@ -11,15 +11,13 @@ import ComInput from "../../Components/ComInput/ComInput";
 import ComTextArea from "../../Components/ComInput/ComTextArea";
 import { useLocation, useNavigate } from "react-router-dom";
 import { postData } from "../../../api/api";
-import { notification } from "antd";
+import { Button, notification } from "antd";
 export default function Payment(props) {
     const [disabled, setDisabled] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
     const [api, contextHolder] = notification.useNotification();
-
     const dataProduct = location?.state?.dataProduct || null;
-    console.log(dataProduct);
     const loginMessenger = yup.object({
         name: yup.string().required(textApp.Payment.information.message.name),
         address: yup.string().required(textApp.Payment.information.message.address),
@@ -43,13 +41,14 @@ export default function Payment(props) {
     const onSubmit = (data) => {
         setDisabled(true)
         const ProductPost = dataProduct.map((e, index) => {
-            return { ...e, product: e._id, quantity: e?.data };
+            return { ...e, product: e._id, price: e.reducedPrice, quantity: e?.data };
         })
-
+        console.log(ProductPost);
         const dataPost = { data, products: ProductPost, totalAmount: totalAmount }
         postData('/order', dataPost)
             .then((data) => {
-                console.log(data);
+                navigate(`bill/${data._id}`)
+                setDisabled(false)
             })
             .catch((error) => {
                 console.log(error.response.data.error);
@@ -57,6 +56,7 @@ export default function Payment(props) {
                     message: textApp.Payment.error,
                     description: error.response.data.error
                 });
+                setDisabled(false)
             })
     }
 
@@ -169,8 +169,11 @@ export default function Payment(props) {
                                 </div>
                             </div>
                             <div>
-                                <button className="bg-blue-500 text-white py-3 px-6 rounded-lg w-full " type="submit"
-                                    name="btnDatHang">{textApp.Payment.orderButton}</button>
+                                <Button disabled={disabled}
+                                    className="bg-blue-500 h-12 text-white py-3 px-6 rounded-lg w-full "
+                                    type="primary"
+                                    htmlType="submit"
+                                >{textApp.Payment.orderButton}</Button>
                             </div>
                         </form>
                     </FormProvider>

@@ -1,13 +1,14 @@
 import { Fragment, useEffect, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
-import {  Checkbox, InputNumber } from 'antd'
+import { Button, Checkbox, InputNumber } from 'antd'
 import { textApp } from '../../../TextContent/textApp'
 import { Link, useNavigate } from 'react-router-dom'
 
 
 export default function ShoppingCart({ show, updateShoppingCart }) {
   const [open, setOpen] = useState(show)
+  const [disabled, setDisabled] = useState(false);
   const [checkedList, setCheckedList] = useState([]);
   const [cart, setCart] = useState(JSON.parse(localStorage.getItem('cart')) || []);
   const navigate = useNavigate();
@@ -21,11 +22,22 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
     const nonDisabledProducts = cart.filter(product => product.quantity > 0);
     setCheckedList(e.target.checked ? nonDisabledProducts : []);
   };
+  useEffect(
+    () => {
+      if (checkedList.length === 0) {
+
+        setDisabled(true)
+      } else {
+        setDisabled(false)
+
+      }
+    }, [checkedList]);
 
   useEffect(
     () => {
       setOpen(show)
       if (show) {
+        setCheckedList([])
         // updateShoppingCart(true);
       }
       setCart(JSON.parse(localStorage.getItem('cart')))
@@ -49,7 +61,8 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
     };
   });
   const onSubmit = () => {
-    setOpen(false); handleCartClose();
+    setOpen(false);
+    handleCartClose();
     console.log(selectedProducts);
     navigate('/payment', { state: { dataProduct: selectedProducts } })
   }
@@ -67,7 +80,14 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
     console.log(updatedCart);
     setCart(updatedCart);
   };
-
+  function formatCurrency(number) {
+    // Sử dụng hàm toLocaleString() để định dạng số thành chuỗi với ngăn cách hàng nghìn và mặc định là USD.
+    return number
+      .toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'VND',
+      });
+  }
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={() => { setOpen(false); handleCartClose(); }}>
@@ -117,11 +137,11 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
                       </Checkbox>
                       <div className="mt-8">
                         <div className="flow-root">
-                          <ul role="list" className="-my-6 divide-y divide-gray-200">
+                          <div role="list" className="-my-6 divide-y divide-gray-200">
                             <Checkbox.Group style={{ width: '100%' }} value={checkedList} onChange={onChange}>
                               {cart.slice().reverse().map((product, index) => (
                                 <div className='flex gap-2' key={index}>
-                                  <Checkbox value={product } disabled={product.quantity === 0 ? true : false} />
+                                  <Checkbox value={product} disabled={product.quantity === 0 ? true : false} />
                                   <li key={product.id} className="flex py-4">
                                     <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                       <img
@@ -138,7 +158,7 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
                                             <Link onClick={() => { setOpen(false); handleCartClose(); }} to={`/product/${product._id}`}
                                             >{product.name}</Link>
                                           </h3>
-                                          <p className="ml-4">{product.price}</p>
+                                          <p className="ml-4">{formatCurrency(product.reducedPrice)}</p>
                                         </div>
                                         <p className="mt-1 text-sm text-gray-500">{product.color}</p>
                                       </div>
@@ -168,7 +188,7 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
                                 </div>
                               ))}
                             </Checkbox.Group>
-                          </ul>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -180,20 +200,22 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
                       </div>
                       <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                       <div className="mt-6">
-                        <button
+                        <Button
                           onClick={() => { onSubmit() }}
                           // onClick={() => { setOpen(false); handleCartClose(); }}
                           // disabled={true}
-                          className="flex items-center w-full justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                          disabled={disabled}
+
+                          className="flex h-12 items-center w-full justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                         >
                           Checkout
-                        </button>
+                        </Button>
                       </div>
                       <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                         <p>
                           or
                           <button
-                            type="button"
+                            type="primary"
                             className="font-medium text-indigo-600 hover:text-indigo-500"
                             onClick={() => { setOpen(false); handleCartClose(); }}
                           >
