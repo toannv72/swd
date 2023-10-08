@@ -6,7 +6,7 @@ import { textApp } from "../../../TextContent/textApp";
 import { FormProvider, useForm } from "react-hook-form";
 import * as yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ComInput from "../../Components/ComInput/ComInput";
 import ComTextArea from "../../Components/ComInput/ComTextArea";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -18,11 +18,18 @@ export default function Payment(props) {
     const location = useLocation();
     const [api, contextHolder] = notification.useNotification();
     const dataProduct = location?.state?.dataProduct || null;
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || []);
+    useEffect(() => {
+        if (!user?._doc?.username) {
+            navigate(`login`)
+        }
+    }, []);
     const loginMessenger = yup.object({
         name: yup.string().required(textApp.Payment.information.message.name),
-        address: yup.string().required(textApp.Payment.information.message.address),
+        shippingAddress: yup.string().required(textApp.Payment.information.message.address),
         phone: yup.string().required(textApp.Payment.information.message.phone),
         email: yup.string().email(textApp.Payment.information.message.emailError).required(textApp.Payment.information.message.email),
+        // description: yup.string(),
     })
     const LoginRequestDefault = {
         // code: "",
@@ -39,13 +46,14 @@ export default function Payment(props) {
     })
     const { handleSubmit, register, setFocus, watch, setValue } = methods
     const onSubmit = (data) => {
+
         setDisabled(true)
         const ProductPost = dataProduct.map((e, index) => {
             return { ...e, product: e._id, price: e.reducedPrice, quantity: e?.data };
         })
-        console.log(ProductPost);
-        const dataPost = { data, products: ProductPost, totalAmount: totalAmount }
-        postData('/order', dataPost)
+        const dataPost = { data, shippingAddress: data.shippingAddress, description: data.description, email: data.email, products: ProductPost, totalAmount: totalAmount }
+        console.log(dataPost);
+        postData('/order/user', dataPost)
             .then((data) => {
                 navigate(`bill/${data._id}`)
                 setDisabled(false)
@@ -129,7 +137,7 @@ export default function Payment(props) {
                                     <ComInput
                                         placeholder={textApp.Payment.information.placeholder.address}
                                         label={textApp.Payment.information.label.address}
-                                        {...register("address")}
+                                        {...register("shippingAddress")}
                                         required
                                     />
                                 </div>

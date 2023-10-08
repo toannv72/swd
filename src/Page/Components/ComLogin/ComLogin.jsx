@@ -3,28 +3,27 @@ import { FormProvider, useForm } from "react-hook-form";
 
 import * as yup from "yup"
 import { yupResolver } from '@hookform/resolvers/yup';
-import ComInput from "../../Components/ComInput/ComInput";
-import ComButton from "../../Components/ComButton/ComButton";
+import ComInput from "../ComInput/ComInput";
+import ComButton from "../ComButton/ComButton";
 import { textApp } from "../../../TextContent/textApp";
-import { ComLink } from "../../Components/ComLink/ComLink";
+import { ComLink } from "../ComLink/ComLink";
 import { routs } from "../../../constants/ROUT";
 import { useStorage } from "../../../hooks/useLocalStorage";
 import { useEffect, useState } from "react";
 import { postData } from "../../../api/api";
-import ComHeader from "../../Components/ComHeader/ComHeader";
-import { useLocation, useNavigate } from "react-router-dom";
-import { FieldError } from "../../Components/FieldError/FieldError";
+import ComHeader from "../ComHeader/ComHeader";
+import { useNavigate } from "react-router-dom";
+import { FieldError } from "../FieldError/FieldError";
 import { useCookies } from "react-cookie";
-import ComFooter from "../../Components/ComFooter/ComFooter";
+import ComFooter from "../ComFooter/ComFooter";
 
 
-export default function Login() {
+export default function ComLogin({handleCancel}) {
     const [token, setToken] = useStorage("user", null);
     const [disabled, setDisabled] = useState(false);
     const [Login, setLogin] = useState(false);
     const [LoginError, setLoginError] = useState(false);
     const navigate = useNavigate();
-    const location = useLocation();
 
     const loginMessenger = yup.object({
         // code: yup.string().required(textApp.Login.message.username).min(5, "Username must be at least 5 characters"),
@@ -58,17 +57,16 @@ export default function Login() {
         postData('/login', data, {})
             .then((data) => {
                 localStorage.setItem('user', JSON.stringify(data));
+                console.log(data);
                 setToken(data)
                 setDisabled(false)
                 // navigate('/')
-                if (location?.state) {
-                    return navigate(location?.state)
-                }
                 if (data._doc.admin) {
-                    navigate('/admin/product/create')
+                    navigate('#')
                 } else {
-                    navigate('/')
+                    navigate('#')
                 }
+                handleCancel();
             })
             .catch((error) => {
                 console.error("Error fetching items:", error);
@@ -85,7 +83,7 @@ export default function Login() {
 
     return (
         <>
-            <ComHeader />
+
             <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
 
@@ -146,7 +144,7 @@ export default function Login() {
                     </p>
                 </div>
             </div>
-            <ComFooter />
+
         </>
     )
 

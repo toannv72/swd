@@ -8,9 +8,13 @@ export default function Logout() {
     const navigate = useNavigate();
     const [cookies, setCookie, removeCookie] = useCookies(['accessToken']);
 
+    removeCookie('accessToken');
+    setCookie("accessToken",null)
+    localStorage.setItem('user',null );
     useEffect(() => {
-        removeCookie('accessToken');
         navigate('/login')
+        if (cookies.accessToken) {
+        }
     });
 
     return (

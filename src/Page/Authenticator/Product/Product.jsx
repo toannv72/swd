@@ -4,7 +4,7 @@ import { StarIcon } from '@heroicons/react/20/solid'
 import ComHeader from '../../Components/ComHeader/ComHeader'
 import ComImage from '../../Components/ComImage/ComImage'
 import { getData } from '../../../api/api'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { textApp } from '../../../TextContent/textApp'
 import { FormProvider, useForm } from 'react-hook-form'
 import * as yup from "yup"
@@ -27,7 +27,12 @@ export default function Product() {
     const [cart, setCart] = useState(JSON.parse(localStorage.getItem('cart')) || []);
     const [sttCart, setSttCart] = useState(true)
     const [api, contextHolder] = notification.useNotification();
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || []);
+
+    const location = useLocation();
+
     const navigate = useNavigate();
+
 
     const productQuantity = yup.object({
         quantity: yup.number().max(Product.quantity, `Số lượng bạn chọn đã đạt mức tối đa của sản phẩm này`).min(1, textApp.Product.message.min).typeError(textApp.Product.message.quantity),
@@ -78,8 +83,12 @@ export default function Product() {
         });
     }
     const onSubmit = (data) => {
+
+        if (!user?._doc?.username) {
+            return navigate('/login', { state: location.pathname })
+        }
         console.log(data);
-        const product = [{ ...Product, data:data.quantity }];
+        const product = [{ ...Product, data: data.quantity }];
         navigate('/payment', { state: { dataProduct: product } })
     }
     const addToCart = (data) => {
@@ -98,7 +107,7 @@ export default function Product() {
                 return;
             }
 
-            updatedCart[existingProductIndex].data =1;
+            updatedCart[existingProductIndex].data = 1;
             setCart(updatedCart);
             api["success"]({
                 message: textApp.Product.Notification.m2.message,
@@ -107,7 +116,7 @@ export default function Product() {
             });
         }
         if (existingProductIndex === -1) {
-            const updatedCart = [...cart, { ...Product, data:1 }];
+            const updatedCart = [...cart, { ...Product, data: 1 }];
             setCart(updatedCart);
             api["success"]({
                 message: textApp.Product.Notification.m1.message,
@@ -226,6 +235,8 @@ export default function Product() {
                     </div>
                 </div>
             </div>
+
+
         </>
     )
 }

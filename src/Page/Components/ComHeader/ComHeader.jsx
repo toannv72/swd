@@ -96,8 +96,10 @@ function classNames(...classes) {
 export default function ComHeader({ dataCart, updateCart }) {
   const [open, setOpen] = useState(false);
   const [shoppingCart, setShoppingCart] = useState(false);
-  const [sttLogin, setSttLogin] = useState([]);
+  const [sttLogin, setSttLogin] = useState(JSON.parse(localStorage.getItem('user')) || []);
   const [cart, setCart] = useState(JSON.parse(localStorage.getItem('cart')) || []);
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || []);
+
   const location = useLocation();
   const navigate = useNavigate();
   useEffect(() => {
@@ -106,7 +108,6 @@ export default function ComHeader({ dataCart, updateCart }) {
   const updateShoppingCartStatus = (newStatus) => {
     setShoppingCart(newStatus);
     updateCart && updateCart(newStatus)
-
 
   };
 
@@ -119,18 +120,26 @@ export default function ComHeader({ dataCart, updateCart }) {
       search: ''
     },
   })
+  // useEffect(() => {
+  //   getData('/login')
+  //     .then((data) => {
+  //       setSttLogin(data.data);
+  //       if (location.pathname === '/login' && data.data.login) {
+  //         navigate('/')
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, []);
+
   useEffect(() => {
-    getData('/login')
-      .then((data) => {
-        setSttLogin(data.data);
-        if (location.pathname === '/login' && data.data.login) {
-          navigate('/')
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    setSttLogin(JSON.parse(localStorage.getItem('user')) || [])
+    if (location.pathname === '/login' && JSON.parse(localStorage.getItem('user'))) {
+      navigate('/')
+    }
   }, []);
+  console.log(sttLogin);
   useEffect(() => {
     setCart(JSON.parse(localStorage.getItem('cart')))
   }, [dataCart, shoppingCart]);
@@ -505,7 +514,7 @@ export default function ComHeader({ dataCart, updateCart }) {
                       </button>
                     </div>
                     {/* login */}
-                    {!sttLogin?.login && <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6 lg:ml-6">
+                    {!sttLogin?._doc && <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6 lg:ml-6">
                       <ComLink
                         to={routs["/login"].link}
                         className="text-sm font-medium text-gray-700 hover:text-gray-800"
@@ -521,7 +530,7 @@ export default function ComHeader({ dataCart, updateCart }) {
                       </ComLink>
                     </div>}
 
-                    {sttLogin?.login && <div>
+                    {sttLogin?._doc && <div>
                       <Menu as="div" className="relative ml-3 z-50">
                         <div>
                           <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
@@ -541,7 +550,7 @@ export default function ComHeader({ dataCart, updateCart }) {
                         >
                           <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
 
-                            {sttLogin?.user?.admin && <Menu.Item >
+                            {sttLogin?._doc?.admin && <Menu.Item >
                               {({ active }) => (
                                 <ComLink
                                   to={routs['/createProduct'].link}
