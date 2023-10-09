@@ -27,9 +27,9 @@ export default function Payment(props) {
     const loginMessenger = yup.object({
         name: yup.string().required(textApp.Payment.information.message.name),
         shippingAddress: yup.string().required(textApp.Payment.information.message.address),
-        phone: yup.string().required(textApp.Payment.information.message.phone),
+        phone: yup.string().required(textApp.Payment.information.message.phone).min(10, "Số điện thoại phải lớn hơn 9 số!").max(11, "Số điện thoại phải nhỏ hơn 12 số!").matches(/^0\d{9,10}$/, "Số điện thoại không hợp lệ"),
         email: yup.string().email(textApp.Payment.information.message.emailError).required(textApp.Payment.information.message.email),
-        // description: yup.string(),
+
     })
     const LoginRequestDefault = {
         // code: "",
@@ -145,7 +145,7 @@ export default function Payment(props) {
                                     <ComInput
                                         placeholder={textApp.Payment.information.placeholder.phone}
                                         label={textApp.Payment.information.label.phone}
-                                        type={"numbers"}
+
                                         {...register("phone")}
                                         required
                                     />

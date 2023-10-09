@@ -84,7 +84,7 @@ export default function TableOrder() {
                 </TabsHeader>
                 <TabsBody>
                     {data.map(({ value, desc }) => (
-                        <TabPanel key={value} value={value}>
+                        <TabPanel key={value} value={value} className='py-2'> 
                             {desc}
                         </TabPanel>
                     ))}

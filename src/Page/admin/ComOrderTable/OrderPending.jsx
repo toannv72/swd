@@ -5,28 +5,25 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import Highlighter from 'react-highlight-words';
 import * as yup from "yup"
 import { SearchOutlined } from '@ant-design/icons';
-import { Button, Divider, Input, Modal, Radio, Select, Space, Table, Tooltip, Typography, notification } from 'antd';
+import { Button, Input, Modal, Space, Table, Tooltip, Typography, notification } from 'antd';
 import { textApp } from '../../../TextContent/textApp';
-import { deleteData, getData, postData, putData } from '../../../api/api';
-import { firebaseImgs } from '../../../upImgFirebase/firebaseImgs';
-import ComHeaderAdmin from '../../Components/ComHeaderAdmin/ComHeaderAdmin';
+import { deleteData, getData, putData } from '../../../api/api';
+
 import ComButton from '../../Components/ComButton/ComButton';
-import ComUpImg from '../../Components/ComUpImg/ComUpImg';
-import ComInput from '../../Components/ComInput/ComInput';
-import ComTextArea from '../../Components/ComInput/ComTextArea';
-import ComNumber from '../../Components/ComInput/ComNumber';
-import ComSelect from '../../Components/ComInput/ComSelect';
+
 import moment from 'moment/moment';
 
 
 export default function OrderPending() {
     const [disabled, setDisabled] = useState(false);
 
-    const [products, setProducts] = useState([]);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
+    const [order, setOrder] = useState([]);
+    const [isModalOpenProcessing, setIsModalOpenProcessing] = useState(false);
+    const [isModalOpenCanceled, setIsModalOpenCanceled] = useState(false);
+    const [isModalOpenProcessingS, setIsModalOpenProcessingS] = useState(false);
+    const [isModalOpenCanceledS, setIsModalOpenCanceledS] = useState(false);
     const [dataRun, setDataRun] = useState(false);
-    const [productRequestDefault, setProductRequestDefault] = useState({});
+    const [orderRequestDefault, setOrderRequestDefault] = useState({});
     const [api, contextHolder] = notification.useNotification();
     const [selectedMaterials, setSelectedMaterials] = useState();
     const [searchText, setSearchText] = useState('');
@@ -60,18 +57,32 @@ export default function OrderPending() {
 
     };
 
-    const showModalDelete = (e) => {
-        setProductRequestDefault({
+
+
+    const handleOpenCanceled = (e) => {
+
+        setOrderRequestDefault({
             id: e._id
         })
-        setIsModalOpenDelete(true);
-    };
-
-    const handleCancelDelete = () => {
-        setIsModalOpenDelete(false);
+        setIsModalOpenCanceled(true);
 
     };
+    const handleCancelCanceled = () => {
+        setIsModalOpenCanceled(false);
 
+    };
+    const handleCancelProcessing = () => {
+        setIsModalOpenProcessing(false);
+
+    };
+    const handleCancelCanceledS = () => {
+        setIsModalOpenCanceledS(false);
+
+    };
+    const handleCancelProcessingS = () => {
+        setIsModalOpenProcessingS(false);
+
+    };
     function formatCurrency(number) {
         // Sử dụng hàm toLocaleString() để định dạng số thành chuỗi với ngăn cách hàng nghìn và mặc định là USD.
         return number.toLocaleString('en-US', {
@@ -79,48 +90,59 @@ export default function OrderPending() {
             currency: 'VND',
         });
     }
+    useEffect(() => {
+        if (selected.length > 0) {
 
+            setDisabled(false)
+        } else {
+            setDisabled(true)
 
-    const onSubmit = () => {
+        }
+    }, [selected]);
+    const processing = () => {
+        putData('/order/admin/put', 'Processing', { orders: [orderRequestDefault.id] })
+            .then((e) => {
+                setDataRun(!dataRun);
+            })
+            .catch(err => console.log(err))
+        setDataRun(!dataRun);
+        handleCancelProcessingS()
+    }
+
+    const canceled = () => {
+        putData('/order/admin/put', 'Canceled', { orders: [orderRequestDefault.id] })
+            .then((e) => {
+                setDataRun(!dataRun);
+            })
+            .catch(err => console.log(err))
+        setDataRun(!dataRun);
+        handleCancelCanceledS()
+    }
+
+    const processingS = () => {
         putData('/order/admin/put', 'Processing', { orders: selected })
             .then((e) => {
                 setDataRun(!dataRun);
             })
             .catch(err => console.log(err))
         setDataRun(!dataRun);
+        handleCancelProcessingS()
     }
 
-    const deleteById = () => {
-        setDisabled(true)
-        deleteData('product', productRequestDefault.id)
-            .then((data) => {
-                setDisabled(false)
-                handleCancelDelete()
-                api["success"]({
-                    message: textApp.TableProduct.Notification.delete.message,
-                    description:
-                        textApp.TableProduct.Notification.delete.description
-                });
-
+    const canceledS = () => {
+        putData('/order/admin/put', 'Canceled', { orders: selected })
+            .then((e) => {
+                setDataRun(!dataRun);
             })
-            .catch((error) => {
-                console.log(error);
-                setDisabled(false)
-                handleCancelDelete()
-                api["error"]({
-                    message: textApp.TableProduct.Notification.deleteError.message,
-                    description:
-                        textApp.TableProduct.Notification.deleteError.description
-                });
-            })
-        setDataRun(!dataRun)
-
+            .catch(err => console.log(err))
+        setDataRun(!dataRun);
+        handleCancelCanceledS()
     }
     useEffect(() => {
         setTimeout(() => {
             getData('/order/admin/pending', {})
                 .then((data) => {
-                    setProducts(data?.data?.docs)
+                    setOrder(data?.data?.docs)
                 })
                 .catch((error) => {
                     console.error("Error fetching items:", error);
@@ -172,19 +194,7 @@ export default function OrderPending() {
                     >
                         Đặt lại
                     </Button>
-                    {/* <Button
-                        type="link"
-                        size="small"
-                        onClick={() => {
-                            confirm({
-                                closeDropdown: false,
-                            });
-                            setSearchText(selectedKeys[0]);
-                            setSearchedColumn(dataIndex);
-                        }}
-                    >
-                        Filter
-                    </Button> */}
+
                     <Button
                         type="link"
                         size="small"
@@ -342,7 +352,7 @@ export default function OrderPending() {
                         </Typography.Link>
                     </div>
                     <div className='mt-2'>
-                        <Typography.Link onClick={() => showModalDelete(record)}>
+                        <Typography.Link onClick={() => handleOpenCanceled(record)}>
                             <div className='text-red-600'>hủy</div>
                         </Typography.Link>
                     </div>
@@ -355,14 +365,24 @@ export default function OrderPending() {
     return (
         <>
             {contextHolder}
-            <Button
-                disabled={disabled}
-                type="primary"
-                onClick={onSubmit}
-                className={`flex  items-center justify-center rounded-md border border-transparent text-base font-medium text-white ${disabled ? " bg-slate-700" : "hover:to-sky-700 hover:from-sky-800 bg-gradient-to-b from-sky-600 to-sky-700"}  `}
-            >
-                Chấp nhận
-            </Button>
+            <div className='flex gap-2'>
+                <Button
+                    disabled={disabled}
+                    type="primary"
+                    onClick={() => setIsModalOpenProcessingS(true)}
+                    className={`flex  items-center justify-center rounded-md border border-transparent text-base font-medium text-white ${disabled ? " bg-slate-700" : "hover:to-sky-700 hover:from-sky-800 bg-gradient-to-b from-sky-600 to-sky-700"}  `}
+                >
+                    Chấp nhận
+                </Button>
+                <Button
+                    disabled={disabled}
+                    type="primary"
+                    onClick={() => setIsModalOpenCanceledS(true)}
+                    className={`flex  items-center justify-center rounded-md border border-transparent text-base font-medium text-white ${disabled ? " bg-slate-700" : "hover:to-red-700 hover:from-red-800 bg-gradient-to-b from-red-600 to-red-700"}  `}
+                >
+                    Từ chối
+                </Button>
+            </div>
             <div className='flex p-2 justify-center'>
                 <Table
                     rowSelection={{
@@ -371,7 +391,7 @@ export default function OrderPending() {
                     }}
                     rowKey="_id"
                     columns={columns}
-                    dataSource={products}
+                    dataSource={order}
                     scroll={{
                         x: 1520,
                         y: "55vh",
@@ -385,26 +405,98 @@ export default function OrderPending() {
             </div>
 
 
-            <Modal title={textApp.TableProduct.title.delete}
+            <Modal title="Chấp nhận đơn hàng này"
                 okType="primary text-black border-gray-700"
-                open={isModalOpenDelete}
+                open={isModalOpenProcessing}
                 width={500}
                 // style={{ top: 20 }}
-                onCancel={handleCancelDelete}>
+                onCancel={handleCancelProcessing}>
 
                 <div className='flex'>
                     <ComButton
                         disabled={disabled}
                         type="primary"
                         danger
-                        onClick={deleteById}
+                        onClick={processing}
                     >
-                        {textApp.TableProduct.modal.submitDelete}
+                        xác nhận
                     </ComButton>
                     <ComButton
                         type="primary"
                         disabled={disabled}
-                        onClick={handleCancelDelete}
+                        onClick={handleCancelProcessing}
+                    >
+                        hủy
+                    </ComButton>
+                </div>
+            </Modal>
+            <Modal title="hủy đơn hàng này"
+                okType="primary text-black border-gray-700"
+                open={isModalOpenCanceled}
+                width={500}
+                // style={{ top: 20 }}
+                onCancel={handleCancelCanceled}>
+
+                <div className='flex'>
+                    <ComButton
+                        type="primary"
+                        danger
+                        onClick={canceled}
+                    >
+                        Xác nhận
+                    </ComButton>
+                    <ComButton
+                        type="primary"
+                        onClick={handleCancelCanceled}
+                    >
+                        {textApp.TableProduct.modal.cancel}
+                    </ComButton>
+                </div>
+            </Modal>
+
+            <Modal title="Chấp nhận đơn hàng"
+                okType="primary text-black border-gray-700"
+                open={isModalOpenProcessingS}
+                width={500}
+                // style={{ top: 20 }}
+                onCancel={handleCancelProcessingS}>
+
+                <div className='flex'>
+                    <ComButton
+                        disabled={disabled}
+                        type="primary"
+                        danger
+                        onClick={processingS}
+                    >
+                        xác nhận
+                    </ComButton>
+                    <ComButton
+                        type="primary"
+                        disabled={disabled}
+                        onClick={handleCancelProcessingS}
+                    >
+                        hủy
+                    </ComButton>
+                </div>
+            </Modal>
+            <Modal title="hủy đơn hàng"
+                okType="primary text-black border-gray-700"
+                open={isModalOpenCanceledS}
+                width={500}
+                // style={{ top: 20 }}
+                onCancel={handleCancelCanceledS}>
+
+                <div className='flex'>
+                    <ComButton
+                        type="primary"
+                        danger
+                        onClick={canceledS}
+                    >
+                        Xác nhận
+                    </ComButton>
+                    <ComButton
+                        type="primary"
+                        onClick={handleCancelCanceledS}
                     >
                         {textApp.TableProduct.modal.cancel}
                     </ComButton>

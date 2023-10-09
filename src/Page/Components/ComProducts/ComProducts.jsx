@@ -54,7 +54,7 @@ export default function ComProducts({ text, link, getAll }) {
                                         <span className="absolute text-white">-{discount(product.price, product.reducedPrice)}%</span>
                                     </div>
                                 </div>
-                                <h3 className="mt-4 text-base h-12 ml-2  text-gray-700 line-clamp-2">{product.name}</h3>
+                                <h3 className="mt-4 text-base h-12 ml-2 mr-2 text-gray-700 line-clamp-2">{product.name}</h3>
                                 <div className="">
                                     <p className="mt-1 ml-2  text-sm font-medium line-through text-slate-500">{formatCurrency(product.price)}</p>
                                     <p className="ml-2 pb-4 text-2xl font-medium  text-red-600">{formatCurrency(product.reducedPrice)}</p>
@@ -76,7 +76,7 @@ export default function ComProducts({ text, link, getAll }) {
                                             <span className="absolute text-white">-{discount(product.price, product.reducedPrice)}%</span>
                                         </div>
                                     </div>
-                                    <h3 className="mt-4 text-base ml-2  text-gray-700 line-clamp-2">{product.name}</h3>
+                                    <h3 className="mt-4 text-base ml-2 mr-2 text-gray-700 line-clamp-2">{product.name}</h3>
                                     <div className="">
                                         <p className="mt-1 ml-2  text-sm font-medium line-through text-slate-500">{formatCurrency(product.price)}</p>
                                         <p className="ml-2 text-2xl font-medium  text-red-600 pb-4">{formatCurrency(product.reducedPrice)}</p>
