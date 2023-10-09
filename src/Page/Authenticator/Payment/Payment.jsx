@@ -51,7 +51,7 @@ export default function Payment(props) {
         const ProductPost = dataProduct.map((e, index) => {
             return { ...e, product: e._id, price: e.reducedPrice, quantity: e?.data };
         })
-        const dataPost = { data, shippingAddress: data.shippingAddress, description: data.description, email: data.email, products: ProductPost, totalAmount: totalAmount }
+        const dataPost = { ...data, shippingAddress: data.shippingAddress, description: data.description, email: data.email, products: ProductPost, totalAmount: totalAmount }
         console.log(dataPost);
         postData('/order/user', dataPost)
             .then((data) => {

@@ -17,50 +17,50 @@ import {
   TabPanel,
 } from "@material-tailwind/react";
 import React, { useState } from "react";
+const data = [
+  {
+    label: textApp.OrderHistory.label.status,
+    value: textApp.OrderHistory.value.status,
+    desc:<Pending/>,
+  },
+  {
+    label: textApp.OrderHistory.label.status1,
+    value: textApp.OrderHistory.value.status1,
+    desc: <Processing/>,
+  },
 
+  {
+    label: textApp.OrderHistory.label.status2,
+    value: textApp.OrderHistory.value.status2,
+    desc: <Transporting/>,
+  },
+
+  {
+    label: textApp.OrderHistory.label.status3,
+    value: textApp.OrderHistory.value.status3,
+    desc: <Done/>,
+  },
+
+  {
+    label: textApp.OrderHistory.label.status4,
+    value: textApp.OrderHistory.value.status4,
+    desc: <Cancel/>,
+  },
+  {
+    label: textApp.OrderHistory.label.status5,
+    value: textApp.OrderHistory.value.status5,
+    desc:<Return/>,
+  },
+  {
+    label: textApp.OrderHistory.label.status6,
+    value: textApp.OrderHistory.value.status6,
+    desc:<All/>,
+  },
+];
 export default function Order() {
-
-  const data = [
-    {
-      label: textApp.OrderHistory.label.status,
-      value: textApp.OrderHistory.value.status,
-      desc:<Pending/>,
-    },
-    {
-      label: textApp.OrderHistory.label.status1,
-      value: textApp.OrderHistory.value.status1,
-      desc: <Processing/>,
-    },
-
-    {
-      label: textApp.OrderHistory.label.status2,
-      value: textApp.OrderHistory.value.status2,
-      desc: <Transporting/>,
-    },
-
-    {
-      label: textApp.OrderHistory.label.status3,
-      value: textApp.OrderHistory.value.status3,
-      desc: <Done/>,
-    },
-
-    {
-      label: textApp.OrderHistory.label.status4,
-      value: textApp.OrderHistory.value.status4,
-      desc: <Cancel/>,
-    },
-    {
-      label: textApp.OrderHistory.label.status5,
-      value: textApp.OrderHistory.value.status5,
-      desc:<Return/>,
-    },
-    {
-      label: textApp.OrderHistory.label.status6,
-      value: textApp.OrderHistory.value.status6,
-      desc:<All/>,
-    },
-  ];
   const [activeTab, setActiveTab] = useState(data[0].value);
+
+ 
 
   return (
     <>
