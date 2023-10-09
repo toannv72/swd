@@ -52,7 +52,7 @@ export default function Payment(props) {
             return { ...e, product: e._id, price: e.reducedPrice, quantity: e?.data };
         })
         const dataPost = { ...data, shippingAddress: data.shippingAddress, description: data.description, email: data.email, products: ProductPost, totalAmount: totalAmount }
-        console.log(dataPost);
+        // console.log(dataPost);
         postData('/order/user', dataPost)
             .then((data) => {
                 navigate(`bill/${data._id}`)

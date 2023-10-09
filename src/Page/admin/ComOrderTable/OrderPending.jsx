@@ -5,7 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import Highlighter from 'react-highlight-words';
 import * as yup from "yup"
 import { SearchOutlined } from '@ant-design/icons';
-import { Button, Input, Modal, Select, Space, Table, Tooltip, Typography, notification } from 'antd';
+import { Button, Divider, Input, Modal, Radio, Select, Space, Table, Tooltip, Typography, notification } from 'antd';
 import { textApp } from '../../../TextContent/textApp';
 import { deleteData, getData, postData, putData } from '../../../api/api';
 import { firebaseImgs } from '../../../upImgFirebase/firebaseImgs';
@@ -21,21 +21,30 @@ import moment from 'moment/moment';
 
 export default function OrderPending() {
     const [disabled, setDisabled] = useState(false);
-    const [image, setImages] = useState([]);
+
     const [products, setProducts] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
     const [dataRun, setDataRun] = useState(false);
     const [productRequestDefault, setProductRequestDefault] = useState({});
-    const [productPrice, setProductPrice] = useState(1000);
-    const [productReducedPrice, setProductReducedPrice] = useState(1000);
-    const [productQuantity, setProductQuantity] = useState(1);
     const [api, contextHolder] = notification.useNotification();
     const [selectedMaterials, setSelectedMaterials] = useState();
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
     const searchInput = useRef(null);
+    const [selected, setSelected] = useState([]);
 
+    const rowSelection = {
+        onChange: (selectedRowKeys, selectedRows) => {
+
+            setSelected(selectedRowKeys)
+        },
+        getCheckboxProps: (record) => ({
+            disabled: record.name === 'Disabled User',
+            // Column configuration not to be checked
+            name: record.name,
+        }),
+    };
     const handleSearch = (selectedKeys, confirm, dataIndex) => {
         confirm();
         setSearchText(selectedKeys[0]);
@@ -45,28 +54,10 @@ export default function OrderPending() {
         clearFilters();
         setSearchText('');
     };
-    console.log(productRequestDefault);
+
     const showModalEdit = (e) => {
         setSelectedMaterials(e.material)
-        setProductPrice(e.price)
-        setProductReducedPrice(e.reducedPrice)
-        setProductQuantity(e.quantity)
-        setProductRequestDefault({
-            name: e.name,
-            price: e.price,
-            price1: e.price,
-            reducedPrice1: e.reducedPrice,
-            reducedPrice: e.reducedPrice,
-            quantity: e.quantity,
-            detail: e.detail,
-            shape: e.shape,
-            models: e.models,
-            material: e.material,
-            accessory: e.accessory,
-            description: e.description,
-            id: e._id
-        })
-        setIsModalOpen(true);
+
     };
 
     const showModalDelete = (e) => {
@@ -75,25 +66,7 @@ export default function OrderPending() {
         })
         setIsModalOpenDelete(true);
     };
-    const options = [
-        {
-            label: "Gỗ",
-            value: "Gỗ"
-        },
-        {
-            label: "Nhựa",
-            value: "Nhựa"
-        },
-        {
-            label: "Kim Loại",
-            value: "Kim loại"
-        },
-    ];
 
-    const handleCancel = () => {
-        setIsModalOpen(false);
-
-    };
     const handleCancelDelete = () => {
         setIsModalOpenDelete(false);
 
@@ -107,114 +80,14 @@ export default function OrderPending() {
         });
     }
 
-    function isInteger(number) {
-        return typeof number === 'number' && isFinite(number) && Math.floor(number) === number;
-    }
-    const onSubmit = (data) => {
-        if (data.price % 1000 !== 0) {
-            api["error"]({
-                message: textApp.CreateProduct.Notification.m7.message,
-                description:
-                    textApp.CreateProduct.Notification.m7.description
-            });
-            return
-        }
-        if (data.reducedPrice % 1000 !== 0) {
-            api["error"]({
-                message: textApp.CreateProduct.Notification.m8.message,
-                description:
-                    textApp.CreateProduct.Notification.m8.description
-            });
-            return
-        }
-        if (!isInteger(data.price)) {
 
-            api["error"]({
-                message: textApp.CreateProduct.Notification.m1.message,
-                description:
-                    textApp.CreateProduct.Notification.m1.description
-            });
-            return
-        }
-
-        if (data.material.length === 0) {
-            api["error"]({
-                message: textApp.CreateProduct.Notification.m4.message,
-                description:
-                    textApp.CreateProduct.Notification.m4.description
-            });
-            return
-        }
-
-
-        if (data.price <= data.reducedPrice) {
-            api["error"]({
-                message: textApp.CreateProduct.Notification.m6.message,
-                description:
-                    textApp.CreateProduct.Notification.m6.description
-            });
-            return
-        }
-
-        setDisabled(true)
-        firebaseImgs(image)
-            .then((dataImg) => {
-                if (Array.isArray(image) && image.length === 0) {
-                    const updatedData = {
-                        ...data, // Giữ lại các trường dữ liệu hiện có trong data
-
-                    };
-
-                    putData(`/product`, productRequestDefault.id, updatedData, {})
-                        .then((dataS) => {
-                            api["success"]({
-                                message: textApp.TableProduct.Notification.update.message,
-                                description:
-                                    textApp.TableProduct.Notification.update.description
-                            });
-                        })
-                        .catch((error) => {
-                            api["error"]({
-                                message: textApp.TableProduct.Notification.updateFail.message,
-                                description:
-                                    textApp.TableProduct.Notification.updateFail.description
-                            });
-                            console.error("Error fetching items:", error);
-                            setDisabled(false)
-                        });
-                } else {
-                    const updatedData = {
-                        ...data, // Giữ lại các trường dữ liệu hiện có trong data
-                        image: dataImg, // Thêm trường images chứa đường dẫn ảnh
-                    };
-                    putData(`/product`, productRequestDefault.id, updatedData, {})
-                        .then((dataS) => {
-                            api["success"]({
-                                message: textApp.TableProduct.Notification.change.message,
-                                description:
-                                    textApp.TableProduct.Notification.change.description
-                            });
-                        })
-                        .catch((error) => {
-                            console.error("Error fetching items:", error);
-                            setDisabled(false)
-                            api["error"]({
-                                message: textApp.TableProduct.Notification.updateFail.message,
-                                description:
-                                    textApp.TableProduct.Notification.updateFail.description
-                            });
-                        });
-                }
-
-            }
-            )
-            .catch((error) => {
-                console.log(error)
-            });
-        setImages([]);
-        setDisabled(false)
-        setIsModalOpen(false);
-        setDataRun(!dataRun)
+    const onSubmit = () => {
+        putData('/order/admin/put', 'Processing', { orders: selected })
+            .then((e) => {
+                setDataRun(!dataRun);
+            })
+            .catch(err => console.log(err))
+        setDataRun(!dataRun);
     }
 
     const deleteById = () => {
@@ -258,14 +131,7 @@ export default function OrderPending() {
 
     }, [dataRun]);
 
-    const onChange = (data) => {
-        const selectedImages = data;
-        // Tạo một mảng chứa đối tượng 'originFileObj' của các tệp đã chọn
-        const newImages = selectedImages.map((file) => file.originFileObj);
-        // Cập nhật trạng thái 'image' bằng danh sách tệp mới
-        setImages(newImages);
 
-    }
     const getColumnSearchProps = (dataIndex, title) => ({
         filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
             <div
@@ -394,12 +260,11 @@ export default function OrderPending() {
             sorter: (a, b) => moment(a.createdAt).unix() - moment(b.createdAt).unix(),
             ...getColumnSearchProps('createdAt', "Ngày đặt hàng"),
             render: (_, record) => (
-                
+
                 <div className="text-sm text-gray-700 line-clamp-4">
                     <p>{moment(record.createdAt).format('l')}</p>
                 </div>
             ),
-
         },
         {
             title: 'Số điện thoại',
@@ -473,12 +338,12 @@ export default function OrderPending() {
                 <div className='flex items-center flex-col'>
                     <div>
                         <Typography.Link onClick={() => showModalEdit(record)}>
-                            Chỉnh sửa
+                            Chấp nhận
                         </Typography.Link>
                     </div>
                     <div className='mt-2'>
                         <Typography.Link onClick={() => showModalDelete(record)}>
-                            <div className='text-red-600'>  Xóa</div>
+                            <div className='text-red-600'>hủy</div>
                         </Typography.Link>
                     </div>
                 </div>
@@ -490,15 +355,26 @@ export default function OrderPending() {
     return (
         <>
             {contextHolder}
-
-            <div className='flex p-5 justify-center'>
+            <Button
+                disabled={disabled}
+                type="primary"
+                onClick={onSubmit}
+                className={`flex  items-center justify-center rounded-md border border-transparent text-base font-medium text-white ${disabled ? " bg-slate-700" : "hover:to-sky-700 hover:from-sky-800 bg-gradient-to-b from-sky-600 to-sky-700"}  `}
+            >
+                Chấp nhận
+            </Button>
+            <div className='flex p-2 justify-center'>
                 <Table
+                    rowSelection={{
+                        type: "checkbox",
+                        ...rowSelection,
+                    }}
                     rowKey="_id"
                     columns={columns}
                     dataSource={products}
                     scroll={{
                         x: 1520,
-                        y: "70vh",
+                        y: "55vh",
                     }}
                     bordered
                     pagination={{

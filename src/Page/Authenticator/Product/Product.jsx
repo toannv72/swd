@@ -33,7 +33,6 @@ export default function Product() {
 
     const navigate = useNavigate();
 
-
     const productQuantity = yup.object({
         quantity: yup.number().max(Product.quantity, `Số lượng bạn chọn đã đạt mức tối đa của sản phẩm này`).min(1, textApp.Product.message.min).typeError(textApp.Product.message.quantity),
     })
