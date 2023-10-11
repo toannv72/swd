@@ -3,13 +3,14 @@ import { Dialog, Disclosure, Popover, Transition } from '@headlessui/react'
 import {
   Bars3Icon,
   ShoppingBagIcon,
-  XMarkIcon,
   PresentationChartBarIcon,
 
   UserCircleIcon,
   Cog6ToothIcon,
   InboxIcon,
   PowerIcon,
+  ClipboardDocumentListIcon,
+  ShoppingCartIcon,
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, } from '@heroicons/react/20/solid'
 import { ComLink } from '../ComLink/ComLink'
@@ -31,6 +32,8 @@ import {
 } from "@material-tailwind/react";
 
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCreditCard } from '@fortawesome/free-regular-svg-icons'
 
 const products = [
   { name: routs['/createProduct'].name, href: routs['/createProduct'].link, },
@@ -53,9 +56,9 @@ export default function ComHeaderAdmin() {
   };
   const handleDeleteCookie = () => {
     removeCookie()
-   
-      navigate('/login')
- 
+
+    navigate('/login')
+
   };
   useEffect(() => {
     getData('/admin')
@@ -76,11 +79,8 @@ export default function ComHeaderAdmin() {
   return (
     <Affix offsetTop={0}>
       <header className="bg-white border-b border-gray-200  ">
-        <nav className="mx-auto flex max-w-7xl items-center justify-between  lg:px-8" aria-label="Global">
-          <div className="flex lg:flex-1">
-            <img className="h-16 w-auto" src={images.logo} alt="" />
-          </div>
-          <div className="flex lg:hidden">
+        <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 " aria-label="Global">
+          <div className="flex ">
             <button
               type="button"
               className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
@@ -90,7 +90,11 @@ export default function ComHeaderAdmin() {
               <Bars3Icon className="h-6 w-6" aria-hidden="true" />
             </button>
           </div>
-          <Popover.Group className="hidden lg:flex lg:gap-x-12">
+          <div className="flex flex-1 justify-center">
+            <img className="h-16 w-auto" src={images.logo} alt="" />
+          </div>
+
+          {/* <Popover.Group className="hidden lg:flex lg:gap-x-12">
             <Popover className="relative">
               <Popover.Button className="flex items-center gap-x-1 text-sm font-semibold leading-6  text-indigo-600 hover:text-indigo-500 ">
                 {textApp.HeaderAdmin.product}
@@ -131,71 +135,18 @@ export default function ComHeaderAdmin() {
           </Popover.Group>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
             <Link to={routs['/logout'].link} className="text-sm font-semibold leading-6 text-gray-900">
-            {routs['/logout'].name}
+              {routs['/logout'].name}
             </Link>
-          </div>
+          </div> */}
         </nav>
-        <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
+        <Dialog as="div" className="" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
           <div className="fixed inset-0 z-10" />
-          <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-0 py-0 sm:max-w-xs sm:ring-1 sm:ring-gray-900/10">
-            {/* <div className="flex items-center justify-between">
+          <Dialog.Panel className="fixed inset-y-0 left-0 z-10 w-full overflow-y-auto px-0 py-0 sm:max-w-xs sm:ring-1 sm:ring-gray-900/10">
 
-              <img
-                className="h-16 w-auto"
-                src={images.logo}
-                alt=""
-              />
-
-              <button
-                type="button"
-                className="-m-2.5 rounded-md p-2.5 text-gray-700"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <span className="sr-only">Close menu</span>
-                <XMarkIcon className="h-6 w-6" aria-hidden="true" />
-              </button>
-            </div>
-            <div className="mt-6 flow-root">
-              <div className="-my-6 divide-y divide-gray-500/10">
-                <div className="space-y-2 py-6">
-                  <Disclosure as="div" className="-mx-3">
-                    {({ open }) => (
-                      <>
-                        <Disclosure.Button className="flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base  leading-7 hover:bg-gray-50 font-semibold text-indigo-600 hover:text-indigo-500 ">
-                          Product
-                          <ChevronDownIcon
-                            className={classNames(open ? 'rotate-180' : '', 'h-5 w-5 flex-none')}
-                            aria-hidden="true"
-                          />
-                        </Disclosure.Button>
-                        <Disclosure.Panel className="mt-2 space-y-2">
-                          {[...products].map((item) => (
-                            <ComLink
-                              key={item.name}
-                              as="a"
-                              to={item.href}
-                              className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                            >
-                              {item.name}
-                            </ComLink>
-                          ))}
-                        </Disclosure.Panel>
-                      </>
-                    )}
-                  </Disclosure>
-                  
-                </div>
-                <div className="py-6">
-                  <Link onClick={() => handleDeleteCookie()} to="/login" className="text-sm font-semibold leading-6 text-gray-900">
-                    Logout
-                  </Link>
-                </div>
-              </div>
-            </div> */}
-            <Card className="h-[calc(100vh)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
+            <Card className="h-[calc(100vh)]  w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
               <div className="mb-2 p-4">
                 <Typography variant="h5" color="blue-gray">
-                  Sidebar
+                  Lồng chim
                 </Typography>
               </div>
               <List>
@@ -208,7 +159,7 @@ export default function ComHeaderAdmin() {
                     />
                   }
                 >
-                  <ListItem className="p-0" selected={open === 1}>
+                  <ListItem className="p-0 " selected={open === 1}>
                     <AccordionHeader onClick={() => handleOpen(1)} className="border-b-0 p-3">
                       <ListItemPrefix>
                         <PresentationChartBarIcon className="h-5 w-5" />
@@ -241,7 +192,7 @@ export default function ComHeaderAdmin() {
                     </List>
                   </AccordionBody>
                 </Accordion>
-                <Accordion
+                {/* <Accordion
                   open={open === 2}
                   icon={
                     <ChevronDownIcon
@@ -253,10 +204,10 @@ export default function ComHeaderAdmin() {
                   <ListItem className="p-0" selected={open === 2}>
                     <AccordionHeader onClick={() => handleOpen(2)} className="border-b-0 p-3">
                       <ListItemPrefix>
-                        <ShoppingBagIcon className="h-5 w-5" />
+                        <ClipboardDocumentListIcon className="h-5 w-5" />
                       </ListItemPrefix>
                       <Typography color="blue-gray" className="mr-auto font-normal">
-                        E-Commerce
+                        Đơn hàng
                       </Typography>
                     </AccordionHeader>
                   </ListItem>
@@ -274,6 +225,57 @@ export default function ComHeaderAdmin() {
                         </ListItemPrefix>
                         Products
                       </ListItem>
+                    </List>
+                  </AccordionBody>
+                </Accordion> */}
+                <Link to={routs['/tableOrder'].link}>
+                  <ListItem>
+                    <ListItemPrefix>
+                      <ClipboardDocumentListIcon className="h-5 w-5" />
+                    </ListItemPrefix>
+                    {routs['/tableOrder'].name}
+                    <ListItemSuffix>
+                      <Chip value="" size="sm" variant="ghost" color="blue-gray" className="rounded-full" />
+                    </ListItemSuffix>
+                  </ListItem>
+                </Link>
+                <Accordion
+                  open={open === 3}
+                  icon={
+                    <ChevronDownIcon
+                      strokeWidth={2.5}
+                      className={`mx-auto h-4 w-4 transition-transform ${open === 3 ? "rotate-180" : ""}`}
+                    />
+                  }
+                >
+                  <ListItem className="p-0" selected={open === 3}>
+                    <AccordionHeader onClick={() => handleOpen(3)} className="border-b-0 p-3">
+                      <ListItemPrefix>
+                        <ShoppingCartIcon className="h-5 w-5" />
+                      </ListItemPrefix>
+                      <Typography color="blue-gray" className="mr-auto font-normal">
+                        Sản phẩm
+                      </Typography>
+                    </AccordionHeader>
+                  </ListItem>
+                  <AccordionBody className="py-1">
+                    <List className="p-0">
+                      <Link to={routs['/createProduct'].link}>
+                        <ListItem>
+                          <ListItemPrefix>
+                            <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                          </ListItemPrefix>
+                          {routs['/createProduct'].name}
+                        </ListItem>
+                      </Link>
+                      <Link to={routs['/tableProduct'].link}>
+                        <ListItem>
+                          <ListItemPrefix>
+                            <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                          </ListItemPrefix>
+                          {routs['/tableProduct'].name}
+                        </ListItem>
+                      </Link>
                     </List>
                   </AccordionBody>
                 </Accordion>
@@ -299,12 +301,15 @@ export default function ComHeaderAdmin() {
                   </ListItemPrefix>
                   Settings
                 </ListItem>
-                <ListItem>
-                  <ListItemPrefix>
-                    <PowerIcon className="h-5 w-5" />
-                  </ListItemPrefix>
-                  Log Out
-                </ListItem>
+
+                <Link to={routs['/logout'].link}>
+                  <ListItem>
+                    <ListItemPrefix>
+                      <PowerIcon className="h-5 w-5" />
+                    </ListItemPrefix>
+                    {routs['/logout'].name}
+                  </ListItem>
+                </Link>
               </List>
             </Card>
           </Dialog.Panel>

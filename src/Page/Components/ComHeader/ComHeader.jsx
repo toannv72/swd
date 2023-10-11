@@ -138,8 +138,7 @@ export default function ComHeader({ dataCart, updateCart }) {
     if (location.pathname === '/login' && JSON.parse(localStorage.getItem('user'))) {
       navigate('/')
     }
-  }, []);
-  console.log(sttLogin);
+  }, []);;
   useEffect(() => {
     setCart(JSON.parse(localStorage.getItem('cart')))
   }, [dataCart, shoppingCart]);
