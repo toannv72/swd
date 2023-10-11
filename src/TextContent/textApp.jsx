@@ -177,7 +177,7 @@ export const textApp = {
         },
         page: {
             quantity: "Số lượng",
-            material: "Chất Liệu :",
+            material: "Chất Liệu: ",
             shape: "Hình Dáng :"
         },
         message: {
@@ -305,8 +305,14 @@ export const textApp = {
         reBuy: "Mua lại",
         cancel:"Hủy đơn hàng"
         
-    }
-
-}
+     }
+    },
+    Invoice:{
+        title:"Xác Nhận Đơn Hàng",
+        thankyou:"Cảm ơn quý khách đã sử dụng dịch vụ. Đơn hàng sẽ được chúng tôi chuẩn bị và giao đến trong thời gian sớm nhất. Chúng tôi hy vọng quý khách hài lòng với dịch vụ.",
+        status:"Đơn hàng của bạn đã được đặt thành công.",
+        info:"Thông tin đơn hàng:",
+        button:"Quay lại Trang Chủ"
+    },
 
 }

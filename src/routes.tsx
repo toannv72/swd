@@ -11,7 +11,8 @@ import CreateProduct from "./Page/admin/CreateProduct";
 import Order from "./Page/Authenticator/Order/Order"; 
 import Logout from "./Page/Authenticator/Logout/Logout"; 
 import TableOrder from "./Page/admin/TableOrder"; 
- 
+import Invoice from "./Page/Authenticator/Payment/Invoice"; 
+
 export const routers = createBrowserRouter([ 
   { 
     path: "*", 
@@ -60,4 +61,8 @@ export const routers = createBrowserRouter([
     path: "/bill/:id",
     element: <Order />,
   },
+  { 
+    path: "/invoice",
+    element: <Invoice />, 
+  }, 
 ]); 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { textApp } from "../../../TextContent/textApp";
 
 const orders = [
@@ -68,6 +68,15 @@ const orders = [
 ];
 
 export default function Return() {
+
+  const [selectedOrderId, setSelectedOrderId] = useState(null);
+
+  const handleClick = (orderId) => {
+    // Log the selected orderId to the console
+    console.log("Selected Order ID:", orderId);
+    setSelectedOrderId(orderId); // Optionally, set the selectedOrderId state for use in your component
+  };
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-semibold mb-4">{textApp.OrderHistory.title}</h1>
@@ -109,7 +118,8 @@ export default function Return() {
               <div className="col-span-3 mt-4 md:mt-0"> 
                 <div className="flex flex-col items-end mb-4"> 
                   <div className="flex items-center space-x-2">
-                    <button className="bg-blue-500 text-white rounded-md px-2 py-1">
+                    <button onClick={() => handleClick(order.index)} // Pass the order ID to the handleClick function
+                    className="bg-blue-500 text-white rounded-md px-2 py-1">
                       {order.reBuy}
                     </button>
                     <button className="text-gray-900 font-semibold rounded-md">
