@@ -9,8 +9,8 @@ export default function Logout() {
     const [cookies, setCookie, removeCookie] = useCookies(['accessToken']);
 
     removeCookie('accessToken');
-    setCookie("accessToken",null)
-    localStorage.setItem('user',null );
+    setCookie("accessToken", null)
+    localStorage.removeItem('user');
     useEffect(() => {
         navigate('/login')
         if (cookies.accessToken) {

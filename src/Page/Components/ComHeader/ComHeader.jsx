@@ -100,7 +100,7 @@ export default function ComHeader({ dataCart, updateCart }) {
   const [sttLogin, setSttLogin] = useState(JSON.parse(localStorage.getItem('user')) || []);
   const [cart, setCart] = useState(JSON.parse(localStorage.getItem('cart')) || []);
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || []);
-  const [token, setToken] = useStorage("user", []);
+  const [token, setToken] = useStorage("user", {});
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -125,8 +125,8 @@ export default function ComHeader({ dataCart, updateCart }) {
 
   useEffect(() => {
     setSttLogin(JSON.parse(localStorage.getItem('user')) || [])
-
-    if (location.pathname === '/login' && token) {
+    console.log(token);
+    if (location.pathname === '/login' && token?.accessToken) {
       navigate('/')
     }
   }, []);;
