@@ -11,6 +11,7 @@ import CreateProduct from "./Page/admin/CreateProduct";
 import Order from "./Page/Authenticator/Order/Order"; 
 import Logout from "./Page/Authenticator/Logout/Logout"; 
 import TableOrder from "./Page/admin/TableOrder"; 
+import Required from "./Page/Authenticator/Required/Required"
  
 export const routers = createBrowserRouter([ 
   { 
@@ -37,6 +38,10 @@ export const routers = createBrowserRouter([
     path: "/product/:slug", 
     element: <Product />, 
   }, 
+  { 
+    path: "/required", 
+    element: <Required />
+  },
   { 
     path: "/admin/product/create",
     element: <CreateProduct />, 
