@@ -11,13 +11,10 @@ import CreateProduct from "./Page/admin/CreateProduct";
 import Order from "./Page/Authenticator/Order/Order"; 
 import Logout from "./Page/Authenticator/Logout/Logout"; 
 import TableOrder from "./Page/admin/TableOrder"; 
-<<<<<<< HEAD
 import Invoice from "./Page/Authenticator/Payment/Invoice"; 
 
-=======
 import Required from "./Page/Authenticator/Required/Required"
  
->>>>>>> origin/requestPage12
 export const routers = createBrowserRouter([ 
   { 
     path: "*", 
