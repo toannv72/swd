@@ -270,7 +270,7 @@ export const textApp = {
             },
         },
         text: "Sản phẩm mới",
-        payments:"Hình thức thanh toán",
+        payments:"Hình thức thanh toán: ",
         orderButton:"Đặt hàng",
         cash:"Tiền mặt",
         totalMoney:'Tổng thành tiền',
@@ -298,6 +298,11 @@ export const textApp = {
         status4:"cancel",
         status5:"return",
         status6:"all",
+    },
+    product:{
+        quantity:"Số lượng: ",
+        price:"Thành tiền: ",
+        amount:"Tổng tiền"
     },
     title:"Danh sách đơn hàng",
     button:{

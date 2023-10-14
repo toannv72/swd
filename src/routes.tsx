@@ -11,7 +11,7 @@ import CreateProduct from "./Page/admin/CreateProduct";
 import Order from "./Page/Authenticator/Order/Order"; 
 import Logout from "./Page/Authenticator/Logout/Logout"; 
 import TableOrder from "./Page/admin/TableOrder"; 
-import Invoice from "./Page/Authenticator/Payment/Invoice"; 
+import Invoice from "./Page/Authenticator/Payment/Invoice";
 
 export const routers = createBrowserRouter([ 
   { 
@@ -58,11 +58,7 @@ export const routers = createBrowserRouter([
     element: <TableOrder />,
   },
   {
-    path: "/bill/:id",
-    element: <Order />,
+    path: "/payment/bill/:id",
+    element: <Invoice />,
   },
-  { 
-    path: "/invoice",
-    element: <Invoice />, 
-  }, 
 ]); 
