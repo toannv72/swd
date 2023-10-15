@@ -30,15 +30,10 @@ export default function Transporting() {
     // }
   }, []);
 
-    console.log(products.docs);
-    console.log(order);
   const getProductById = (productId) => {
     // Tìm sản phẩm theo ID trong danh sách sản phẩm
     return products?.docs?.find(product => product._id === productId);
   };
-
-  console.log(111111111111,getProductById("651d09c5168f0f453452abf8"));
-  
 
   return (
     <div className="container mx-auto p-4">

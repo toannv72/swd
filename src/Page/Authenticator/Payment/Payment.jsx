@@ -19,11 +19,11 @@ export default function Payment(props) {
     const [api, contextHolder] = notification.useNotification();
     const dataProduct = location?.state?.dataProduct || null;
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || []);
-    // useEffect(() => {
-    //     if (!user?._doc?.username) {
-    //         navigate(`login`)
-    //     }
-    // }, []);
+    useEffect(() => {
+        if (!user?._doc?.username) {
+            navigate(`login`)
+        }
+    }, []);
     const loginMessenger = yup.object({
         name: yup.string().required(textApp.Payment.information.message.name),
         shippingAddress: yup.string().required(textApp.Payment.information.message.address),
