@@ -13,6 +13,8 @@ import Logout from "./Page/Authenticator/Logout/Logout";
 import TableOrder from "./Page/admin/TableOrder"; 
 import Invoice from "./Page/Authenticator/Payment/Invoice";
 
+import Required from "./Page/Authenticator/Required/Required"
+ 
 export const routers = createBrowserRouter([ 
   { 
     path: "*", 
@@ -38,6 +40,10 @@ export const routers = createBrowserRouter([
     path: "/product/:slug", 
     element: <Product />, 
   }, 
+  { 
+    path: "/required", 
+    element: <Required />
+  },
   { 
     path: "/admin/product/create",
     element: <CreateProduct />, 

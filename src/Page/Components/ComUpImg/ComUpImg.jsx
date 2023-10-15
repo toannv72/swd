@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { UploadOutlined } from '@ant-design/icons';
 import { Button, Upload ,message } from 'antd';
-
+import { PlusOutlined } from "@ant-design/icons";
 const ComUpImg = ({onChange}) => {
   const [fileList, setFileList] = useState([]);
   const maxImages = 5;
@@ -30,12 +30,13 @@ const ComUpImg = ({onChange}) => {
     <>
       <Upload
         fileList={fileList}
+         listType="picture-card"
         onChange={handleFileChange}
         beforeUpload={() => false} // Để tránh tải lên tự động
         accept=".jpg,.jpeg,.png,.gif" // Chỉ cho phép chọn các tệp hình ảnh
         multiple={true} // Cho phép chọn nhiều tệp
       >
-        <Button icon={<UploadOutlined />}>Tải hình ảnh</Button>
+        <PlusOutlined />
       </Upload>
     </>
   );

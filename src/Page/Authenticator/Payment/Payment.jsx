@@ -19,17 +19,17 @@ export default function Payment(props) {
     const [api, contextHolder] = notification.useNotification();
     const dataProduct = location?.state?.dataProduct || null;
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || []);
-    useEffect(() => {
-        if (!user?._doc?.username) {
-            navigate(`login`)
-        }
-    }, []);
+    // useEffect(() => {
+    //     if (!user?._doc?.username) {
+    //         navigate(`login`)
+    //     }
+    // }, []);
     const loginMessenger = yup.object({
         name: yup.string().required(textApp.Payment.information.message.name),
         shippingAddress: yup.string().required(textApp.Payment.information.message.address),
-        phone: yup.string().required(textApp.Payment.information.message.phone),
+        phone: yup.string().required(textApp.Payment.information.message.phone).min(10, "Số điện thoại phải lớn hơn 9 số!").max(11, "Số điện thoại phải nhỏ hơn 12 số!").matches(/^0\d{9,10}$/, "Số điện thoại không hợp lệ"),
         email: yup.string().email(textApp.Payment.information.message.emailError).required(textApp.Payment.information.message.email),
-        // description: yup.string(),
+
     })
     const LoginRequestDefault = {
         // code: "",
@@ -51,8 +51,8 @@ export default function Payment(props) {
         const ProductPost = dataProduct.map((e, index) => {
             return { ...e, product: e._id, price: e.reducedPrice, quantity: e?.data };
         })
-        const dataPost = { data, shippingAddress: data.shippingAddress, description: data.description, email: data.email, products: ProductPost, totalAmount: totalAmount }
-        console.log(dataPost);
+        const dataPost = { ...data, shippingAddress: data.shippingAddress, description: data.description, email: data.email, products: ProductPost, totalAmount: totalAmount }
+        // console.log(dataPost);
         postData('/order/user', dataPost)
             .then((data) => {
                 navigate(`bill/${data._id}`)
@@ -145,7 +145,7 @@ export default function Payment(props) {
                                     <ComInput
                                         placeholder={textApp.Payment.information.placeholder.phone}
                                         label={textApp.Payment.information.label.phone}
-                                        type={"numbers"}
+
                                         {...register("phone")}
                                         required
                                     />
