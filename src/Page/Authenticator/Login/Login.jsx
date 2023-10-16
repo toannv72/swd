@@ -19,7 +19,7 @@ import ComFooter from "../../Components/ComFooter/ComFooter";
 
 
 export default function Login() {
-    const [token, setToken] = useStorage("user", null);
+    const [token, setToken] = useStorage("user", {});
     const [disabled, setDisabled] = useState(false);
     const [Login, setLogin] = useState(false);
     const [LoginError, setLoginError] = useState(false);

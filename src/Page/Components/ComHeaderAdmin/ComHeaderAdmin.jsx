@@ -79,7 +79,7 @@ export default function ComHeaderAdmin() {
   return (
     <Affix offsetTop={0}>
       <header className="bg-white border-b border-gray-200  ">
-        <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 " aria-label="Global">
+        <nav className="mx-auto flex  items-center justify-between px-6 " aria-label="Global">
           <div className="flex ">
             <button
               type="button"

@@ -270,7 +270,7 @@ export const textApp = {
             },
         },
         text: "Sản phẩm mới",
-        payments:"Hình thức thanh toán",
+        payments:"Hình thức thanh toán: ",
         orderButton:"Đặt hàng",
         cash:"Tiền mặt",
         totalMoney:'Tổng thành tiền',
@@ -299,6 +299,11 @@ export const textApp = {
         status5:"return",
         status6:"all",
     },
+    product:{
+        quantity:"Số lượng: ",
+        price:"Thành tiền: ",
+        amount:"Tổng tiền"
+    },
     title:"Danh sách đơn hàng",
     button:{
         contact:"Liên hệ người bán",
@@ -312,7 +317,9 @@ export const textApp = {
         thankyou:"Cảm ơn quý khách đã sử dụng dịch vụ. Đơn hàng sẽ được chúng tôi chuẩn bị và giao đến trong thời gian sớm nhất. Chúng tôi hy vọng quý khách hài lòng với dịch vụ.",
         status:"Đơn hàng của bạn đã được đặt thành công.",
         info:"Thông tin đơn hàng:",
-        button:"Quay lại Trang Chủ"
+        button:"Quay lại Trang Chủ",
+        paymentMethod:"Hình thức thanh toán: Thanh toán bằng tiền mặt",
+        orderDate:"Ngày đặt hàng",
     },
 
 }

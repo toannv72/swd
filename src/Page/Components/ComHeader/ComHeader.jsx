@@ -19,6 +19,7 @@ import { textApp } from "../../../TextContent/textApp";
 import { getData } from "../../../api/api";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
+import { useStorage } from "../../../hooks/useLocalStorage";
 
 
 const navigation = {
@@ -99,6 +100,7 @@ export default function ComHeader({ dataCart, updateCart }) {
   const [sttLogin, setSttLogin] = useState(JSON.parse(localStorage.getItem('user')) || []);
   const [cart, setCart] = useState(JSON.parse(localStorage.getItem('cart')) || []);
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || []);
+  const [token, setToken] = useStorage("user", {});
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -120,22 +122,11 @@ export default function ComHeader({ dataCart, updateCart }) {
       search: ''
     },
   })
-  // useEffect(() => {
-  //   getData('/login')
-  //     .then((data) => {
-  //       setSttLogin(data.data);
-  //       if (location.pathname === '/login' && data.data.login) {
-  //         navigate('/')
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }, []);
 
   useEffect(() => {
     setSttLogin(JSON.parse(localStorage.getItem('user')) || [])
-    if (location.pathname === '/login' && JSON.parse(localStorage.getItem('user'))) {
+    console.log(token);
+    if (location.pathname === '/login' && token?.accessToken) {
       navigate('/')
     }
   }, []);;
