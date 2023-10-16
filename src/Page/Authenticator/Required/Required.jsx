@@ -1,185 +1,192 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import ComFooter from "../../Components/ComFooter/ComFooter";
-import ComHeader from "../../Components/ComHeader/ComHeader";
-import { faCreditCard } from "@fortawesome/free-regular-svg-icons";
-import { textApp } from "../../../TextContent/textApp";
-import { FormProvider, useForm } from "react-hook-form";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useEffect, useState } from "react";
-import ComInput from "../../Components/ComInput/ComInput";
-import ComUpImg from "../../Components/ComUpImg/ComUpImg";
-import ComSelect from "../../Components/ComInput/ComSelect";
-import ComTextArea from "../../Components/ComInput/ComTextArea";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { postData } from "../../../api/api";
-import { Button, notification, Checkbox, Upload, Modal } from "antd";
+import { textApp } from "../../../TextContent/textApp";
+import ComInput from "../../Components/ComInput/ComInput";
+import { FormProvider, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import ComUpImg from "../../Components/ComUpImg/ComUpImg";
+import { firebaseImgs } from "../../../upImgFirebase/firebaseImgs";
+import ComButton from "../../Components/ComButton/ComButton";
+
+import ComTextArea from "../../Components/ComInput/ComTextArea";
+import ComNumber from "../../Components/ComInput/ComNumber";
+import { Select, notification } from "antd";
+import ComSelect from "../../Components/ComInput/ComSelect";
 
 import bird from "../../../../src/img/bird-svgrepo-com.svg";
+import ComFooter from "../../Components/ComFooter/ComFooter";
+import ComHeader from "../../Components/ComHeader/ComHeader";
 
-import { PlusOutlined } from "@ant-design/icons";
-const getBase64 = (file) =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = (error) => reject(error);
-  });
+const options = [
+  {
+    label: "Gỗ",
+    value: "Gỗ",
+  },
+  {
+    label: "Nhựa",
+    value: "Nhựa",
+  },
+  {
+    label: "Kim Loại",
+    value: "Kim loại",
+  },
+];
 
-export default function Required(props) {
+export default function Required() {
   const [disabled, setDisabled] = useState(false);
-  const navigate = useNavigate();
-  const location = useLocation();
+  const [image, setImages] = useState("");
   const [api, contextHolder] = notification.useNotification();
-  const dataProduct = location?.state?.dataProduct || null;
-  const [user, setUser] = useState(
-    JSON.parse(localStorage.getItem("user")) || []
-  );
+  console.log("image", image);
+  const CreateProductMessenger = yup.object({
+    // orderName: khôn được nhập số
+    name: yup
+      .string()
+      .matches(/^[a-zA-Z ]*$/, "Vui lòng không nhập số và kí tự đặc biệt")
+      .required("Vui lòng nhập tên người đặt hàng"),
 
-  const [previewOpen, setPreviewOpen] = useState(false);
-  const [previewImage, setPreviewImage] = useState("");
-  const [previewTitle, setPreviewTitle] = useState("");
+    bird: yup
+      .string()
+      .matches(
+        /^[a-zA-Z ]*$/,
+        "Vui lòng nhập tên không có số và kí tự đặc biệt"
+      )
+      .required("Vui lòng nhập tên chim"),
+    email: yup
+      .string()
+      .email("Vui lòng nhập đúng định dạng gmail")
+      .required("Vui lòng nhập gmail"),
+    phone: yup
+      .string()
+      .matches(/^[0-9]+$/, "Số điện thoại không hợp lệ")
+      .min(10, "Số điện thoại phải có ít nhất 10 chữ số")
+      .max(10, "Số điện thoại không được quá 10 chữ số")
+      .required("Vui lòng nhập số điện thoại"),
 
-  const [fileList, setFileList] = useState([]);
-  const handleCancel = () => setPreviewOpen(false);
-  const handlePreview = async (file) => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
-    }
-    setPreviewImage(file.url || file.preview);
-    setPreviewOpen(true);
-    setPreviewTitle(
-      file.name || file.url.substring(file.url.lastIndexOf("/") + 1)
-    );
-  };
-  const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
-  const uploadButton = (
-    <div>
-      <PlusOutlined />
-      <div
-        style={{
-          marginTop: 8,
-        }}
-      >
-        Upload
-      </div>
-    </div>
-  );
+    // quantity: yup
+    //   .number()
+    //   .min(1, "Số lượng phải lớn hơn 0")
+    //   .typeError("Số lượng phải là số")
+    //   .required("Vui lòng nhập số lượng"),
 
-  const schema = yup
-    .object({
-        image: yup
-        .string()
-        .test("valid-format", "Không đúng định dạng", (value) => {
-          return !!value || value === "";
-        })
-        .required("Hình ảnh là bắt buộc"),
+    material: yup.array().required(textApp.CreateProduct.message.material),
+    spokes: yup
+      .number()
+      .min(10, "Số nan phải lớn hơn 10")
+      .max(30, "Số nan phải nhỏ hơn 30")
+      .required("Vui lòng nhập số nan")
+      .typeError("Số nan phải là số"),
+    shippingAddress: yup.string().required("Vui lòng nhập địa chỉ giao hàng"),
 
-      birdName: yup
-        .string()
-        .matches(/^[A-Za-z ]*$/, "Chỉ nhập chữ ")
-        .required("Không bỏ trống và chỉ nhập chữ")
-        .test("valid-format", "Không đúng định dạng", (value) => {
-          return !!value || value === "";
-        }),
-        // materials: yup
-        // .array()
-        // .of(yup.string().oneOf(["Gỗ", "Kim loại", "Nhựa"]))
-        // .required("Không bỏ trống")
-        // .test("valid-format", "Chọn ít nhất một nguyên liêu", (value) => {
-        //   return !!value || value === "";
-        // }),
-      cageNumber: yup
-        .number()
-        .min(10, "Phải lớn hơn hoặc bằng 10")
-        .max(30, "Phải nhỏ hơn hoặc bằng 30")
-        .required("Không bỏ trống và phải là số")
-        .typeError("Không bỏ trống và phải là số")
-        .test("valid-format", "Không đúng định dạng", (value) => {
-          return !!value || value === "";
-        }),
-      email: yup
-        .string()
-        .email("Không đúng định dạng email")
-        .required("Không bỏ trống và phải là email")
-        .test("valid-format", "Không đúng định dạng", (value) => {
-          return !!value || value === "";
-        }),
-      phone: yup
-        .string()
-        .matches(/^\d{10}$/, "Phải là số và có 10 chữ số")
-        .required("Không bỏ trống và không quá 10 số")
-        .test("valid-format", "Không đúng định dạng", (value) => {
-          return !!value || value === "";
-        }),
-      address: yup
-        .string()
-        .required("Không bỏ trống")
-        .test("valid-format", "Không đúng định dạng", (value) => {
-          return !!value || value === "";
-        }),
-      description: yup
-        .string()
-        .max(1000, "Nhỏ hơn 1000 ký tự")
-        .required("Không bỏ trống")
-        .test("valid-format", "Không đúng định dạng", (value) => {
-          return !!value || value === "";
-        }),
-    })
-    .required();
-  const LoginRequestDefault = {
-    image: "",
-    birdName: "",
-    materials: [],
-    cageNumber: "",
-    email: "",
-    phone: "",
-    address: "",
-    description: "",
+    description: yup
+      .string()
+      .required(textApp.CreateProduct.message.description),
+  });
+  const createOrderRequestDefault = {
+    price: 1000,
+    reducedPrice: 1000,
   };
   const methods = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(CreateProductMessenger),
     defaultValues: {
-      // code: "",
+      name: "",
+      bird: "",
+      email: "",
+      phone: "",
+      spokes: "",
+      image: "",
+      material: "",
+      // quantity: 1,
+      shippingAddress: "",
+      description: "",
     },
-    values: LoginRequestDefault,
+    values: createOrderRequestDefault,
   });
-  const promotion = useForm({});
   const { handleSubmit, register, setFocus, watch, setValue } = methods;
 
-  const onSubmit = (data) => {
-    setDisabled(true);
-    const dataPost = { ...data, products: dataProduct };
-    // console.log(dataPost);
-    postData("/order/user", dataPost)
-      .then((data) => {
-        navigate(`bill/${data._id}`);
-        setDisabled(false);
-      })
-      .catch((error) => {
-        console.log(error.response.data.error);
-        api["error"]({
-          message: textApp.Payment.error,
-          description: error.response.data.error,
-        });
-        setDisabled(false);
-      });
-  };
+  function isInteger(number) {
+    return (
+      typeof number === "number" &&
+      isFinite(number) &&
+      Math.floor(number) === number
+    );
+  }
 
-  const customUpload = async ({ onError, onSuccess, file }) => {
-    const isImage = file.type.indexOf("image/") === 0;
-    if (!isImage) {
-      onError("Không phải file ảnh");
+  const onSubmit = (data) => {
+    console.log(data);
+    // console.log(data.reducedPrice % 1000 !== 0);
+    // console.log(data.reducedPrice % 1000);
+
+    if (data.material.length === 0) {
+      api["error"]({
+        message: textApp.CreateProduct.Notification.m4.message,
+        description: textApp.CreateProduct.Notification.m4.description,
+      });
       return;
     }
-    try {
-      const res = await getBase64(file);
-      onSuccess(res);
-    } catch (error) {
-      onError("Lỗi");
+    if (image.length === 0) {
+      api["error"]({
+        message: textApp.CreateProduct.Notification.m5.message,
+        description: textApp.CreateProduct.Notification.m5.description,
+      });
+      return;
     }
+    setDisabled(true);
+    firebaseImgs(image)
+      .then((dataImg) => {
+        console.log("ảnh nè : ", dataImg);
+        const updatedData = {
+          ...data, // Giữ lại các trường dữ liệu hiện có trong data
+          image: "" + dataImg,
+        };
+
+        postData("/customOrder/user", updatedData, {})
+          .then((dataS) => {
+            console.log(dataS);
+            setDisabled(false);
+            api["success"]({
+              message: textApp.CreateProduct.Notification.m2.message,
+              description: textApp.CreateProduct.Notification.m2.description,
+            });
+          })
+          .catch((error) => {
+            api["error"]({
+              message: textApp.CreateProduct.Notification.m3.message,
+              description: textApp.CreateProduct.Notification.m3.description,
+            });
+            console.error("Error fetching items:", error);
+            setDisabled(false);
+          });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  const onChange = (data) => {
+    const selectedImages = data;
+    // Tạo một mảng chứa đối tượng 'originFileObj' của các tệp đã chọn
+    const newImages = selectedImages.map((file) => file.originFileObj);
+    // Cập nhật trạng thái 'image' bằng danh sách tệp mới
+    setImages(newImages);
+    console.log(image);
+    // setFileList(data);
+  };
+  const handleValueChange = (e, value) => {
+    setValue("price", value, { shouldValidate: true });
   };
 
+  const handleValueChange1 = (e, value) => {
+    console.log(value);
+    setValue("reducedPrice", value, { shouldValidate: true });
+  };
+
+  const handleValueChangeSelect = (e, value) => {
+    if (value.length === 0) {
+      setValue("material", null, { shouldValidate: true });
+    } else {
+      setValue("material", value, { shouldValidate: true });
+    }
+  };
   return (
     <>
       {contextHolder}
@@ -191,136 +198,145 @@ export default function Required(props) {
         </div>
         <h1 className="text-4xl">{"Đặt hàng theo yêu cầu"}</h1>
       </div>
-
-      <div className="flex justify-center">
-        <div className="w-full md:w-1/2">
-          <FormProvider {...methods}>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <div className="grid grid-cols-1 md:grid-cols-2 sm:grid-cols-2 gap-4 mb-6">
-                <ComInput
-                  label="Tên chim"
-                  placeholder="Nhập tên chim"
-                  {...register("birdName")}
-                  pattern="[A-Za-z ]*"
-                  required
-                />
-                <div className="">
-                  <ComSelect
-                    size={"large"}
-                    style={{
-                      width: "100%",
-                    }}
-                    label={textApp.CreateProduct.label.material}
-                    placeholder={textApp.CreateProduct.placeholder.material}
-                    onChangeValue={handleChange}
-                    options={[
-                      { value: "Gỗ", label: "Gỗ" },
-                      { value: "Kim loại", label: "Kim loại" },
-                      { value: "Nhựa", label: "Nhựa" },
-                    ]}
-                    {...register("material")}
-                    {...register("materials")}
+      <div className="isolate bg-white px-6 py-10 sm:py-10 lg:px-8">
+        <FormProvider {...methods}>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="mx-auto mt-4 max-w-xl sm:mt-8"
+          >
+            <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+              <div className="sm:col-span-2">
+                <div className="mt-2.5">
+                  <ComInput
+                    type="text"
+                    label={"Người đặt hàng"}
+                    placeholder={"Nhập tên người đặt hàng"}
+                    {...register("name")}
                     required
                   />
                 </div>
+              </div>
 
-                <ComInput
-                  label="Số nan"
-                  placeholder="Nhập số nan"
-                  {...register("cageNumber")}
-                  min={10}
-                  max={30}
-                  required
-                  defaultValue={10}
-                />
+              <div className="sm:col-span-2">
+                <div className="mt-2.5">
+                  <ComInput
+                    type="text"
+                    label={"Tên chim"}
+                    placeholder={"Nhập tên chim"}
+                    {...register("bird")}
+                    required
+                  />
+                </div>
+              </div>
 
+              <div className="sm:col-span-2">
+                <div className="mt-2.5">
+                  <ComInput
+                    type="text"
+                    label={"Địa chỉ giao hàng"}
+                    placeholder={"Nhập địa chỉ giao hàng"}
+                    {...register("shippingAddress")}
+                    required
+                  />
+                </div>
+              </div>
+              <div>
                 <ComInput
-                  label="Email"
-                  placeholder="Nhập email"
-                  type="email"
+                  type="text"
+                  label={"Gmail"}
+                  placeholder={"Nhập gmail"}
+                  // type="numbers"
                   {...register("email")}
-                  defaultValue={user.email}
                   required
-                />
-
-                <ComInput
-                  label="Số điện thoại"
-                  placeholder="Nhập số điện thoại"
-                  type="tel"
-                  {...register("phone")}
-                  defaultValue={user.phone}
-                  required
-                />
-                <ComInput
-                  label="Địa chỉ"
-                  {...register("address")}
-                  defaultValue={user.address}
-                  required
-                />
-                <ComTextArea
-                  label="Yêu cầu"
-                  placeholder="Nhập yêu cầu về lồng chim"
-                  {...register("description")}
-                  rows={4}
-                  maxLength={1000}
                 />
               </div>
-              {/* <div className="flex flex-col">
-                <label className="text-paragraph font-bold">
-                  Hình ảnh
-                  <span className="text-red-500">*</span>
-                </label>
-                <Upload
-                  listType="picture-card"
-                  fileList={fileList}
-                  onPreview={handlePreview}
-                  onChange={handleChange}
-                  customRequest={customUpload}
-                  // {...register("image")}
+              <div>
+                <ComInput
+                  type="text"
+                  label={"Phone"}
+                  placeholder={"Nhập số điện thoại"}
+                  // type="numbers"
+                  {...register("phone")}
                   required
-                >
-                  {fileList.length >= 1 ? null : uploadButton}
-                </Upload>
+                />
+              </div>
+              {/* <div>
+                <ComNumber
+                  label={"Số luợng"}
+                  placeholder={"Nhập số lượng"}
+                  // type="numbers"
+                  min={1}
+                  defaultValue={1}
+                  {...register("quantity")}
+                  required
+                />
               </div> */}
-               <label className="text-paragraph font-bold">
-                  Hình ảnh
-                  <span className="text-red-500">*</span>
-                </label>
-              <ComUpImg
-                onChange={(value) => {
-                  setValue("image", value);
-                }}
-                required
-              />
-
-              <Modal
-                open={previewOpen}
-                title={previewTitle}
-                footer={null}
-                onCancel={handleCancel}
-              >
-                <img
-                  alt="example"
+              <div className="">
+                <ComSelect
+                  size={"large"}
                   style={{
                     width: "100%",
                   }}
-                  src={previewImage}
+                  label={textApp.CreateProduct.label.material}
+                  placeholder={textApp.CreateProduct.placeholder.material}
+                  required
+                  onChangeValue={handleValueChangeSelect}
+                  options={options}
+                  {...register("material")}
                 />
-              </Modal>
-              <Button
-                disabled={disabled}
-                className="bg-blue-500 h-12 text-white py-3 px-6 rounded-lg w-full mb-6"
-                type="primary"
-                htmlType="submit"
-              >
-                {textApp.Payment.orderButton}
-              </Button>
-            </form>
-          </FormProvider>
-        </div>
-      </div>
+              </div>
+              <div className="sm:col-span-2">
+                <div className="mt-2.5">
+                  <ComNumber
+                    type="text"
+                    label={"Số nan"}
+                    placeholder={"Nhập số nan"}
+                    {...register("spokes")}
+                    required
+                  />
+                </div>
+              </div>
+              {/* <div className="sm:col-span-2">
+                <ComInput
+                  label={textApp.CreateProduct.label.shape}
+                  placeholder={textApp.CreateProduct.placeholder.shape}
+                  required
+                  type="text"
+                  {...register("shape")}
+                />
+            
+              </div> */}
 
-      <ComFooter />
+              <div className="sm:col-span-2">
+                <div className="mt-2.5">
+                  <ComTextArea
+                    label={textApp.CreateProduct.label.description}
+                    placeholder={textApp.CreateProduct.placeholder.description}
+                    rows={4}
+                    defaultValue={""}
+                    required
+                    maxLength={1000}
+                    {...register("description")}
+                  />
+                </div>
+              </div>
+              <div className="sm:col-span-1">
+                <ComUpImg onChange={onChange} multiple={false} />
+              </div>
+            </div>
+            <div className="mt-10">
+              <ComButton
+                disabled={disabled}
+                htmlType="submit"
+                type="primary"
+                className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                {"Yêu cầu đặt hàng"}
+              </ComButton>
+            </div>
+          </form>
+        </FormProvider>
+      </div>
     </>
   );
 }
