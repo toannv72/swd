@@ -14,6 +14,7 @@ import TableOrder from "./Page/admin/TableOrder";
 import Invoice from "./Page/Authenticator/Payment/Invoice";
 
 import Required from "./Page/Authenticator/Required/Required"
+import TableUser from "./Page/Admin2/TableUser";
  
 export const routers = createBrowserRouter([ 
   { 
@@ -45,11 +46,11 @@ export const routers = createBrowserRouter([
     element: <Required />
   },
   { 
-    path: "/admin/product/create",
+    path: "/staff/product/create",
     element: <CreateProduct />, 
   }, 
   {
-    path: "/admin/product/table", 
+    path: "/staff/product/table", 
     element: <TableProduct />, 
   }, 
   { 
@@ -60,11 +61,14 @@ export const routers = createBrowserRouter([
     element: <Order />,
   }, 
   {
-    path: "/admin/order",
+    path: "/staff/order",
     element: <TableOrder />,
   },
   {
     path: "/payment/bill/:id",
     element: <Invoice />,
+  },{
+    path: "/admin/tableUser",
+    element: <TableUser />,
   },
 ]); 

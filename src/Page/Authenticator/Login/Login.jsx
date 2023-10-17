@@ -57,6 +57,7 @@ export default function Login() {
         setDisabled(true)
         postData('/login', data, {})
             .then((data) => {
+                console.log(data);
                 localStorage.setItem('user', JSON.stringify(data));
                 setToken(data)
                 setDisabled(false)
@@ -64,10 +65,17 @@ export default function Login() {
                 if (location?.state) {
                     return navigate(location?.state)
                 }
-                if (data._doc.admin) {
-                    navigate('/admin/product/create')
-                } else {
-                    navigate('/')
+                if (data._doc.role==='user') {
+                    return navigate('/')
+                }
+                if (data._doc.role==='staff') {
+                    return navigate('/staff/product/table')
+                }
+                if (data._doc.role==='manager') {
+                    return navigate('/manager')
+                }
+                if (data._doc.role==='admin') {
+                    return navigate('/admin')
                 }
             })
             .catch((error) => {

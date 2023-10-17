@@ -32,13 +32,7 @@ import {
 } from "@material-tailwind/react";
 
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCreditCard } from '@fortawesome/free-regular-svg-icons'
-
-const products = [
-  { name: routs['/createProduct'].name, href: routs['/createProduct'].link, },
-  { name: routs['/tableProduct'].name, href: routs['/tableProduct'].link, },
-]
+import { useStorage } from '../../../hooks/useLocalStorage'
 
 
 function classNames(...classes) {
@@ -47,6 +41,7 @@ function classNames(...classes) {
 
 export default function ComHeaderAdmin() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [user, setUser] = useStorage('user',{})
   const [cookies, setCookie, removeCookie] = useCookies(['accessToken']);
   const navigate = useNavigate();
   const [open, setOpen] = useState(0);
@@ -54,28 +49,13 @@ export default function ComHeaderAdmin() {
   const handleOpen = (value) => {
     setOpen(open === value ? 0 : value);
   };
-  const handleDeleteCookie = () => {
-    removeCookie()
 
-    navigate('/login')
-
-  };
   useEffect(() => {
-    getData('/admin')
-      .then((data) => {
-        if (!data.data.admin) {
-          navigate('/')
-        }
-        if (data.data.admin === 'login') {
-          navigate('/login')
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        navigate('/login')
-      })
+    if (!(user?._doc?.role==='staff')) {
 
-  }, [navigate]);
+        navigate('/login')
+    }
+  }, []);
   return (
     <Affix offsetTop={0}>
       <header className="bg-white border-b border-gray-200  ">

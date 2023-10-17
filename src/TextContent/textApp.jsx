@@ -232,6 +232,7 @@ export const textApp = {
         home: "Trang chủ",
         category:"Danh mục",
         allProduct:"Sản phẩm",
+        required:"Đặt hàng theo yêu cầu",
         search: "Tìm kiếm...",
     },
     Home: {

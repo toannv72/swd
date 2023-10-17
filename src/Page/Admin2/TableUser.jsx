@@ -19,7 +19,7 @@ import ComSelect from '../Components/ComInput/ComSelect';
 import moment from 'moment/moment';
 
 
-export default function TableProduct() {
+export default function TableUser() {
     const [disabled, setDisabled] = useState(false);
     const [image, setImages] = useState([]);
     const [products, setProducts] = useState([]);

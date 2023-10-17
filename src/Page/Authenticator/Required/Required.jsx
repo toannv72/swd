@@ -139,7 +139,7 @@ export default function Required() {
           ...data, // Giữ lại các trường dữ liệu hiện có trong data
           image: "" + dataImg,
         };
-
+        console.log(updatedData);
         postData("/customOrder/user", updatedData, {})
           .then((dataS) => {
             console.log(dataS);

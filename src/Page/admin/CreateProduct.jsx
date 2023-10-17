@@ -72,10 +72,10 @@ export default function CreateProduct() {
     }
     const onSubmit = (data) => {
         console.log(data);
-        console.log(data.reducedPrice%1000!==0);
-        console.log(data.reducedPrice%1000);
+        console.log(data.reducedPrice % 1000 !== 0);
+        console.log(data.reducedPrice % 1000);
 
-        if (data.price%1000!==0) {
+        if (data.price % 1000 !== 0) {
             api["error"]({
                 message: textApp.CreateProduct.Notification.m7.message,
                 description:
@@ -83,7 +83,7 @@ export default function CreateProduct() {
             });
             return
         }
-        if (data.reducedPrice%1000!==0) {
+        if (data.reducedPrice % 1000 !== 0) {
             api["error"]({
                 message: textApp.CreateProduct.Notification.m8.message,
                 description:
@@ -126,7 +126,7 @@ export default function CreateProduct() {
             });
             return
         }
-       
+
         setDisabled(true)
         firebaseImgs(image)
             .then((dataImg) => {
@@ -173,7 +173,7 @@ export default function CreateProduct() {
         // setFileList(data);
     }
     const handleValueChange = (e, value) => {
-       
+
         setValue("price", value, { shouldValidate: true });
     };
 
@@ -328,7 +328,14 @@ export default function CreateProduct() {
                                     />
                                 </div>
                             </div>
-                            <div className="sm:col-span-1">
+                            <div className="sm:col-span-2">
+                                <label  className="text-paragraph font-bold">
+                                    Hình ảnh
+                                        <span className="text-paragraph font-bold text-error-7 text-red-500">
+                                            *
+                                        </span>
+                                   
+                                </label>
                                 <ComUpImg onChange={onChange} />
                             </div>
                         </div>
