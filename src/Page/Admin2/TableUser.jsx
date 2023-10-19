@@ -284,7 +284,7 @@ export default function TableUser() {
     }
     useEffect(() => {
         setTimeout(() => {
-            getData('/product/staff', {})
+            getData('/user', {})
                 .then((data) => {
                     setProducts(data?.data?.docs)
                 })
@@ -402,66 +402,27 @@ export default function TableUser() {
     const columns = [
 
         {
-            title: 'Ảnh sản phẩm',
-
-            dataIndex: 'image',
-            key: 'img',
+            title: 'username',
+            dataIndex: 'username',
+            key: 'username',
+            width: 100,
             fixed: 'left',
-            render: (_, record) => (
 
-                <div className='flex items-center justify-center'>
-                    <img src={record.image} className='h-24 object-cover object-center   ' alt={record.image} />
-                </div>
-            )
+
         },
         {
-            title: 'Tên sản phẩm',
-            dataIndex: 'name',
-            width: 300,
-            key: 'name',
-            fixed: 'left',
+            title: 'password',
+            dataIndex: 'password',
+            width: 100,
+            key: 'password',
 
             render: (_, record) => (
-
                 <div >
-                    <h1>{record.name}</h1>
+                    <h1>**********</h1>
                 </div>
             ),
-            ...getColumnSearchProps('name', 'tên sản phẩm'),
         },
-        {
-            title: 'Giá Tiền',
-            width: 150,
-            dataIndex: 'price',
-            key: 'price',
-            sorter: (a, b) => a.price - b.price,
-            render: (_, record) => (
 
-                <div >
-                    <h1>{formatCurrency(record.price)}</h1>
-                </div>
-            )
-        },
-        {
-            title: 'Giá tiền đã giảm',
-            width: 150,
-            dataIndex: 'reducedPrice',
-            key: 'reducedPrice',
-            sorter: (a, b) => a.reducedPrice - b.reducedPrice,
-            render: (_, record) => (
-
-                <div >
-                    <h1>{formatCurrency(record.reducedPrice)}</h1>
-                </div>
-            )
-        },
-        {
-            title: 'Số lượng',
-            width: 100,
-            dataIndex: 'quantity',
-            key: 'quantity',
-            sorter: (a, b) => a.quantity - b.quantity,
-        },
         {
             title: 'Ngày tạo',
             dataIndex: 'createdAt',
@@ -469,79 +430,32 @@ export default function TableUser() {
             key: 'createdAt',
             sorter: (a, b) => moment(a.createdAt).unix() - moment(b.createdAt).unix(),
             render: (_, record) => (
-
                 <div className="text-sm text-gray-700 line-clamp-4">
                     <p>{moment(record.createdAt).format('l')}</p>
                 </div>
             )
         },
         {
-            title: 'Ngày chỉnh sửa',
-            dataIndex: 'updatedAt',
-            width: 110,
-            key: 'updatedAt',
-            sorter: (a, b) => moment(a.updatedAt).unix() - moment(b.updatedAt).unix(),
+            title: <div className='flex justify-center '>trạng thái</div>,
+            dataIndex: '',
+            key: '',
+            width: 100,
             render: (_, record) => (
-                <div className="text-sm text-gray-700 line-clamp-4">
-                    <p>{moment(record.updatedAt).format('l')}</p>
+                <div >
+                    <div className='flex justify-center text-lg text-cyan-600'>hoạt động</div>
                 </div>
-            )
-        },
-        {
-            title: 'Chất liệu',
-            dataIndex: 'material',
-            key: 'material',
-            render: (_, record) => (
-
-                <div className="text-sm text-gray-700 line-clamp-4">
-                    <p>{record.material?.[0]}</p>
-                    <p>{record.material?.[1]}</p>
-                    <p>{record.material?.[2]}</p>
-                </div>
-
-
-            )
-        },
-        {
-            title: 'Chi tiết sản phẩm',
-            dataIndex: 'description',
-            key: 'description',
-            width: 300,
-            ...getColumnSearchProps('description', "chi tiết"),
-            // render: (_, record) => (
-
-            //     <div className="text-sm text-gray-700 line-clamp-4">
-            //         <p className="text-sm text-gray-700 line-clamp-4">{record.description}</p>
-            //     </div>
-
-            // ),
-            ellipsis: {
-                showTitle: false,
-            },
-            render: (record) => (
-                <Tooltip placement="topLeft" title={record}>
-                    {record}
-
-                </Tooltip>
             ),
 
         },
         {
-            title: 'Action',
+            title: <div className='flex justify-center'>Action</div>,
             key: 'operation',
-            fixed: 'right',
-
+            width: 50,
             render: (_, record) => (
-
                 <div className='flex items-center flex-col'>
-                    <div>
-                        <Typography.Link onClick={() => showModalEdit(record)}>
-                            Chỉnh sửa
-                        </Typography.Link>
-                    </div>
                     <div className='mt-2'>
                         <Typography.Link onClick={() => showModalDelete(record)}>
-                            <div className='text-red-600'>  Xóa</div>
+                            <div className='text-red-600'>Khóa</div>
                         </Typography.Link>
                     </div>
                 </div>
@@ -574,7 +488,7 @@ export default function TableUser() {
     return (
         <>
             {contextHolder}
-            <ComHeaderAdmin />
+            {/* <ComHeaderAdmin /> */}
             <div className='flex p-5 justify-center'>
                 <Table
                     rowKey="_id"

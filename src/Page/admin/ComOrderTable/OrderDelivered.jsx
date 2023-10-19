@@ -753,12 +753,13 @@ export default function OrderDelivered() {
             </Modal>
 
 
-            <Modal title={textApp.TableProduct.title.delete}
+            <Modal  title="Xác nhận hủy đơn hàng"
                 okType="primary text-black border-gray-700"
                 open={isModalOpenDelete}
                 width={500}
                 // style={{ top: 20 }}
                 onCancel={handleCancelDelete}>
+                <div className='text-lg p-6'>Bạn có chắc chắn muốn hủy đơn hàng đã chọn này không?</div>
 
                 <div className='flex'>
                     <ComButton
@@ -780,4 +781,5 @@ export default function OrderDelivered() {
             </Modal>
         </>
     )
+
 }

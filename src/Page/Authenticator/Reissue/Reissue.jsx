@@ -13,6 +13,8 @@ import { useEffect, useState } from "react";
 import { postData } from "../../../api/api";
 import ComHeader from "../../Components/ComHeader/ComHeader";
 import ComFooter from "../../Components/ComFooter/ComFooter";
+import { notification } from "antd";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -20,13 +22,15 @@ export default function Reissue() {
 
     const [error, setError] = useState("");
     const [disabled, setDisabled] = useState(false);
+    const [api, contextHolder] = notification.useNotification();
+    const navigate = useNavigate();
 
 
 
     const loginMessenger = yup.object({
         // code: yup.string().required(textApp.Reissue.message.username).min(5, "Username must be at least 5 characters"),
         username: yup.string().required(textApp.Reissue.message.username).min(6, textApp.Reissue.message.usernameMIn),
-        phone: yup.string().required(textApp.Reissue.message.phone),
+        phone: yup.string().required(textApp.Reissue.message.phone).min(10, "Số điện thoại phải lớn hơn 9 số!").max(10, "Số điện thoại phải nhỏ hơn 11 số!").matches(/^0\d{9,10}$/, "Số điện thoại không hợp lệ"),
         // .matches(/^[0-9]+$/, 'Số điện thoại phải chứa chỉ số'),
         password: yup.string().required(textApp.Reissue.message.password).min(5, textApp.Reissue.message.passwordMIn),
         password2: yup.string().required(textApp.Reissue.message.password2).min(5, textApp.Reissue.message.passwordMIn),
@@ -61,8 +65,15 @@ export default function Reissue() {
         setError("")
         postData('/reg', data, {})
             .then((data) => {
-                console.log(data);
+                api["success"]({
+                    message: 'Thành công!',
+                    description:
+                        "Đăng ký tài khoản thành công"
+                });
                 setDisabled(false)
+                setTimeout(() => {
+                    return navigate('/login')
+                }, 3000);
             })
             .catch((error) => {
                 setError(error?.response?.data?.error)
@@ -75,6 +86,8 @@ export default function Reissue() {
     console.log(disabled);
     return (
         <>
+            {contextHolder}
+
             <ComHeader />
             <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">

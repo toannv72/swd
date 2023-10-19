@@ -9,7 +9,6 @@ import { Button, Input, Modal, Select, Space, Table, Tooltip, Typography, notifi
 import { textApp } from '../../TextContent/textApp';
 import { deleteData, getData, postData, putData } from '../../api/api';
 import { firebaseImgs } from '../../upImgFirebase/firebaseImgs';
-import ComHeaderAdmin from '../Components/ComHeaderAdmin/ComHeaderAdmin';
 import ComButton from '../Components/ComButton/ComButton';
 import ComUpImg from '../Components/ComUpImg/ComUpImg';
 import ComInput from '../Components/ComInput/ComInput';
@@ -17,6 +16,7 @@ import ComTextArea from '../Components/ComInput/ComTextArea';
 import ComNumber from '../Components/ComInput/ComNumber';
 import ComSelect from '../Components/ComInput/ComSelect';
 import moment from 'moment/moment';
+import ComHeaderStaff from '../Components/ComHeaderStaff/ComHeaderStaff';
 
 
 export default function TableProduct() {
@@ -574,7 +574,7 @@ export default function TableProduct() {
     return (
         <>
             {contextHolder}
-            <ComHeaderAdmin />
+            <ComHeaderStaff />
             <div className='flex p-5 justify-center'>
                 <Table
                     rowKey="_id"

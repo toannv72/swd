@@ -96,7 +96,7 @@ export default function OrderPending() {
             setDisabled(true)
 
         }
-    }, [selected]);
+    }, [selected,dataRun]);
     const processing = () => {
         putData('/order/admin/put', 'Processing', { orders: [orderRequestDefault.id] })
             .then((e) => {
@@ -107,14 +107,15 @@ export default function OrderPending() {
         handleCancelProcessingS()
     }
 
-    const canceled = () => {
+    const sttCanceled = () => {
         putData('/order/admin/put', 'Canceled', { orders: [orderRequestDefault.id] })
             .then((e) => {
+             
                 setDataRun(!dataRun);
             })
             .catch(err => console.log(err))
         setDataRun(!dataRun);
-        handleCancelCanceledS()
+        handleCancelCanceled()
     }
 
     const processingS = () => {
@@ -131,6 +132,7 @@ export default function OrderPending() {
         putData('/order/admin/put', 'Canceled', { orders: selected })
             .then((e) => {
                 setDataRun(!dataRun);
+                handleCancelCanceledS()
             })
             .catch(err => console.log(err))
         setDataRun(!dataRun);
@@ -147,8 +149,6 @@ export default function OrderPending() {
                 });
 
         }, 100);
-
-
     }, [dataRun]);
 
 
@@ -428,18 +428,18 @@ export default function OrderPending() {
                     </ComButton>
                 </div>
             </Modal>
-            <Modal title="hủy đơn hàng này"
+            <Modal title="Xác nhận hủy"
                 okType="primary text-black border-gray-700"
                 open={isModalOpenCanceled}
                 width={500}
                 // style={{ top: 20 }}
                 onCancel={handleCancelCanceled}>
-
+                <div className='text-lg p-6'>Bạn có chắc chắn muốn hủy đơn hàng này.</div>
                 <div className='flex'>
                     <ComButton
                         type="primary"
                         danger
-                        onClick={canceled}
+                        onClick={sttCanceled}
                     >
                         Xác nhận
                     </ComButton>
@@ -477,12 +477,13 @@ export default function OrderPending() {
                     </ComButton>
                 </div>
             </Modal>
-            <Modal title="hủy đơn hàng"
+            <Modal title="Xác nhận hủy đơn hàng"
                 okType="primary text-black border-gray-700"
                 open={isModalOpenCanceledS}
                 width={500}
                 // style={{ top: 20 }}
                 onCancel={handleCancelCanceledS}>
+                <div className='text-lg p-6'>Bạn có chắc chắn muốn hủy đơn hàng đã chọn này không?</div>
 
                 <div className='flex'>
                     <ComButton

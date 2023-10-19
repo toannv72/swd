@@ -14,8 +14,8 @@ import OrderDelivered from './ComOrderTable/OrderDelivered';
 import OrderCanceled from './ComOrderTable/OrderCanceled';
 import OrderReturned from './ComOrderTable/OrderReturned';
 import OrderAll from './ComOrderTable/OrderAll';
-import ComHeaderAdmin from "../Components/ComHeaderAdmin/ComHeaderAdmin";
 import { textApp } from "../../TextContent/textApp";
+import ComHeaderStaff from "../Components/ComHeaderStaff/ComHeaderStaff";
 
 const data = [
     {
@@ -62,7 +62,7 @@ export default function TableOrder() {
     
     return (
         <>
-            <ComHeaderAdmin />
+            <ComHeaderStaff/>
             <Tabs value={activeTab}>
                 <TabsHeader
                     className="rounded-none border-b border-blue-gray-50 bg-transparent p-0"

@@ -14,6 +14,7 @@ import ComTextArea from '../Components/ComInput/ComTextArea'
 import ComNumber from '../Components/ComInput/ComNumber'
 import { Select, notification } from 'antd'
 import ComSelect from '../Components/ComInput/ComSelect'
+import ComHeaderStaff from '../Components/ComHeaderStaff/ComHeaderStaff'
 
 const options = [
     {
@@ -192,7 +193,7 @@ export default function CreateProduct() {
     return (
         <>
             {contextHolder}
-            <ComHeaderAdmin />
+            <ComHeaderStaff/>
             <div className="isolate bg-white px-6 py-10 sm:py-10 lg:px-8">
                 <div className="mx-auto max-w-2xl text-center">
                     <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">

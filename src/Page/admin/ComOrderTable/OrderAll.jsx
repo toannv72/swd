@@ -9,7 +9,6 @@ import { Button, Input, Modal, Select, Space, Table, Tooltip, Typography, notifi
 import { textApp } from '../../../TextContent/textApp';
 import { deleteData, getData, postData, putData } from '../../../api/api';
 import { firebaseImgs } from '../../../upImgFirebase/firebaseImgs';
-import ComHeaderAdmin from '../../Components/ComHeaderAdmin/ComHeaderAdmin';
 import ComButton from '../../Components/ComButton/ComButton';
 import ComUpImg from '../../Components/ComUpImg/ComUpImg';
 import ComInput from '../../Components/ComInput/ComInput';
