@@ -53,7 +53,7 @@ export default function Pprocessing() {
                     {orderData.products.map((product, id) => {
                       // Sử dụng ID sản phẩm để lấy thông tin sản phẩm tương ứng
                       const productInfo = getProductById(product.product);
-
+                      const materials = productInfo?.material?.join(', ');
                       return (
                         <li key={id} className="flex items-center space-x-4">
                           <img
@@ -63,7 +63,7 @@ export default function Pprocessing() {
                           />
                           <div className="flex-1">
                             <p className="text-lg font-semibold">{productInfo?.name}</p>
-                            <p className="text-gray-500">{productInfo?.material}</p>
+                            <p className="text-gray-500">{materials}</p>
                           </div>
                           <div className="text-sm text-gray-500">
                             {textApp.OrderHistory.product.quantity} {product?.quantity}

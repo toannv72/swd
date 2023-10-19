@@ -54,6 +54,7 @@ const InvoicePage = () => {
           {order?.products?.map((product, index) => {
             // Sử dụng getProductById để lấy thông tin sản phẩm đầy đủ
             const fullProduct = getProductById(product.product);
+            const materials = fullProduct?.material?.join(', ');
 
             return (
               <div key={index} className="mb-4 flex items-center">
@@ -67,7 +68,7 @@ const InvoicePage = () => {
                     {textApp.OrderHistory.product.price}: {product?.price?.toLocaleString("en-US", { style: "currency", currency: "VND" })}
                   </p>
                   <p>
-                    {textApp.Product.page.material}: {fullProduct?.material}
+                    {textApp.Product.page.material}: {materials}
                   </p>
                 </div>
               </div>
