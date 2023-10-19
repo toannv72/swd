@@ -113,10 +113,12 @@ export default function TableProduct() {
     };
     function formatCurrency(number) {
         // Sử dụng hàm toLocaleString() để định dạng số thành chuỗi với ngăn cách hàng nghìn và mặc định là USD.
-        return number.toLocaleString('en-US', {
-            style: 'currency',
-            currency: 'VND',
-        });
+        if (typeof number === "number") {
+            return number.toLocaleString('en-US', {
+                style: 'currency',
+                currency: 'VND',
+            });
+          }
     }
     const CreateProductMessenger = yup.object({
 
@@ -454,6 +456,12 @@ export default function TableProduct() {
                     <h1>{formatCurrency(record.reducedPrice)}</h1>
                 </div>
             )
+        }, {
+            title: 'Đã bán',
+            width: 100,
+            dataIndex: 'sold',
+            key: 'sold',
+            sorter: (a, b) => a.sold - b.sold,
         },
         {
             title: 'Số lượng',

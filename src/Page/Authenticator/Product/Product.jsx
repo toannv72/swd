@@ -76,10 +76,13 @@ export default function Product() {
 
     function formatCurrency(number) {
         // Sử dụng hàm toLocaleString() để định dạng số thành chuỗi với ngăn cách hàng nghìn và mặc định là USD.
-        return number.toLocaleString('en-US', {
-            style: 'currency',
-            currency: 'VND',
-        });
+        if (typeof number === "number") {
+      
+            return number.toLocaleString('en-US', {
+                style: 'currency',
+                currency: 'VND',
+            });
+          }
     }
     const onSubmit = (data) => {
 
@@ -159,7 +162,7 @@ export default function Product() {
                                 </p>
                             </div>
                             {/* Reviews */}
-                            <div className="mt-6">
+                            {/* <div className="mt-6">
                                 <h3 className="sr-only">Reviews</h3>
                                 <div className="flex items-center">
                                     <div className="flex items-center">
@@ -179,8 +182,9 @@ export default function Product() {
                                         {reviews.totalCount} reviews
                                     </a>
                                 </div>
-                            </div>
+                            </div> */}
 
+                            <div className='flex pt-2'>Đã bán: <h2 className='text-indigo-600 '> {Product?.sold} cái.</h2>                             </div>
                             <div className='flex pt-2'>{textApp.Product.page.shape} <h2 className='text-indigo-600 '>{Product?.shape}</h2>                             </div>
                             <div className='flex pt-2'>{textApp.Product.page.material}<div className='text-indigo-600 '>{Product?.material?.map((e) => ` ${e}`)}</div>
                                 {/* {Product?.material?.[1]},{Product?.material?.[2]}. */}

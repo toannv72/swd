@@ -15,6 +15,7 @@ import Invoice from "./Page/Authenticator/Payment/Invoice";
 
 import Required from "./Page/Authenticator/Required/Required"
 import TableUser from "./Page/Admin2/TableUser";
+import Dashboard from "./Page/manager/dashboard";
  
 export const routers = createBrowserRouter([ 
   { 
@@ -67,8 +68,13 @@ export const routers = createBrowserRouter([
   {
     path: "/payment/bill/:id",
     element: <Invoice />,
-  },{
+  },
+  {
     path: "/admin/tableUser",
     element: <TableUser />,
+  },
+  {
+    path: "/manager/dashboard",
+    element: <Dashboard />,
   },
 ]); 

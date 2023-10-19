@@ -29,7 +29,16 @@ export default function Transporting({activeTab}) {
         });
     // }
   }, [activeTab]);
-
+  function formatCurrency(number) {
+    // Sử dụng hàm toLocaleString() để định dạng số thành chuỗi với ngăn cách hàng nghìn và mặc định là USD.
+    if (typeof number === "number") {
+      
+      return number.toLocaleString('en-US', {
+          style: 'currency',
+          currency: 'VND',
+      });
+    }
+}
   const getProductById = (productId) => {
     // Tìm sản phẩm theo ID trong danh sách sản phẩm
     return products?.docs?.find(product => product._id === productId);
@@ -48,7 +57,7 @@ export default function Transporting({activeTab}) {
             <li key={orderData.index} className="py-4">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
                 <div className="col-span-2">
-                  <h2 className="text-lg font-semibold mb-2">{textApp.OrderHistory.product.amount} {orderData.totalAmount}</h2>
+                  <h2 className="text-lg font-semibold mb-2">{textApp.OrderHistory.product.amount} {formatCurrency(orderData.totalAmount)}</h2>
                   <ul className="space-y-4">
                     {orderData.products.map((product, id) => {
                       // Sử dụng ID sản phẩm để lấy thông tin sản phẩm tương ứng
@@ -69,7 +78,7 @@ export default function Transporting({activeTab}) {
                             {textApp.OrderHistory.product.quantity} {product?.quantity}
                           </div>
                           <div className="text-sm text-gray-900">
-                            {textApp.OrderHistory.product.price} {productInfo?.price}
+                            {textApp.OrderHistory.product.price} {formatCurrency(productInfo?.price)}
                           </div>
                         </li>
                       );

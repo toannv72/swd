@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { getData } from "../../../api/api";
+
 import ComHeader from "../../Components/ComHeader/ComHeader";
 import ComFooter from "../../Components/ComFooter/ComFooter";
 import ComImage from "../../Components/ComImage/ComImage";
@@ -12,12 +11,11 @@ export default function Home() {
     return (
         <>
             <ComHeader />
-
             <div className="mx-auto max-w-2xl px-4 py-2  sm:mt-4 sm:px-6 lg:py-2 lg:max-w-7xl ">
             <ComImage showThumbnails={false} product={images.Home} />
             </div>
             <ComProducts link={`/product?limit=9`} text={textApp.Home.text} getAll={'/'}/>
-            <ComProducts link={`/product?limit=9`} text={textApp.Home.text} getAll={'/'}/>
+            <ComProducts link={`/product/sold?limit=9`} text={'Sản phẩm bán chạy nhất'} getAll={'/'}/>
             <ComFooter />
         </>
     )
