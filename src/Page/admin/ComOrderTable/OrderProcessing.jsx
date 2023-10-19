@@ -19,7 +19,7 @@ import ComSelect from '../../Components/ComInput/ComSelect';
 import moment from 'moment/moment';
 
 
-export default function OrderProcessing() {
+export default function OrderProcessing({ activeTab }) {
     const [disabled, setDisabled] = useState(false);
 
     const [order, setOrder] = useState([]);
@@ -101,7 +101,6 @@ export default function OrderProcessing() {
         } else {
             setDisabled(true)
         }
-        console.log(selected.length);
     }, [selected]);
     // const processing = () => {
     //     putData('/order/admin/put', 'Shipped', { orders: [orderRequestDefault.id] })
@@ -162,7 +161,7 @@ export default function OrderProcessing() {
             .catch((error) => {
                 console.error("Error fetching items:", error);
             });
-    }, [dataRun]);
+    }, [dataRun,activeTab]);
 
 
     const getColumnSearchProps = (dataIndex, title) => ({

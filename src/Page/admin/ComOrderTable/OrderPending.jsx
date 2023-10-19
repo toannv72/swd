@@ -14,9 +14,8 @@ import ComButton from '../../Components/ComButton/ComButton';
 import moment from 'moment/moment';
 
 
-export default function OrderPending() {
+export default function OrderPending({ activeTab }) {
     const [disabled, setDisabled] = useState(false);
-
     const [order, setOrder] = useState([]);
     const [isModalOpenProcessing, setIsModalOpenProcessing] = useState(false);
     const [isModalOpenCanceled, setIsModalOpenCanceled] = useState(false);
@@ -53,7 +52,10 @@ export default function OrderPending() {
     };
 
     const showModalEdit = (e) => {
-        setSelectedMaterials(e.material)
+        setOrderRequestDefault({
+            id: e._id
+        })
+        setIsModalOpenProcessing(true);
 
     };
 
@@ -90,13 +92,11 @@ export default function OrderPending() {
     }
     useEffect(() => {
         if (selected.length > 0) {
-
             setDisabled(false)
         } else {
             setDisabled(true)
-
         }
-    }, [selected,dataRun]);
+    }, [selected]);
     const processing = () => {
         putData('/order/admin/put', 'Processing', { orders: [orderRequestDefault.id] })
             .then((e) => {
@@ -104,13 +104,13 @@ export default function OrderPending() {
             })
             .catch(err => console.log(err))
         setDataRun(!dataRun);
-        handleCancelProcessingS()
+        handleCancelProcessing()
     }
 
     const sttCanceled = () => {
         putData('/order/admin/put', 'Canceled', { orders: [orderRequestDefault.id] })
             .then((e) => {
-             
+
                 setDataRun(!dataRun);
             })
             .catch(err => console.log(err))
@@ -124,6 +124,8 @@ export default function OrderPending() {
                 setDataRun(!dataRun);
             })
             .catch(err => console.log(err))
+        setDisabled(true)
+        console.log(123);
         setDataRun(!dataRun);
         handleCancelProcessingS()
     }
@@ -135,6 +137,7 @@ export default function OrderPending() {
                 handleCancelCanceledS()
             })
             .catch(err => console.log(err))
+        setDisabled(true)
         setDataRun(!dataRun);
         handleCancelCanceledS()
     }
@@ -149,7 +152,7 @@ export default function OrderPending() {
                 });
 
         }, 100);
-    }, [dataRun]);
+    }, [dataRun,activeTab]);
 
 
     const getColumnSearchProps = (dataIndex, title) => ({
@@ -409,10 +412,9 @@ export default function OrderPending() {
                 width={500}
                 // style={{ top: 20 }}
                 onCancel={handleCancelProcessing}>
-
+                <div className='text-lg p-6'>Bạn có chắc chắn muốn chuyển qua đang sử lý hay không?</div>
                 <div className='flex'>
                     <ComButton
-                        disabled={disabled}
                         type="primary"
                         danger
                         onClick={processing}
@@ -421,7 +423,6 @@ export default function OrderPending() {
                     </ComButton>
                     <ComButton
                         type="primary"
-                        disabled={disabled}
                         onClick={handleCancelProcessing}
                     >
                         hủy
@@ -458,10 +459,10 @@ export default function OrderPending() {
                 width={500}
                 // style={{ top: 20 }}
                 onCancel={handleCancelProcessingS}>
+                <div className='text-lg p-6'>Bạn có chắc chắn muốn chuyển qua đang sử lý hay không?</div>
 
                 <div className='flex'>
                     <ComButton
-                        disabled={disabled}
                         type="primary"
                         danger
                         onClick={processingS}
@@ -470,7 +471,6 @@ export default function OrderPending() {
                     </ComButton>
                     <ComButton
                         type="primary"
-                        disabled={disabled}
                         onClick={handleCancelProcessingS}
                     >
                         hủy

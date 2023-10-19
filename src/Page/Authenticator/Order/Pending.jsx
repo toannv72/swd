@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { textApp } from "../../../TextContent/textApp";
 import { getData } from '../../../api/api';
 
-export default function Pending() {
+export default function Pending({activeTab}) {
   const [order, setOrder] = useState([]);
   const [products, setProducts] = useState([]);
   const [dataRun, setDataRun] = useState(false);
@@ -29,7 +29,7 @@ export default function Pending() {
     
         });
     // }
-  }, []);
+  }, [activeTab]);
 
    
   const getProductById = (productId) => {

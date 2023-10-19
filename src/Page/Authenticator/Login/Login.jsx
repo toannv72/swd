@@ -75,7 +75,7 @@ export default function Login() {
                     return navigate('/manager')
                 }
                 if (data._doc.role==='admin') {
-                    return navigate('/admin')
+                    return navigate('/admin/tableUser')
                 }
             })
             .catch((error) => {
