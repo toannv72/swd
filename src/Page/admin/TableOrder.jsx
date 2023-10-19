@@ -16,12 +16,11 @@ import OrderReturned from './ComOrderTable/OrderReturned';
 import OrderAll from './ComOrderTable/OrderAll';
 import { textApp } from "../../TextContent/textApp";
 import ComHeaderStaff from "../Components/ComHeaderStaff/ComHeaderStaff";
-
 const data = [
     {
         label: textApp.OrderHistory.label.status,
         value: textApp.OrderHistory.value.status,
-        desc: <OrderPending />,
+        desc: <OrderPending  />,
     },
     {
         label: textApp.OrderHistory.label.status1,
@@ -85,7 +84,7 @@ export default function TableOrder() {
                 <TabsBody>
                     {data.map(({ value, desc }) => (
                         <TabPanel key={value} value={value} className='py-2'> 
-                            {desc}
+                        {React.cloneElement(desc, { activeTab })}
                         </TabPanel>
                     ))}
                 </TabsBody>

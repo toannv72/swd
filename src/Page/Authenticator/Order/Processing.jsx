@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { textApp } from "../../../TextContent/textApp";
 import { getData } from '../../../api/api';
 
-export default function Pprocessing() {
+export default function Pprocessing({activeTab}) {
   const [order, setOrder] = useState([]);
   const [products, setProducts] = useState([]);
 
@@ -28,7 +28,7 @@ export default function Pprocessing() {
     
         });
     // }
-  }, []);
+  }, [activeTab]);
 
   const getProductById = (productId) => {
     // Tìm sản phẩm theo ID trong danh sách sản phẩm

@@ -5,11 +5,10 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import Highlighter from 'react-highlight-words';
 import * as yup from "yup"
 import { SearchOutlined } from '@ant-design/icons';
-import { Button, Input, Modal, Select, Space, Table, Tooltip, Typography, notification } from 'antd';
+import { Button, Input, Modal, Space, Table, Typography, notification } from 'antd';
 import { textApp } from '../../TextContent/textApp';
-import { deleteData, getData, postData, putData } from '../../api/api';
+import { deleteData, getData, putData } from '../../api/api';
 import { firebaseImgs } from '../../upImgFirebase/firebaseImgs';
-import ComHeaderAdmin from '../Components/ComHeaderAdmin/ComHeaderAdmin';
 import ComButton from '../Components/ComButton/ComButton';
 import ComUpImg from '../Components/ComUpImg/ComUpImg';
 import ComInput from '../Components/ComInput/ComInput';
@@ -17,6 +16,7 @@ import ComTextArea from '../Components/ComInput/ComTextArea';
 import ComNumber from '../Components/ComInput/ComNumber';
 import ComSelect from '../Components/ComInput/ComSelect';
 import moment from 'moment/moment';
+import ComHeaderAdmin from '../Components/ComHeaderAdmin/ComHeaderAdmin';
 
 
 export default function TableUser() {
@@ -488,7 +488,7 @@ export default function TableUser() {
     return (
         <>
             {contextHolder}
-            {/* <ComHeaderAdmin /> */}
+            <ComHeaderAdmin />
             <div className='flex p-5 justify-center'>
                 <Table
                     rowKey="_id"
