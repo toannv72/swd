@@ -34,7 +34,7 @@ export default function ComProducts({ text, link, getAll }) {
     return (
         <>
             <div className="bg-white p-4">
-                <div className=" mx-auto  max-w-2xl px-4 py-16 sm:px-6 sm:py-4  lg:max-w-7xl lg:px-8">
+                <div className=" mx-auto  max-w-2xl px-4 py-4 sm:px-6 sm:py-4  lg:max-w-7xl lg:px-2">
                     <h2 className="bg-red-500 h-12 flex items-center p-2 text-2xl font-bold tracking-tight text-white mb-4">{text}</h2>
                     <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
                         {products?.map((product, index) => (
@@ -56,7 +56,10 @@ export default function ComProducts({ text, link, getAll }) {
                                 </div>
                                 <h3 className="mt-4 text-base h-12 ml-2 mr-2 text-gray-700 line-clamp-2">{product.name}</h3>
                                 <div className="">
-                                    <p className="mt-1 ml-2  text-sm font-medium line-through text-slate-500">{formatCurrency(product.price)}</p>
+                                <div className="flex justify-between">
+                                            <p className="mt-1 ml-2  text-sm font-medium line-through text-slate-500">{formatCurrency(product.price)}</p>
+                                            <p className="mt-1 mr-2  text-sm font-medium ">Đã bán: {(product.sold)}</p>
+                                        </div>
                                     <p className="ml-2 pb-4 text-2xl font-medium  text-red-600">{formatCurrency(product.reducedPrice)}</p>
                                 </div>
                             </ComLink> :
@@ -76,18 +79,23 @@ export default function ComProducts({ text, link, getAll }) {
                                             <span className="absolute text-white">-{discount(product.price, product.reducedPrice)}%</span>
                                         </div>
                                     </div>
-                                    <h3 className="mt-4 text-base ml-2 mr-2 text-gray-700 line-clamp-2">{product.name}</h3>
+                                    <h3 className="mt-4 text-base h-12 ml-2 mr-2 text-gray-700 line-clamp-2">{product.name}</h3>
                                     <div className="">
-                                        <p className="mt-1 ml-2  text-sm font-medium line-through text-slate-500">{formatCurrency(product.price)}</p>
+                                        <div className="flex justify-between">
+                                            <p className="mt-1 ml-2  text-sm font-medium line-through text-slate-500">{formatCurrency(product.price)}</p>
+                                            <p className="mt-1 mr-2  text-sm font-medium ">Đã bán: {(product.sold)}</p>
+                                        </div>
                                         <p className="ml-2 text-2xl font-medium  text-red-600 pb-4">{formatCurrency(product.reducedPrice)}</p>
                                     </div>
                                 </ComLink>
 
                         ))}
                     </div>
-                    <ComLink to={getAll} >
-                        {textApp.Home.getAll}
-                    </ComLink>
+                    <div className={'flex justify-end mt-4'}>
+                        <ComLink to={getAll} >
+                            {textApp.Home.getAll}
+                        </ComLink>
+                    </div>
                 </div>
             </div>
         </>
