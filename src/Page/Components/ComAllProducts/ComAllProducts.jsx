@@ -75,54 +75,51 @@ console.log ("selectedMaterial", selectedMaterial);
 
         {/* Filter and Search Input Fields */}
         <div className="mx-auto">
-          Tìm kiếm theo
-        </div>
-        <div
-          className="flex items-center justify-between"
-          style={{ marginBottom: "1rem" }}
-          ></div>
-        <div className="mb-4">
-        <label>Giá từ: </label>
-          <input
-          className="bg-gray-100 border border-gray-400 text-gray-700 text-sm rounded-lg focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-            type="number"
-            placeholder="Min Price"
-            value={minPrice}
-            onChange={(e) => setMinPrice(parseInt(e.target.value, 10))}
-          />
-          <label>đến : </label>
-          <input
-          className="bg-gray-100 border border-gray-400 text-gray-700 text-sm rounded-lg focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-            type="number"
-            placeholder="Max Price"
-            value={maxPrice}
-            onChange={(e) => setMaxPrice(parseInt(e.target.value, 10))}
-          />
-          <div
-          className="flex items-center justify-between"
-          style={{ marginBottom: "1rem" }}
-          ></div>
-          <select
-            value={selectedMaterial}
-            onChange={(e) => setSelectedMaterial(e.target.value)}
-          >
-            <option value="">Chất liệu</option>
-            <option value="Gỗ">Gỗ</option>
-            <option value="Nhựa">Nhựa</option>
-          </select>
-          <div
-          className="flex items-center justify-between"
-          style={{ marginBottom: "1rem" }}
-          ></div>
-          <input
-          className="bg-gray-100 border border-gray-400 text-gray-700 text-sm rounded-lg focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-            type="text"
-            placeholder="Tìm kiếm theo tên"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
+  Tìm kiếm theo
+</div>
+<div className="flex items-center justify-between" style={{ marginBottom: "1rem" }}>
+  <div className="mb-4">
+    <label>Giá từ:</label>
+    <input
+      className="bg-gray-100 border border-gray-400 text-gray-700 text-sm rounded-lg focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+      type="number"
+      placeholder="Min Price"
+      value={minPrice}
+      onChange={(e) => setMinPrice(parseInt(e.target.value, 10))}
+    />
+    <label>đến:</label>
 
+    <input
+      className="bg-gray-100 border border-gray-400 text-gray-700 text-sm rounded-lg focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+      type="number"
+      placeholder="Max Price"
+      value={maxPrice}
+      onChange={(e) => setMaxPrice(parseInt(e.target.value, 10))}
+      />
+  </div>
+  <div className="flex items-center justify-between" style={{ marginBottom: "1rem" }}>
+    <select
+      value={selectedMaterial}
+      onChange={(e) => setSelectedMaterial(e.target.value)}
+    >
+      <option value="">Chất liệu</option>
+      <option value="Gỗ">Gỗ</option>
+      <option value="Nhựa">Nhựa</option>
+      <option value="Kim loại">Kim loại</option>
+    </select>
+  </div>
+  <div className="flex items-center justify-between" style={{ marginBottom: "1rem" }}>
+    <input
+      className="bg-gray-100 border border-gray-400 text-gray-700 text-sm rounded-lg focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+      type="text"
+      placeholder="Tìm kiếm theo tên"
+      value={searchQuery}
+      onChange={(e) => setSearchQuery(e.target.value)}
+    />
+  </div>
+</div>
+
+     
         <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
           {productRange.map((product, index) => (
             <ComLink
@@ -161,6 +158,7 @@ console.log ("selectedMaterial", selectedMaterial);
             </ComLink>
           ))}
         </div>
+        <div>
         <div className="pagination">
           {Array.from({ length: totalPages }, (_, index) => (
             <button
@@ -175,6 +173,8 @@ console.log ("selectedMaterial", selectedMaterial);
         <div className="page-info">
           Page {currentPage} of {totalPages}
         </div>
+        </div>
+        
       </div>
     </div>
   );
