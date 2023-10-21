@@ -85,7 +85,7 @@ export default function ComProducts({ text, link, getAll }) {
 
                         ))}
                     </div>
-                    <ComLink to={getAll} >
+                    <ComLink to={'/showAll'} >
                         {textApp.Home.getAll}
                     </ComLink>
                 </div>

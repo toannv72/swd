@@ -13,8 +13,9 @@ import Logout from "./Page/Authenticator/Logout/Logout";
 import TableOrder from "./Page/admin/TableOrder"; 
 import Invoice from "./Page/Authenticator/Payment/Invoice";
 
-import Required from "./Page/Authenticator/Required/Required"
- 
+import Required from "./Page/Authenticator/Required/Required";
+
+import ShowAll from "./Page/Authenticator/ShowAll/ShowAll";
 export const routers = createBrowserRouter([ 
   { 
     path: "*", 
@@ -67,4 +68,8 @@ export const routers = createBrowserRouter([
     path: "/payment/bill/:id",
     element: <Invoice />,
   },
+  { 
+    path: "/showAll", 
+    element: <ShowAll/>, 
+  }, 
 ]); 

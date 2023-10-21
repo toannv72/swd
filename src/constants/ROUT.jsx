@@ -8,4 +8,5 @@ export const routs = {
   "/tableOrder": { name: 'Đơn Hàng', link: '/admin/order', },
   "/logout": { name: 'Đăng Xuất', link: '/logout', },
   "/order": { name: 'Đơn hàng', link: '/order', },
+  "/showAll": { name: 'Tất cả đơn hàng', link: '/showAll', },
 };
