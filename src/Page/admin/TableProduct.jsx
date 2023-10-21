@@ -118,7 +118,7 @@ export default function TableProduct() {
                 style: 'currency',
                 currency: 'VND',
             });
-          }
+        }
     }
     const CreateProductMessenger = yup.object({
 
@@ -405,7 +405,6 @@ export default function TableProduct() {
 
         {
             title: 'Ảnh sản phẩm',
-
             dataIndex: 'image',
             key: 'img',
             fixed: 'left',
@@ -419,7 +418,7 @@ export default function TableProduct() {
         {
             title: 'Tên sản phẩm',
             dataIndex: 'name',
-            width: 300,
+            width: 200,
             key: 'name',
             fixed: 'left',
 
@@ -477,7 +476,6 @@ export default function TableProduct() {
             key: 'createdAt',
             sorter: (a, b) => moment(a.createdAt).unix() - moment(b.createdAt).unix(),
             render: (_, record) => (
-
                 <div className="text-sm text-gray-700 line-clamp-4">
                     <p>{moment(record.createdAt).format('l')}</p>
                 </div>
@@ -500,14 +498,11 @@ export default function TableProduct() {
             dataIndex: 'material',
             key: 'material',
             render: (_, record) => (
-
                 <div className="text-sm text-gray-700 line-clamp-4">
                     <p>{record.material?.[0]}</p>
                     <p>{record.material?.[1]}</p>
                     <p>{record.material?.[2]}</p>
                 </div>
-
-
             )
         },
         {
@@ -538,6 +533,7 @@ export default function TableProduct() {
             title: 'Action',
             key: 'operation',
             fixed: 'right',
+            width: 100,
 
             render: (_, record) => (
 
@@ -752,7 +748,7 @@ export default function TableProduct() {
 
                                 className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                             >
-                                {textApp.common.button.createProduct}
+                                Chỉnh sửa
                             </ComButton>
                         </div>
                     </form>
@@ -767,6 +763,7 @@ export default function TableProduct() {
                 width={500}
                 // style={{ top: 20 }}
                 onCancel={handleCancelDelete}>
+                <div className='text-lg p-6'>Bạn có chắc chắn muốn xóa sản phẩm đã chọn này không?</div>
 
                 <div className='flex'>
                     <ComButton

@@ -154,7 +154,7 @@ export default function Product() {
                             <h3 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{Product.name}</h3>
 
                             <div className='flex gap-6'>
-                                <p className="text-3xl tracking-tight line-through text-slate-600 ">
+                                <p className="flex items-end text-2xl tracking-tight line-through text-slate-600 ">
                                     {Product.price && formatCurrency(Product.price)}
                                 </p>
                                 <p className="text-3xl tracking-tight text-gray-900 ">
@@ -184,7 +184,7 @@ export default function Product() {
                                 </div>
                             </div> */}
 
-                            <div className='flex pt-2'>Đã bán: <h2 className='text-indigo-600 '> {Product?.sold} cái.</h2>                             </div>
+                            <div className='flex pt-2'>Đã bán: <h2 className='text-indigo-600 '> {Product?.sold}</h2>                             </div>
                             <div className='flex pt-2'>{textApp.Product.page.shape} <h2 className='text-indigo-600 '>{Product?.shape}</h2>                             </div>
                             <div className='flex pt-2'>{textApp.Product.page.material}<div className='text-indigo-600 '>{Product?.material?.map((e) => ` ${e}`)}</div>
                                 {/* {Product?.material?.[1]},{Product?.material?.[2]}. */}

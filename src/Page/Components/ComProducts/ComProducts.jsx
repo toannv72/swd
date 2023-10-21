@@ -28,7 +28,12 @@ export default function ComProducts({ text, link, getAll }) {
         }
 
         let discountPercentage = ((initialPrice - discountedPrice) / initialPrice) * 100;
-        return discountPercentage.toFixed(0); // Giữ nguyên số thập phân, không rút gọn
+        if (discountPercentage.toFixed(0) > 99) {
+            return 99
+        } else {
+
+            return discountPercentage.toFixed(0); // Giữ nguyên số thập phân, không rút gọn
+        }
     }
 
     return (
@@ -56,11 +61,11 @@ export default function ComProducts({ text, link, getAll }) {
                                 </div>
                                 <h3 className="mt-4 text-base h-12 ml-2 mr-2 text-gray-700 line-clamp-2">{product.name}</h3>
                                 <div className="">
-                                <div className="flex justify-between">
-                                            <p className="mt-1 ml-2  text-sm font-medium line-through text-slate-500">{formatCurrency(product.price)}</p>
-                                            <p className="mt-1 mr-2  text-sm font-medium ">Đã bán: {(product.sold)}</p>
-                                        </div>
+                                        <p className="mt-1 ml-2  text-sm font-medium line-through text-slate-500">{formatCurrency(product.price)}</p>
+                                    <div className="flex justify-between">
                                     <p className="ml-2 pb-4 text-2xl font-medium  text-red-600">{formatCurrency(product.reducedPrice)}</p>
+                                        <p className="mt-1 mr-2  text-sm font-medium ">Đã bán: {(product.sold)}</p>
+                                    </div>
                                 </div>
                             </ComLink> :
                                 <ComLink key={index} to={`/product/${product._id}`} className="shadow-md group border-solid border-2 border-white hover:border-zinc-400 sm:hidden lg:block xl:hidden ">
@@ -81,11 +86,11 @@ export default function ComProducts({ text, link, getAll }) {
                                     </div>
                                     <h3 className="mt-4 text-base h-12 ml-2 mr-2 text-gray-700 line-clamp-2">{product.name}</h3>
                                     <div className="">
+                                        <p className="mt-1 ml-2  text-sm font-medium line-through text-slate-500">{formatCurrency(product.price)}</p>
                                         <div className="flex justify-between">
-                                            <p className="mt-1 ml-2  text-sm font-medium line-through text-slate-500">{formatCurrency(product.price)}</p>
+                                            <p className="ml-2 text-2xl font-medium  text-red-600 pb-4">{formatCurrency(product.reducedPrice)}</p>
                                             <p className="mt-1 mr-2  text-sm font-medium ">Đã bán: {(product.sold)}</p>
                                         </div>
-                                        <p className="ml-2 text-2xl font-medium  text-red-600 pb-4">{formatCurrency(product.reducedPrice)}</p>
                                     </div>
                                 </ComLink>
 
