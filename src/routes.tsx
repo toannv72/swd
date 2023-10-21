@@ -17,6 +17,8 @@ import Required from "./Page/Authenticator/Required/Required"
 import TableUser from "./Page/Admin2/TableUser";
 import Dashboard from "./Page/manager/dashboard";
  
+
+import ShowAll from "./Page/Authenticator/ShowAll/ShowAll";
 export const routers = createBrowserRouter([ 
   { 
     path: "*", 
@@ -77,4 +79,8 @@ export const routers = createBrowserRouter([
     path: "/manager/dashboard",
     element: <Dashboard />,
   },
+  { 
+    path: "/showAll", 
+    element: <ShowAll/>, 
+  }, 
 ]); 
