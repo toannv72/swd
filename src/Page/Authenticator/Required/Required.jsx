@@ -260,7 +260,7 @@ export default function Required() {
                   required
                 />
               </div>
-              {/* <div>
+              <div>
                 <ComNumber
                   label={"Số luợng"}
                   placeholder={"Nhập số lượng"}
@@ -270,7 +270,7 @@ export default function Required() {
                   {...register("quantity")}
                   required
                 />
-              </div> */}
+              </div>
               <div className="">
                 <ComSelect
                   size={"large"}

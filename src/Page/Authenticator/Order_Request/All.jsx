@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { textApp } from "../../../TextContent/textApp";
 import { getData } from '../../../api/api';
 
-export default function Pending() {
+export default function All() {
   const [order, setOrder] = useState([]);
   const [products, setProducts] = useState([]);
   const [dataRun, setDataRun] = useState(false);
@@ -19,7 +19,7 @@ export default function Pending() {
           console.error("Error fetching products:", error);
         });
 
-      getData('/order/user/shipp', {})
+      getData('/customOrder/user', {})
         .then((orderData) => {
           setOrder(orderData?.data?.docs);
     
@@ -57,34 +57,31 @@ export default function Pending() {
           {order.map((orderData) => (
             <li key={orderData.index} className="py-4">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
-                <div className="col-span-2">
-                  <h2 className="text-lg font-semibold mb-2">{textApp.OrderHistory.product.amount} {formatCurrency(orderData.totalAmount)}</h2>
-                  <ul className="space-y-4">
-                    {orderData.products.map((product, id) => {
-                      // Sử dụng ID sản phẩm để lấy thông tin sản phẩm tương ứng
-                      const productInfo = getProductById(product.product);
-                      const materials = productInfo?.material?.join(', ');
-                      return (
-                        <li key={id} className="flex items-center space-x-4">
-                          <img
+                 <div className="col-span-2">
+                 <img
                             className="w-16 h-16 rounded-full bg-gray-200"
-                            src={productInfo?.image}
+                            src={orderData?.image}
                             alt=""
                           />
-                          <div className="flex-1">
-                            <p className="text-lg font-semibold">{productInfo?.name}</p>
-                            <p className="text-gray-500">{materials}</p>
-                          </div>
-                          <div className="text-sm text-gray-500">
-                            {textApp.OrderHistory.product.quantity} {product?.quantity}
-                          </div>
-                          <div className="text-sm text-gray-900">
-                            {textApp.OrderHistory.product.price} {formatCurrency(productInfo?.price)}
-                          </div>
-                        </li>
-                      );
-                    })}
-                  </ul>
+                  <h2 className="text-lg font-semibold mb-2">
+                  {"Tên Đơn Hàng :"}{orderData._id}
+                   </h2> 
+                   <h3 className="text-lg  mb-4">
+                  {"Tên Người đặt :"}{orderData.name}
+                   </h3> 
+                   <h3 className="text-lg  mb-4">
+                  {"Số điện thoại :"}{orderData.phone}
+                   </h3> 
+                   <h3 className="text-lg  mb-4">
+                  {"Địa chỉ :"}{orderData.shippingAddress}
+                   </h3> 
+                   {/* Ngày đặt hàng */}
+                   <h3 className="text-lg  mb-4">
+                  {"Ngày đặt hàng :"}{orderData.createdAt}
+                   </h3> 
+                   <h3 className="text-lg mb-4">
+                    {"số lượng:"}{orderData.quantity}
+                    </h3>
                 </div>
                 <div className="col-span-1 mt-4 md:mt-0">
                   <div className="flex flex-col items-end mb-4">

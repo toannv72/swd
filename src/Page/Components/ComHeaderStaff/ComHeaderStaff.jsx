@@ -219,6 +219,18 @@ export default function ComHeaderStaff() {
                     </ListItemSuffix>
                   </ListItem>
                 </Link>
+
+                <Link to={routs['/tableOrderRequest'].link}>
+                  <ListItem>
+                    <ListItemPrefix>
+                      <ClipboardDocumentListIcon className="h-5 w-5" />
+                    </ListItemPrefix>
+                    {routs['/tableOrderRequest'].name}
+                    <ListItemSuffix>
+                      <Chip value="" size="sm" variant="ghost" color="blue-gray" className="rounded-full" />
+                    </ListItemSuffix>
+                  </ListItem>
+                </Link>
                 <Accordion
                   open={open === 3}
                   icon={

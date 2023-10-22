@@ -2,10 +2,9 @@ import React, { useEffect, useState } from "react";
 import { textApp } from "../../../TextContent/textApp";
 import { getData } from '../../../api/api';
 
-export default function Pending() {
+export default function Return({activeTab}) {
   const [order, setOrder] = useState([]);
   const [products, setProducts] = useState([]);
-  const [dataRun, setDataRun] = useState(false);
 
   useEffect(() => {
   
@@ -19,7 +18,7 @@ export default function Pending() {
           console.error("Error fetching products:", error);
         });
 
-      getData('/order/user/shipp', {})
+      getData('customOrder/user/returned', {})
         .then((orderData) => {
           setOrder(orderData?.data?.docs);
     
@@ -29,12 +28,7 @@ export default function Pending() {
     
         });
     // }
-  }, []);
-
-  const getProductById = (productId) => {
-    // Tìm sản phẩm theo ID trong danh sách sản phẩm
-    return products?.docs?.find(product => product._id === productId);
-  };
+  }, [activeTab]);
   function formatCurrency(number) {
     // Sử dụng hàm toLocaleString() để định dạng số thành chuỗi với ngăn cách hàng nghìn và mặc định là USD.
     if (typeof number === "number") {
@@ -45,6 +39,11 @@ export default function Pending() {
       });
     }
 }
+  const getProductById = (productId) => {
+    // Tìm sản phẩm theo ID trong danh sách sản phẩm
+    return products?.docs?.find(product => product._id === productId);
+  };
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-semibold mb-4">{textApp.OrderHistory.title}</h1>
@@ -65,31 +64,40 @@ export default function Pending() {
                       const productInfo = getProductById(product.product);
                       const materials = productInfo?.material?.join(', ');
                       return (
-                        <li key={id} className="flex items-center space-x-4">
-                          <img
+                        <div className="col-span-2">
+                           <img
                             className="w-16 h-16 rounded-full bg-gray-200"
-                            src={productInfo?.image}
+                            src={orderData?.image}
                             alt=""
                           />
-                          <div className="flex-1">
-                            <p className="text-lg font-semibold">{productInfo?.name}</p>
-                            <p className="text-gray-500">{materials}</p>
-                          </div>
-                          <div className="text-sm text-gray-500">
-                            {textApp.OrderHistory.product.quantity} {product?.quantity}
-                          </div>
-                          <div className="text-sm text-gray-900">
-                            {textApp.OrderHistory.product.price} {formatCurrency(productInfo?.price)}
-                          </div>
-                        </li>
+                        <h2 className="text-lg font-semibold mb-2">
+                        {"Tên Đơn Hàng :"}{orderData._id}
+                         </h2> 
+                         <h3 className="text-lg  mb-4">
+                        {"Tên Người đặt :"}{orderData.name}
+                         </h3> 
+                         <h3 className="text-lg  mb-4">
+                        {"Số điện thoại :"}{orderData.phone}
+                         </h3> 
+                         <h3 className="text-lg  mb-4">
+                        {"Địa chỉ :"}{orderData.shippingAddress}
+                         </h3> 
+                         {/* Ngày đặt hàng */}
+                         <h3 className="text-lg  mb-4">
+                        {"Ngày đặt hàng :"}{orderData.createdAt}
+                         </h3> 
+                         <h3 className="text-lg mb-4">
+                          {"số lượng:"}{orderData.quantity}
+                          </h3>
+                      </div>
                       );
                     })}
                   </ul>
                 </div>
                 <div className="col-span-1 mt-4 md:mt-0">
                   <div className="flex flex-col items-end mb-4">
-                    <div className={`flex-none ${orderData.status === "Done" ? 'bg-emerald-500' : 'bg-red-500'} text-white rounded-full px-3 py-1 mb-2`}>
-                      {orderData.status}
+                    <div className="flex-none bg-red-400 text-white rounded-full px-3 py-1 mb-2">
+                    {textApp.OrderHistory.label.status5}
                     </div>
                   </div>
                 </div>

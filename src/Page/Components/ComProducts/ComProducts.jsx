@@ -97,7 +97,7 @@ export default function ComProducts({ text, link, getAll }) {
                         ))}
                     </div>
                     <div className={'flex justify-end mt-4'}>
-                        <ComLink to={getAll} >
+                        <ComLink to={`/showAll`} >
                             {textApp.Home.getAll}
                         </ComLink>
                     </div>

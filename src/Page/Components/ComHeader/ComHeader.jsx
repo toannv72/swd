@@ -317,6 +317,20 @@ export default function ComHeader({ dataCart, updateCart }) {
                             <Menu.Item >
                               {({ active }) => (
                                 <ComLink
+                                  to={routs['/orderRequest'].link}
+                                  className={classNames(
+                                    active ? 'bg-gray-100' : '',
+                                    'block px-4 py-2 text-sm text-gray-700'
+                                  )}
+                                >
+                                  {routs['/orderRequest'].name}
+                                </ComLink>
+
+                              )}
+                            </Menu.Item>
+                            <Menu.Item >
+                              {({ active }) => (
+                                <ComLink
                                   to={routs['/logout'].link}
                                   className={classNames(
                                     active ? 'bg-gray-100' : '',

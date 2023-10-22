@@ -1,29 +1,33 @@
-import { Fragment, useEffect, useState } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
-import { XMarkIcon } from '@heroicons/react/24/outline'
-import { Button, Checkbox, InputNumber } from 'antd'
-import { textApp } from '../../../TextContent/textApp'
-import { Link, useNavigate } from 'react-router-dom'
-import Modal from 'react-modal';
+import { Fragment, useEffect, useState } from "react";
+import { Dialog, Transition } from "@headlessui/react";
+import { XMarkIcon } from "@heroicons/react/24/outline";
+import { Button, Checkbox, InputNumber } from "antd";
+import { textApp } from "../../../TextContent/textApp";
+import { Link, useNavigate } from "react-router-dom";
+import Modal from "react-modal";
 
-Modal.setAppElement('#root');
-
+Modal.setAppElement("#root");
 
 export default function ShoppingCart({ show, updateShoppingCart }) {
-  const [open, setOpen] = useState(show)
+  const [open, setOpen] = useState(show);
   const [disabled, setDisabled] = useState(false);
   const [checkedList, setCheckedList] = useState([]);
-  const [cart, setCart] = useState(JSON.parse(localStorage.getItem('cart')) || []);
+  const [cart, setCart] = useState(
+    JSON.parse(localStorage.getItem("cart")) || []
+  );
   const [totalAmount, setTotalAmount] = useState(0);
   const navigate = useNavigate();
-  const nonDisabledProducts = cart.filter(product => product.quantity > 0);
+  const nonDisabledProducts = cart.filter((product) => product.quantity > 0);
   const checkAll = nonDisabledProducts.length === checkedList.length;
-  const indeterminate = checkedList.length > 0 && checkedList.length < nonDisabledProducts.length;
+  const indeterminate =
+    checkedList.length > 0 && checkedList.length < nonDisabledProducts.length;
   const removeProduct = (productId) => {
     // Sử dụng window.confirm() để xác nhận xóa sản phẩm
-    const confirmDelete = window.confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');
+    const confirmDelete = window.confirm(
+      "Bạn có chắc chắn muốn xóa sản phẩm này?"
+    );
     if (confirmDelete) {
-      const updatedCart = cart.filter(item => item._id !== productId);
+      const updatedCart = cart.filter((item) => item._id !== productId);
       setCart(updatedCart);
     }
   };
@@ -31,29 +35,26 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
     setCheckedList(list);
   };
   const onCheckAllChange = (e) => {
-    const nonDisabledProducts = cart.filter(product => product.quantity > 0);
+    const nonDisabledProducts = cart.filter((product) => product.quantity > 0);
     setCheckedList(e.target.checked ? nonDisabledProducts : []);
   };
-  useEffect(
-    () => {
-      if (checkedList.length === 0) {
+  useEffect(() => {
+    if (checkedList.length === 0) {
+      setDisabled(true);
+    } else {
+      setDisabled(false);
+    }
+  }, [checkedList]);
 
-        setDisabled(true)
-      } else {
-        setDisabled(false)
-
-      }
-    }, [checkedList]);
-
-    useEffect(() => {
-      // Kiểm tra xem có ít nhất một sản phẩm được chọn hay không
-      if (checkedList.length > 0) {
-        setDisabled(false); // Khi có ít nhất một sản phẩm được chọn, kích hoạt nút "Xóa tất cả"
-      } else {
-        setDisabled(true);
-      }
-    }, [checkedList]);
-    // Hàm để chọn hoặc bỏ chọn sản phẩm
+  useEffect(() => {
+    // Kiểm tra xem có ít nhất một sản phẩm được chọn hay không
+    if (checkedList.length > 0) {
+      setDisabled(false); // Khi có ít nhất một sản phẩm được chọn, kích hoạt nút "Xóa tất cả"
+    } else {
+      setDisabled(true);
+    }
+  }, [checkedList]);
+  // Hàm để chọn hoặc bỏ chọn sản phẩm
   const toggleProductSelection = (productId) => {
     if (checkedList.includes(productId)) {
       // Bỏ chọn sản phẩm nếu đã chọn
@@ -65,46 +66,48 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
   };
 
   const removeAllSelectedProducts = () => {
-    const confirmDelete = window.confirm('Bạn có chắc chắn muốn xóa các sản phẩm này?');
+    const confirmDelete = window.confirm(
+      "Bạn có chắc chắn muốn xóa các sản phẩm này?"
+    );
     if (confirmDelete) {
-    // Lấy danh sách các ID sản phẩm đã chọn
-    const selectedProductIds = checkedList.map((product) => product._id);
-    
-    // Lọc ra các sản phẩm không nằm trong danh sách đã chọn
-    const updatedCart = cart.filter((product) => !selectedProductIds.includes(product._id));
-    
-    setCart(updatedCart);
-    setCheckedList([]); // Bỏ chọn tất cả sau khi xóa
-    localStorage.setItem('cart', JSON.stringify(updatedCart)); // Cập nhật dữ liệu trong localStorage
+      // Lấy danh sách các ID sản phẩm đã chọn
+      const selectedProductIds = checkedList.map((product) => product._id);
+
+      // Lọc ra các sản phẩm không nằm trong danh sách đã chọn
+      const updatedCart = cart.filter(
+        (product) => !selectedProductIds.includes(product._id)
+      );
+
+      setCart(updatedCart);
+      setCheckedList([]); // Bỏ chọn tất cả sau khi xóa
+      localStorage.setItem("cart", JSON.stringify(updatedCart)); // Cập nhật dữ liệu trong localStorage
     }
   };
-  
 
-  useEffect(
-    () => {
-      setOpen(show)
-      if (show) {
-        setCheckedList([])
-        // updateShoppingCart(true);
-      }
-      setCart(JSON.parse(localStorage.getItem('cart')))
-    }, [show]);
+  useEffect(() => {
+    setOpen(show);
+    if (show) {
+      setCheckedList([]);
+      // updateShoppingCart(true);
+    }
+    setCart(JSON.parse(localStorage.getItem("cart")));
+  }, [show]);
   const handleCartClose = () => {
     // Gọi hàm callback để cập nhật giá trị shoppingCart thành false
     updateShoppingCart(false);
   };
   useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart));
-  }, [cart])
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
   const removeFromCart = (productId) => {
-    const updatedCart = cart.filter(item => item._id !== productId);
+    const updatedCart = cart.filter((item) => item._id !== productId);
     setCart(updatedCart);
-
   };
-  const selectedProducts = checkedList.map(product => {
-    const cartProduct = cart.find(item => item._id === product._id);
+  const selectedProducts = checkedList.map((product) => {
+    const cartProduct = cart.find((item) => item._id === product._id);
     return {
-      ...cartProduct, quantityCart: product.quantityCart  // Cập nhật quantityCart theo giá trị từ checkedList
+      ...cartProduct,
+      quantityCart: product.quantityCart, // Cập nhật quantityCart theo giá trị từ checkedList
     };
   });
   const onSubmit = () => {
@@ -112,23 +115,25 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
     handleCartClose();
     console.log(selectedProducts);
     const selectedProductIds = checkedList.map((product) => product._id);
-  const updatedCart = cart.filter((product) => !selectedProductIds.includes(product._id));
-  
-  setCart(updatedCart);
-  setCheckedList([]); // Bỏ chọn tất cả sản phẩm đã chọn
-  localStorage.setItem('cart', JSON.stringify(updatedCart)); // Cập nhật dữ liệu trong localStorage
+    const updatedCart = cart.filter(
+      (product) => !selectedProductIds.includes(product._id)
+    );
 
-  // Thực hiện các hành động liên quan đến thanh toán ở đây
+    setCart(updatedCart);
+    setCheckedList([]); // Bỏ chọn tất cả sản phẩm đã chọn
+    localStorage.setItem("cart", JSON.stringify(updatedCart)); // Cập nhật dữ liệu trong localStorage
 
-  // Chuyển người dùng đến trang thanh toán hoặc thực hiện các hành động cần thiết
-    navigate('/payment', { state: { dataProduct: selectedProducts } })
-  }
+    // Thực hiện các hành động liên quan đến thanh toán ở đây
+
+    // Chuyển người dùng đến trang thanh toán hoặc thực hiện các hành động cần thiết
+    navigate("/payment", { state: { dataProduct: selectedProducts } });
+  };
 
   const handleQuantityChange = (productId, newQuantity) => {
     console.log(productId);
 
     // Tìm sản phẩm trong cart có id là productId và cập nhật giá trị quantityCart
-    const updatedCart = cart.slice().map(product => {
+    const updatedCart = cart.slice().map((product) => {
       if (product._id === productId) {
         return { ...product, data: newQuantity };
       }
@@ -139,11 +144,10 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
   };
   function formatCurrency(number) {
     // Sử dụng hàm toLocaleString() để định dạng số thành chuỗi với ngăn cách hàng nghìn và mặc định là USD.
-    return number
-      .toLocaleString('en-US', {
-        style: 'currency',
-        currency: 'VND',
-      });
+    return number.toLocaleString("en-US", {
+      style: "currency",
+      currency: "VND",
+    });
   }
 
   const calculateTotalAmount = () => {
@@ -155,7 +159,14 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
   };
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={() => { setOpen(false); handleCartClose(); }}>
+      <Dialog
+        as="div"
+        className="relative z-10"
+        onClose={() => {
+          setOpen(false);
+          handleCartClose();
+        }}
+      >
         <Transition.Child
           as={Fragment}
           enter="ease-in-out duration-500"
@@ -184,12 +195,17 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
                   <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
                     <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
                       <div className="flex items-start justify-between">
-                        <Dialog.Title className="text-lg font-medium text-gray-900">{textApp.ShoppingCart.tile}</Dialog.Title>
+                        <Dialog.Title className="text-lg font-medium text-gray-900">
+                          {textApp.ShoppingCart.tile}
+                        </Dialog.Title>
                         <div className="ml-3 flex h-7 items-center">
                           <button
                             type="button"
                             className="relative -m-2 p-2 text-gray-400 hover:text-gray-500"
-                            onClick={() => { setOpen(false); handleCartClose(); }}
+                            onClick={() => {
+                              setOpen(false);
+                              handleCartClose();
+                            }}
                           >
                             <span className="absolute -inset-0.5" />
                             <span className="sr-only">Close panel</span>
@@ -197,71 +213,110 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
                           </button>
                         </div>
                       </div>
-                      <Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll}>
-      {textApp.ShoppingCart.checkbox}
-    </Checkbox>
-    
-    {disabled ? null : ( // Hiển thị nút "Xóa tất cả" nếu không bị vô hiệu hóa
-      <Button
-      onClick={removeAllSelectedProducts}
-      disabled={disabled}
-      className="font-medium text-indigo-600 hover:text-indigo-500"
-    >
-      Xóa nhiều
-    </Button>
-    )}
+                      <Checkbox
+                        indeterminate={indeterminate}
+                        onChange={onCheckAllChange}
+                        checked={checkAll}
+                      >
+                        {textApp.ShoppingCart.checkbox}
+                      </Checkbox>
+
+                      {disabled ? null : ( // Hiển thị nút "Xóa tất cả" nếu không bị vô hiệu hóa
+                        <Button
+                          onClick={removeAllSelectedProducts}
+                          disabled={disabled}
+                          className="font-medium text-indigo-600 hover:text-indigo-500"
+                        >
+                          Xóa nhiều
+                        </Button>
+                      )}
                       <div className="mt-8">
                         <div className="flow-root">
-                          <div role="list" className="-my-6 divide-y divide-gray-200">
-                            <Checkbox.Group style={{ width: '100%' }} value={checkedList} onChange={onChange}>
-                              {cart.slice().reverse().map((product, index) => (
-                                <div className='flex gap-2' key={index}>
-                                  <Checkbox value={product} disabled={product.quantity === 0 ? true : false} />
-                                  <li key={product.id} className="flex py-4">
-                                    <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                      <img
-                                        src={product.image}
-                                        alt={product.image}
-                                        className="h-full w-full object-cover object-center"
-                                      />
-                                    </div>
-
-                                    <div className="ml-4 flex flex-1 flex-col">
-                                      <div>
-                                        <div className="flex justify-between text-base font-medium text-gray-900">
-                                          <h3 className='w-44'>
-                                            <Link onClick={() => { setOpen(false); handleCartClose(); }} to={`/product/${product._id}`}
-                                            >{product.name}</Link>
-                                          </h3>
-                                          <p className="ml-4">{formatCurrency(product.reducedPrice)}</p>
-                                        </div>
-                                        <p className="mt-1 text-sm text-gray-500">{product.color}</p>
+                          <div
+                            role="list"
+                            className="-my-6 divide-y divide-gray-200"
+                          >
+                            <Checkbox.Group
+                              style={{ width: "100%" }}
+                              value={checkedList}
+                              onChange={onChange}
+                            >
+                              {cart
+                                .slice()
+                                .reverse()
+                                .map((product, index) => (
+                                  <div className="flex gap-2" key={index}>
+                                    <Checkbox
+                                      value={product}
+                                      disabled={
+                                        product.quantity === 0 ? true : false
+                                      }
+                                    />
+                                    <li key={product.id} className="flex py-4">
+                                      <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                                        <img
+                                          src={product.image}
+                                          alt={product.image}
+                                          className="h-full w-full object-cover object-center"
+                                        />
                                       </div>
-                                      <div className="flex flex-1 items-end justify-between text-sm">
-                                        <div className="flex items-center gap-2 text-gray-500">
-                                          <InputNumber
-                                            className="w-14 text-sm"
-                                            min={1}
-                                            onChange={(newQuantity) => handleQuantityChange(product._id, newQuantity)}
-                                            defaultValue={product?.data || 1}
-                                            max={product.quantity}
-                                          />
-                                          {product.quantity} Sản phẩm
-                                        </div>
 
-                                        <div className="flex">
-                                        <button
-        onClick={() => removeProduct(product._id)}
-        className="font-medium text-indigo-600 hover:text-indigo-500"
-      >
-        Xóa
-      </button>
+                                      <div className="ml-4 flex flex-1 flex-col">
+                                        <div>
+                                          <div className="flex justify-between text-base font-medium text-gray-900">
+                                            <h3 className="w-44">
+                                              <Link
+                                                onClick={() => {
+                                                  setOpen(false);
+                                                  handleCartClose();
+                                                }}
+                                                to={`/product/${product._id}`}
+                                              >
+                                                {product.name}
+                                              </Link>
+                                            </h3>
+                                            <p className="ml-4">
+                                              {formatCurrency(
+                                                product.reducedPrice
+                                              )}
+                                            </p>
+                                          </div>
+                                          <p className="mt-1 text-sm text-gray-500">
+                                            {product.color}
+                                          </p>
+                                        </div>
+                                        <div className="flex flex-1 items-end justify-between text-sm">
+                                          <div className="flex items-center gap-2 text-gray-500">
+                                            <InputNumber
+                                              className="w-14 text-sm"
+                                              min={1}
+                                              onChange={(newQuantity) =>
+                                                handleQuantityChange(
+                                                  product._id,
+                                                  newQuantity
+                                                )
+                                              }
+                                              defaultValue={product?.data || 1}
+                                              max={product.quantity}
+                                            />
+                                            {product.quantity} Sản phẩm
+                                          </div>
+
+                                          <div className="flex">
+                                            <button
+                                              onClick={() =>
+                                                removeProduct(product._id)
+                                              }
+                                              className="font-medium text-indigo-600 hover:text-indigo-500"
+                                            >
+                                              Xóa
+                                            </button>
+                                          </div>
                                         </div>
                                       </div>
-                                    </div>
-                                  </li>
-                                </div>
-                              ))}
+                                    </li>
+                                  </div>
+                                ))}
                             </Checkbox.Group>
                           </div>
                         </div>
@@ -273,14 +328,17 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
                         <p>Subtotal</p>
                         <p>{formatCurrency(calculateTotalAmount())}</p>
                       </div>
-                      <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
+                      <p className="mt-0.5 text-sm text-gray-500">
+                        Shipping and taxes calculated at checkout.
+                      </p>
                       <div className="mt-6">
                         <Button
-                          onClick={() => { onSubmit() }}
+                          onClick={() => {
+                            onSubmit();
+                          }}
                           // onClick={() => { setOpen(false); handleCartClose(); }}
                           // disabled={true}
                           disabled={disabled}
-
                           className="flex h-12 items-center w-full justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                         >
                           Checkout
@@ -292,7 +350,10 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
                           <button
                             type="primary"
                             className="font-medium text-indigo-600 hover:text-indigo-500"
-                            onClick={() => { setOpen(false); handleCartClose(); }}
+                            onClick={() => {
+                              setOpen(false);
+                              handleCartClose();
+                            }}
                           >
                             Continue Shopping
                             <span aria-hidden="true"> &rarr;</span>
@@ -308,5 +369,5 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
         </div>
       </Dialog>
     </Transition.Root>
-  )
+  );
 }

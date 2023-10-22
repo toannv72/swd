@@ -9,6 +9,7 @@ import PaymentPage from "./Page/Authenticator/Payment/Payment";
 import TableProduct from "./Page/admin/TableProduct";
 import CreateProduct from "./Page/admin/CreateProduct";
 import Order from "./Page/Authenticator/Order/Order"; 
+import OrderRequest from "./Page/Authenticator/Order_Request/Order"; 
 import Logout from "./Page/Authenticator/Logout/Logout"; 
 import TableOrder from "./Page/admin/TableOrder"; 
 import Invoice from "./Page/Authenticator/Payment/Invoice";
@@ -19,6 +20,7 @@ import Dashboard from "./Page/manager/dashboard";
  
 
 import ShowAll from "./Page/Authenticator/ShowAll/ShowAll";
+import TableOrderRequest from "./Page/admin/TableOrderRequest";
 export const routers = createBrowserRouter([ 
   { 
     path: "*", 
@@ -59,14 +61,23 @@ export const routers = createBrowserRouter([
   { 
     path: "/payment", 
     element: <PaymentPage />, 
-  },{
+  },
+  {
     path: "/order",
     element: <Order />,
   }, 
   {
+    path: "/orderRequest",
+    element: <OrderRequest />, 
+  }, 
+  {
     path: "/staff/order",
     element: <TableOrder />,
-  },
+  }, 
+  {
+    path: "/staff/orderRequest",
+    element: <TableOrderRequest />
+  }, 
   {
     path: "/payment/bill/:id",
     element: <Invoice />,

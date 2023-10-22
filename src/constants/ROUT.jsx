@@ -6,7 +6,9 @@ export const routs = {
   "/createProduct": { name: 'Tạo sản phẩm', name2: 'ADMIN', link: '/staff/product/create', },
   "/tableProduct": { name: 'Quản lý sản phẩm', link: '/staff/product/table', },
   "/tableOrder": { name: 'Đơn Hàng', link: '/staff/order', },
+  "/tableOrderRequest": { name: 'Đơn Hàng', link: '/staff/orderRequest', },
   "/logout": { name: 'Đăng Xuất', link: '/logout', },
   "/order": { name: 'Đơn hàng', link: '/order', },
+  "/orderRequest": { name: 'Đơn hàng theo yêu cầu', link: '/orderRequest', },
   "/showAll": { name: 'Tất cả đơn hàng', link: '/showAll', },
 };
