@@ -103,27 +103,27 @@ export default function OrderProcessing({ activeTab }) {
             setDisabled(true)
         }
     }, [selected]);
-    // const processing = () => {
-    //     putData('/order/admin/put', 'Shipped', { orders: [orderRequestDefault.id] })
-    //         .then((e) => {
-    //             setDataRun(!dataRun);
-    //         })
-    //         .catch(err => console.log(err))
-    //     setDataRun(!dataRun);
-    //     handleCancelProcessingS()
-    // }
-    // console.log(dataRun);
-    // const sttCanceled = () => {
-    //     putData('/order/admin/put', 'Pending', { orders: [orderRequestDefault.id] })
-    //         .then((e) => {
-    //             setDataRun(!dataRun);
-    //         })
-    //         .catch(err => console.log(err))
-    //     setDataRun(!dataRun);
-    //     handleCancelCanceled()
-    // }isModalOpenProcessing
+    const processing = () => {
+        putData('customOrder/admin/put', 'Shipped', { orders: [orderRequestDefault.id] })
+            .then((e) => {
+                setDataRun(!dataRun);
+            })
+            .catch(err => console.log(err))
+        setDataRun(!dataRun);
+        handleCancelProcessingS()
+    }
+    console.log(dataRun);
+    const sttCanceled = () => {
+        putData('customOrder/admin/put', 'Pending', { orders: [orderRequestDefault.id] })
+            .then((e) => {
+                setDataRun(!dataRun);
+            })
+            .catch(err => console.log(err))
+        setDataRun(!dataRun);
+        handleCancelCanceled()
+    }
     const shipped = () => {
-        putData('/order/admin/put', 'Shipped', { orders: [orderRequestDefault.id] })
+        putData('customOrder/admin/put', 'Shipped', { orders: [orderRequestDefault.id] })
             .then((e) => {
               
                 setDataRun(!dataRun);
@@ -133,7 +133,7 @@ export default function OrderProcessing({ activeTab }) {
         handleCancelProcessing()
     }
     const shippedS = () => {
-        putData('/order/admin/put', 'Shipped', { orders: selected })
+        putData('customOrder/admin/put', 'Shipped', { orders: selected })
             .then((e) => {
                 setDataRun(!dataRun);
             })
@@ -155,7 +155,7 @@ export default function OrderProcessing({ activeTab }) {
         setDisabled(true)
     }
     useEffect(() => {
-        getData('/order/admin/Processing', {})
+        getData('customOrder/admin/Processing', {})
             .then((data) => {
                 setOrder(data?.data?.docs)
             })

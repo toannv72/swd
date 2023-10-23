@@ -99,7 +99,7 @@ export default function OrderPending({ activeTab }) {
         }
     }, [selected]);
     const processing = () => {
-        putData('/order/admin/put', 'Processing', { orders: [orderRequestDefault.id] })
+        putData('customOrder/admin/put', 'Processing', { orders: [orderRequestDefault.id] })
             .then((e) => {
                 setDataRun(!dataRun);
             })
@@ -109,7 +109,7 @@ export default function OrderPending({ activeTab }) {
     }
 
     const sttCanceled = () => {
-        putData('/order/admin/put', 'Canceled', { orders: [orderRequestDefault.id] })
+        putData('customOrder/admin/put', 'Canceled', { orders: [orderRequestDefault.id] })
             .then((e) => {
 
                 setDataRun(!dataRun);
@@ -120,7 +120,7 @@ export default function OrderPending({ activeTab }) {
     }
 
     const processingS = () => {
-        putData('/order/admin/put', 'Processing', { orders: selected })
+        putData('customOrder/admin/put', 'Processing', { orders: selected })
             .then((e) => {
                 setDataRun(!dataRun);
             })
@@ -132,7 +132,7 @@ export default function OrderPending({ activeTab }) {
     }
 
     const canceledS = () => {
-        putData('/order/admin/put', 'Canceled', { orders: selected })
+        putData('customOrder/admin/put', 'Canceled', { orders: selected })
             .then((e) => {
                 setDataRun(!dataRun);
                 handleCancelCanceledS()
@@ -144,7 +144,7 @@ export default function OrderPending({ activeTab }) {
     }
     useEffect(() => {
         setTimeout(() => {
-            getData('/customOrder/admin/pending', {})
+            getData('customOrder/admin/pending', {})
                 .then((data) => {
                     setOrder(data?.data?.docs)
                 })
