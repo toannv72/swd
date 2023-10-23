@@ -114,10 +114,11 @@ export default function OrderCanceled() {
     };
     function formatCurrency(number) {
         // Sử dụng hàm toLocaleString() để định dạng số thành chuỗi với ngăn cách hàng nghìn và mặc định là USD.
-        return number.toLocaleString('en-US', {
-            style: 'currency',
-            currency: 'VND',
-        });
+        return number
+        // .toLocaleString('en-US', {
+        //     style: 'currency',
+        //     currency: 'VND',
+        // });
     }
     const CreateProductMessenger = yup.object({
 
