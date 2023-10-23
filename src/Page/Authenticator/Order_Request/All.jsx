@@ -55,34 +55,15 @@ export default function All() {
       ) : (
         <ul role="list" className="divide-y divide-gray-200">
           {order.map((orderData) => (
-            <li key={orderData.index} className="py-4">
+              <tr key={orderData.index}>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
-                 <div className="col-span-2">
-                 <img
-                            className="w-16 h-16 rounded-full bg-gray-200"
-                            src={orderData?.image}
-                            alt=""
-                          />
-                  <h2 className="text-lg font-semibold mb-2">
-                  {"Tên Đơn Hàng :"}{orderData._id}
-                   </h2> 
-                   <h3 className="text-lg  mb-4">
-                  {"Tên Người đặt :"}{orderData.name}
-                   </h3> 
-                   <h3 className="text-lg  mb-4">
-                  {"Số điện thoại :"}{orderData.phone}
-                   </h3> 
-                   <h3 className="text-lg  mb-4">
-                  {"Địa chỉ :"}{orderData.shippingAddress}
-                   </h3> 
-                   {/* Ngày đặt hàng */}
-                   <h3 className="text-lg  mb-4">
-                  {"Ngày đặt hàng :"}{orderData.createdAt}
-                   </h3> 
-                   <h3 className="text-lg mb-4">
-                    {"số lượng:"}{orderData.quantity}
-                    </h3>
-                </div>
+              <td className="px-6 py-4 whitespace-nowrap">{orderData._id}</td>
+              <td className="px-6 py-4 whitespace-nowrap">{orderData.name}</td>
+              <td className="px-6 py-4 whitespace-nowrap">{orderData.phone}</td>
+              <td className="px-6 py-4 whitespace-nowrap">{orderData.shippingAddress}</td>
+              <td className="px-6 py-4 whitespace-nowrap">{orderData.createdAt}</td>
+              <td className="px-6 py-4 whitespace-nowrap">{orderData.quantity}</td><td className="px-6 py-4 whitespace-nowrap">{orderData.quantity}</td>
+              <td className="px-6 py-4 whitespace-nowrap">{orderData.status}</td>
                 <div className="col-span-1 mt-4 md:mt-0">
                   <div className="flex flex-col items-end mb-4">
                     <div className={`flex-none ${orderData.status === "Done" ? 'bg-emerald-500' : 'bg-red-500'} text-white rounded-full px-3 py-1 mb-2`}>
@@ -100,7 +81,7 @@ export default function All() {
                   </div>
                 </div>
               </div>
-            </li>
+            </tr>
           ))}
         </ul>
       )}

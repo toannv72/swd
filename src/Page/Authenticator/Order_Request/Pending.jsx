@@ -80,7 +80,10 @@ export default function Pending({activeTab}) {
               <td className="px-6 py-4 whitespace-nowrap">{orderData.phone}</td>
               <td className="px-6 py-4 whitespace-nowrap">{orderData.shippingAddress}</td>
               <td className="px-6 py-4 whitespace-nowrap">{orderData.createdAt}</td>
-              <td className="px-6 py-4 whitespace-nowrap">{orderData.quantity}</td><td className="px-6 py-4 whitespace-nowrap">{orderData.quantity}</td>
+              <td className="px-6 py-4 whitespace-nowrap">{orderData.quantity}</td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                  {orderData.amount === 0 ? '' : formatCurrency(orderData.amount)}
+                </td>
               <td className="px-6 py-4 whitespace-nowrap">{orderData.status}</td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <button className="bg-blue-500 text-white rounded-md px-2 py-1">{textApp.OrderHistory.button.cancel}</button>
