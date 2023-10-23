@@ -53,10 +53,23 @@ export default function All() {
       ) : order.error ? (
         <p>Error: {order.error.message}</p>
       ) : (
-        <ul role="list" className="divide-y divide-gray-200">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead>
+          <tr>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tên Đơn Hàng</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tên Người Đặt</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Số Điện Thoại</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Địa Chỉ</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ngày Đặt Hàng</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Số Lượng</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Số Tiền </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Trạng Thái</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Hành Động</th>
+          </tr>
+        </thead>
+        <tbody>
           {order.map((orderData) => (
               <tr key={orderData.index}>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
               <td className="px-6 py-4 whitespace-nowrap">{orderData._id}</td>
               <td className="px-6 py-4 whitespace-nowrap">{orderData.name}</td>
               <td className="px-6 py-4 whitespace-nowrap">{orderData.phone}</td>
@@ -80,10 +93,10 @@ export default function All() {
                     </div>
                   </div>
                 </div>
-              </div>
             </tr>
           ))}
-        </ul>
+          </tbody>
+        </table>
       )}
     </div>
   );
