@@ -1,10 +1,12 @@
 
 import { Fragment, useEffect, useState } from "react";
-import { Dialog, Menu, Popover, Tab, Transition } from "@headlessui/react";
+import { Dialog, Menu, Popover, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
   ShoppingBagIcon,
   XMarkIcon,
+  HomeIcon,
+  PencilSquareIcon
 } from "@heroicons/react/24/outline";
 import ShoppingCart from "../../Authenticator/ShoppingCart/ShoppingCart";
 import { routs } from "../../../constants/ROUT";
@@ -16,17 +18,13 @@ import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup"
 import { textApp } from "../../../TextContent/textApp";
-import { getData } from "../../../api/api";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
 import { useStorage } from "../../../hooks/useLocalStorage";
-
 
 const navigation = {
   pages: [
-    { name: textApp.Header.home, href: "/" },
-    { name: textApp.Header.allProduct, href: "#" },
-    { name: textApp.Header.required, href: "/required" },
+    { name: textApp.Header.home, href: "/", icon: <HomeIcon class="h-6 w-6 text-gray-500" /> },
+    { name: textApp.Header.required, href: "/required", icon: <PencilSquareIcon class="h-6 w-6 text-gray-500"/> },
   ],
 
 };
@@ -40,7 +38,6 @@ export default function ComHeader({ dataCart, updateCart }) {
   const [shoppingCart, setShoppingCart] = useState(false);
   const [sttLogin, setSttLogin] = useState(JSON.parse(localStorage.getItem('user')) || []);
   const [cart, setCart] = useState(JSON.parse(localStorage.getItem('cart')) || []);
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || []);
   const [token, setToken] = useStorage("user", {});
 
   const location = useLocation();
@@ -66,7 +63,7 @@ export default function ComHeader({ dataCart, updateCart }) {
 
   useEffect(() => {
     setSttLogin(JSON.parse(localStorage.getItem('user')) || [])
-  
+
     if (location.pathname === '/login' && token?.accessToken) {
       navigate('/')
     }
@@ -77,7 +74,9 @@ export default function ComHeader({ dataCart, updateCart }) {
 
   const { handleSubmit, register } = methods
   const onSubmit = (data) => {
-    console.log(data);
+    if (data.search.trim() !== '') {
+      navigate(`/search/${data.search.trim()}`)
+    }
   }
 
   return (
@@ -138,7 +137,10 @@ export default function ComHeader({ dataCart, updateCart }) {
                             to={page.href}
                             className=" block p-2 font-medium text-gray-900"
                           >
-                            {page.name}
+                           <div className="flex gap-2">
+                              {page.icon}
+                              {page.name}
+                           </div>
                           </Link>
                         </div>
                       ))}
@@ -200,15 +202,18 @@ export default function ComHeader({ dataCart, updateCart }) {
                   {/* Flyout menus */}
                   <Popover.Group className="hidden lg:ml-8 lg:block lg:self-stretch">
                     <div className="flex h-full space-x-8">
-              
+
 
                       {navigation.pages.map((page) => (
                         <Link
                           key={page.name}
                           to={page.href}
-                          className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
+                          className="flex items-center text-base font-medium text-gray-700 hover:text-gray-800"
                         >
-                          {page.name}
+                          <div className="flex gap-2 justify-center">
+                              {page.icon}
+                              <p>{page.name}</p>
+                           </div>
                         </Link>
                       ))}
                     </div>
@@ -287,7 +292,7 @@ export default function ComHeader({ dataCart, updateCart }) {
                         >
                           <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
 
-                            {sttLogin?._doc?.role==='staff' && <Menu.Item >
+                            {sttLogin?._doc?.role === 'staff' && <Menu.Item >
                               {({ active }) => (
                                 <ComLink
                                   to={routs['/createProduct'].link}

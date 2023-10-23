@@ -19,6 +19,7 @@ import Dashboard from "./Page/manager/dashboard";
  
 
 import ShowAll from "./Page/Authenticator/ShowAll/ShowAll";
+import Search from "./Page/Authenticator/Search/Search";
 export const routers = createBrowserRouter([ 
   { 
     path: "*", 
@@ -83,4 +84,8 @@ export const routers = createBrowserRouter([
     path: "/showAll", 
     element: <ShowAll/>, 
   }, 
+  { 
+    path: "/search/:search", 
+    element: <Search/>, 
+  },
 ]); 
