@@ -5,37 +5,42 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import Highlighter from 'react-highlight-words';
 import * as yup from "yup"
 import { SearchOutlined } from '@ant-design/icons';
-import { Button, Input, Modal, Select, Space, Table, Tooltip, Typography, notification } from 'antd';
+import { Button, Input, Modal, Space, Table, Tooltip, Typography, notification } from 'antd';
 import { textApp } from '../../../TextContent/textApp';
-import { deleteData, getData, postData, putData } from '../../../api/api';
-import { firebaseImgs } from '../../../upImgFirebase/firebaseImgs';
-import ComHeaderAdmin from '../../Components/ComHeaderAdmin/ComHeaderAdmin';
+import { deleteData, getData, putData } from '../../../api/api';
+
 import ComButton from '../../Components/ComButton/ComButton';
-import ComUpImg from '../../Components/ComUpImg/ComUpImg';
-import ComInput from '../../Components/ComInput/ComInput';
-import ComTextArea from '../../Components/ComInput/ComTextArea';
-import ComNumber from '../../Components/ComInput/ComNumber';
-import ComSelect from '../../Components/ComInput/ComSelect';
+
 import moment from 'moment/moment';
 
 
-export default function OrderShipped() {
+export default function OrderShipped({ activeTab }) {
     const [disabled, setDisabled] = useState(false);
-    const [image, setImages] = useState([]);
-    const [products, setProducts] = useState([]);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
+    const [order, setOrder] = useState([]);
+    const [isModalOpenProcessing, setIsModalOpenProcessing] = useState(false);
+    const [isModalOpenCanceled, setIsModalOpenCanceled] = useState(false);
+    const [isModalOpenProcessingS, setIsModalOpenProcessingS] = useState(false);
+    const [isModalOpenCanceledS, setIsModalOpenCanceledS] = useState(false);
     const [dataRun, setDataRun] = useState(false);
-    const [productRequestDefault, setProductRequestDefault] = useState({});
-    const [productPrice, setProductPrice] = useState(1000);
-    const [productReducedPrice, setProductReducedPrice] = useState(1000);
-    const [productQuantity, setProductQuantity] = useState(1);
+    const [orderRequestDefault, setOrderRequestDefault] = useState({});
     const [api, contextHolder] = notification.useNotification();
     const [selectedMaterials, setSelectedMaterials] = useState();
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
     const searchInput = useRef(null);
+    const [selected, setSelected] = useState([]);
 
+    const rowSelection = {
+        onChange: (selectedRowKeys, selectedRows) => {
+
+            setSelected(selectedRowKeys)
+        },
+        getCheckboxProps: (record) => ({
+            disabled: record.name === 'Disabled User',
+            // Column configuration not to be checked
+            name: record.name,
+        }),
+    };
     const handleSearch = (selectedKeys, confirm, dataIndex) => {
         confirm();
         setSearchText(selectedKeys[0]);
@@ -45,71 +50,38 @@ export default function OrderShipped() {
         clearFilters();
         setSearchText('');
     };
-    console.log(productRequestDefault);
+
     const showModalEdit = (e) => {
-        setSelectedMaterials(e.material)
-        setProductPrice(e.price)
-        setProductReducedPrice(e.reducedPrice)
-        setProductQuantity(e.quantity)
-        setProductRequestDefault({
-            name: e.name,
-            price: e.price,
-            price1: e.price,
-            reducedPrice1: e.reducedPrice,
-            reducedPrice: e.reducedPrice,
-            quantity: e.quantity,
-            detail: e.detail,
-            shape: e.shape,
-            models: e.models,
-            material: e.material,
-            accessory: e.accessory,
-            description: e.description,
+        setOrderRequestDefault({
             id: e._id
         })
-        setIsModalOpen(true);
+        setIsModalOpenProcessing(true);
+
     };
 
-    const showModalDelete = (e) => {
-        setProductRequestDefault({
+    const handleOpenCanceled = (e) => {
+
+        setOrderRequestDefault({
             id: e._id
         })
-        setIsModalOpenDelete(true);
-    };
-    const options = [
-        {
-            label: "Gỗ",
-            value: "Gỗ"
-        },
-        {
-            label: "Nhựa",
-            value: "Nhựa"
-        },
-        {
-            label: "Kim Loại",
-            value: "Kim loại"
-        },
-    ];
-
-    const handleCancel = () => {
-        setIsModalOpen(false);
+        setIsModalOpenCanceled(true);
 
     };
-    const handleCancelDelete = () => {
-        setIsModalOpenDelete(false);
+    const handleCancelCanceled = () => {
+        setIsModalOpenCanceled(false);
 
     };
-    const handleValueChange = (e, value) => {
-        setProductPrice(value)
-        setValue("price", value, { shouldValidate: true });
-    };
+    const handleCancelProcessing = () => {
+        setIsModalOpenProcessing(false);
 
-    const handleValueChange1 = (e, value) => {
-        setProductReducedPrice(value)
-        setValue("reducedPrice", value, { shouldValidate: true });
     };
-    const handleValueChangeQuantity = (e, value) => {
-        setProductQuantity(value)
-        setValue("quantity", value, { shouldValidate: true });
+    const handleCancelCanceledS = () => {
+        setIsModalOpenCanceledS(false);
+
+    };
+    const handleCancelProcessingS = () => {
+        setIsModalOpenProcessingS(false);
+
     };
     function formatCurrency(number) {
         // Sử dụng hàm toLocaleString() để định dạng số thành chuỗi với ngăn cách hàng nghìn và mặc định là USD.
@@ -118,193 +90,70 @@ export default function OrderShipped() {
             currency: 'VND',
         });
     }
-    const CreateProductMessenger = yup.object({
-
-        name: yup.string().required(textApp.CreateProduct.message.name),
-        price: yup.number().min(1, textApp.CreateProduct.message.priceMin).typeError(textApp.CreateProduct.message.price),
-        price1: yup.string().required(textApp.CreateProduct.message.price).min(1, textApp.CreateProduct.message.priceMin).test('no-dots', textApp.CreateProduct.message.priceDecimal, value => !value.includes('.')),
-        reducedPrice: yup.number().min(1, textApp.CreateProduct.message.priceMin).typeError(textApp.CreateProduct.message.price),
-        reducedPrice1: yup.string().required(textApp.CreateProduct.message.price).min(1, textApp.CreateProduct.message.priceMin).test('no-dots', textApp.CreateProduct.message.priceDecimal, value => !value.includes('.')),
-        quantity: yup.number().min(0, textApp.CreateProduct.message.quantityMin).typeError(textApp.CreateProduct.message.quantity),
-        shape: yup.string().required(textApp.CreateProduct.message.shape),
-        material: yup.array().required(textApp.CreateProduct.message.material),
-        description: yup.string().required(textApp.CreateProduct.message.description),
-    })
-
-    const methods = useForm({
-        resolver: yupResolver(CreateProductMessenger),
-        defaultValues: {
-            name: "",
-            price: "",
-            quantity: "",
-            detail: "",
-            material: [],
-            models: "",
-            accessory: "",
-            description: "",
-        },
-        values: productRequestDefault
-    })
-    const { handleSubmit, register, setFocus, watch, setValue } = methods
-    function isInteger(number) {
-        return typeof number === 'number' && isFinite(number) && Math.floor(number) === number;
-    }
-    const onSubmit = (data) => {
-        if (data.price % 1000 !== 0) {
-            api["error"]({
-                message: textApp.CreateProduct.Notification.m7.message,
-                description:
-                    textApp.CreateProduct.Notification.m7.description
-            });
-            return
+    useEffect(() => {
+        if (selected.length > 0) {
+            setDisabled(false)
+        } else {
+            setDisabled(true)
         }
-        if (data.reducedPrice % 1000 !== 0) {
-            api["error"]({
-                message: textApp.CreateProduct.Notification.m8.message,
-                description:
-                    textApp.CreateProduct.Notification.m8.description
-            });
-            return
-        }
-        if (!isInteger(data.price)) {
-
-            api["error"]({
-                message: textApp.CreateProduct.Notification.m1.message,
-                description:
-                    textApp.CreateProduct.Notification.m1.description
-            });
-            return
-        }
-
-        if (data.material.length === 0) {
-            api["error"]({
-                message: textApp.CreateProduct.Notification.m4.message,
-                description:
-                    textApp.CreateProduct.Notification.m4.description
-            });
-            return
-        }
-
-
-        if (data.price <= data.reducedPrice) {
-            api["error"]({
-                message: textApp.CreateProduct.Notification.m6.message,
-                description:
-                    textApp.CreateProduct.Notification.m6.description
-            });
-            return
-        }
-
-        setDisabled(true)
-        firebaseImgs(image)
-            .then((dataImg) => {
-                if (Array.isArray(image) && image.length === 0) {
-                    const updatedData = {
-                        ...data, // Giữ lại các trường dữ liệu hiện có trong data
-
-                    };
-
-                    putData(`/product`, productRequestDefault.id, updatedData, {})
-                        .then((dataS) => {
-                            api["success"]({
-                                message: textApp.TableProduct.Notification.update.message,
-                                description:
-                                    textApp.TableProduct.Notification.update.description
-                            });
-                        })
-                        .catch((error) => {
-                            api["error"]({
-                                message: textApp.TableProduct.Notification.updateFail.message,
-                                description:
-                                    textApp.TableProduct.Notification.updateFail.description
-                            });
-                            console.error("Error fetching items:", error);
-                            setDisabled(false)
-                        });
-                } else {
-                    const updatedData = {
-                        ...data, // Giữ lại các trường dữ liệu hiện có trong data
-                        image: dataImg, // Thêm trường images chứa đường dẫn ảnh
-                    };
-                    putData(`/product`, productRequestDefault.id, updatedData, {})
-                        .then((dataS) => {
-                            api["success"]({
-                                message: textApp.TableProduct.Notification.change.message,
-                                description:
-                                    textApp.TableProduct.Notification.change.description
-                            });
-                        })
-                        .catch((error) => {
-                            console.error("Error fetching items:", error);
-                            setDisabled(false)
-                            api["error"]({
-                                message: textApp.TableProduct.Notification.updateFail.message,
-                                description:
-                                    textApp.TableProduct.Notification.updateFail.description
-                            });
-                        });
-                }
-
-            }
-            )
-            .catch((error) => {
-                console.log(error)
-            });
-        setImages([]);
-        setDisabled(false)
-        setIsModalOpen(false);
-        setDataRun(!dataRun)
+    }, [selected]);
+    const Delivered = () => {
+        putData('/order/admin/put', 'Delivered', { orders: [orderRequestDefault.id] })
+            .then((e) => {
+                setDataRun(!dataRun);
+            })
+            .catch(err => console.log(err))
+        setDataRun(!dataRun);
+        handleCancelProcessing()
     }
 
-    const deleteById = () => {
+    const sttCanceled = () => {
+        putData('/order/admin/put', 'Canceled', { orders: [orderRequestDefault.id] })
+            .then((e) => {
+
+                setDataRun(!dataRun);
+            })
+            .catch(err => console.log(err))
+        setDataRun(!dataRun);
+        handleCancelCanceled()
+    }
+
+    const processingS = () => {
+        putData('/order/admin/put', 'Delivered', { orders: selected })
+            .then((e) => {
+                setDataRun(!dataRun);
+            })
+            .catch(err => console.log(err))
         setDisabled(true)
-        deleteData('product', productRequestDefault.id)
-            .then((data) => {
-                setDisabled(false)
-                handleCancelDelete()
-                api["success"]({
-                    message: textApp.TableProduct.Notification.delete.message,
-                    description:
-                        textApp.TableProduct.Notification.delete.description
-                });
+        console.log(123);
+        setDataRun(!dataRun);
+        handleCancelProcessingS()
+    }
 
+    const canceledS = () => {
+        putData('/order/admin/put', 'Canceled', { orders: selected })
+            .then((e) => {
+                setDataRun(!dataRun);
+                handleCancelCanceledS()
             })
-            .catch((error) => {
-                console.log(error);
-                setDisabled(false)
-                handleCancelDelete()
-                api["error"]({
-                    message: textApp.TableProduct.Notification.deleteError.message,
-                    description:
-                        textApp.TableProduct.Notification.deleteError.description
-                });
-            })
-        setDataRun(!dataRun)
-
+            .catch(err => console.log(err))
+        setDisabled(true)
+        setDataRun(!dataRun);
+        handleCancelCanceledS()
     }
     useEffect(() => {
         setTimeout(() => {
-            getData('/product', {})
+            getData('/order/admin/shipped', {})
                 .then((data) => {
-                    setProducts(data?.data?.docs)
+                    setOrder(data?.data?.docs)
                 })
                 .catch((error) => {
                     console.error("Error fetching items:", error);
                 });
-
         }, 100);
+    }, [dataRun,activeTab]);
 
 
-    }, [dataRun]);
-
-    const onChange = (data) => {
-        const selectedImages = data;
-        // Tạo một mảng chứa đối tượng 'originFileObj' của các tệp đã chọn
-        const newImages = selectedImages.map((file) => file.originFileObj);
-        // Cập nhật trạng thái 'image' bằng danh sách tệp mới
-        setImages(newImages);
-
-    }
     const getColumnSearchProps = (dataIndex, title) => ({
         filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
             <div
@@ -345,19 +194,7 @@ export default function OrderShipped() {
                     >
                         Đặt lại
                     </Button>
-                    {/* <Button
-                        type="link"
-                        size="small"
-                        onClick={() => {
-                            confirm({
-                                closeDropdown: false,
-                            });
-                            setSearchText(selectedKeys[0]);
-                            setSearchedColumn(dataIndex);
-                        }}
-                    >
-                        Filter
-                    </Button> */}
+
                     <Button
                         type="link"
                         size="small"
@@ -401,97 +238,85 @@ export default function OrderShipped() {
     });
     const columns = [
 
-   
+
         {
-            title: 'Tên Đơn Hàng',
-            dataIndex: 'name',
+            title: 'Mã đơn hàng',
+            dataIndex: '_id',
             width: 300,
-            key: 'name',
+            key: '_id',
             fixed: 'left',
 
             render: (_, record) => (
 
                 <div >
-                    <h1>{record.name}</h1>
+                    <h1>{record._id}</h1>
                 </div>
             ),
-            ...getColumnSearchProps('name', 'tên sản phẩm'),
+            ...getColumnSearchProps('_id', 'Mã đơn hàng'),
         },
         {
-            title: 'Giá Tiền',
-            width: 150,
-            dataIndex: 'price',
-            key: 'price',
-            sorter: (a, b) => a.price - b.price,
-            render: (_, record) => (
+            title: 'Tên Người đặt',
+            width: 200,
+            dataIndex: 'name',
+            key: 'name',
+            ...getColumnSearchProps('name', "tên"),
 
-                <div >
-                    <h1>{formatCurrency(record.price)}</h1>
-                </div>
-            )
         },
         {
-            title: 'Giá tiền đã giảm',
-            width: 150,
-            dataIndex: 'reducedPrice',
-            key: 'reducedPrice',
-            sorter: (a, b) => a.reducedPrice - b.reducedPrice,
-            render: (_, record) => (
-
-                <div >
-                    <h1>{formatCurrency(record.reducedPrice)}</h1>
-                </div>
-            )
-        },
-        {
-            title: 'Số lượng',
-            width: 100,
-            dataIndex: 'quantity',
-            key: 'quantity',
-            sorter: (a, b) => a.quantity - b.quantity,
-        },
-        {
-            title: 'Ngày tạo',
+            title: 'Ngày đặt hàng',
             dataIndex: 'createdAt',
             width: 110,
             key: 'createdAt',
             sorter: (a, b) => moment(a.createdAt).unix() - moment(b.createdAt).unix(),
+            ...getColumnSearchProps('createdAt', "Ngày đặt hàng"),
             render: (_, record) => (
 
                 <div className="text-sm text-gray-700 line-clamp-4">
                     <p>{moment(record.createdAt).format('l')}</p>
                 </div>
-            )
+            ),
         },
         {
-            title: 'Ngày chỉnh sửa',
-            dataIndex: 'updatedAt',
-            width: 110,
-            key: 'updatedAt',
-            sorter: (a, b) => moment(a.updatedAt).unix() - moment(b.updatedAt).unix(),
+            title: 'Số điện thoại',
+            width: 200,
+            dataIndex: 'phone',
+            key: 'phone',
+            sorter: (a, b) => a.phone - b.phone,
+            ...getColumnSearchProps('phone', "phone"),
+
+        },
+        {
+            title: 'Email',
+            width: 200,
+            dataIndex: 'email',
+            key: 'email',
+            ...getColumnSearchProps('email', "email"),
+        },
+
+        {
+            title: 'Địa chỉ ',
+            width: 300,
+            dataIndex: 'shippingAddress',
+            key: 'shippingAddress',
+            ...getColumnSearchProps('shippingAddress', "Địa chỉ"),
+
+        },
+        {
+            title: 'Tổng tiền đơn hàng',
+            width: 300,
+            dataIndex: 'totalAmount',
+            key: 'totalAmount',
+            // ...getColumnSearchProps('totalAmount', "Địa chỉ"),
+            sorter: (a, b) => a.totalAmount - b.totalAmount,
             render: (_, record) => (
-                <div className="text-sm text-gray-700 line-clamp-4">
-                    <p>{moment(record.updatedAt).format('l')}</p>
+
+                <div >
+                    <h1>{formatCurrency(record.totalAmount)}</h1>
                 </div>
             )
         },
         {
-            title: 'Chất liệu',
-            dataIndex: 'material',
-            key: 'material',
-            render: (_, record) => (
-
-                <div className="text-sm text-gray-700 line-clamp-4">
-                    <p>{record.material?.[0]}</p>
-                    <p>{record.material?.[1]}</p>
-                    <p>{record.material?.[2]}</p>
-                </div>
-
-
-            )
-        },
-        {
-            title: 'Chi tiết sản phẩm',
+            title: 'Thông tin bổ sung',
             dataIndex: 'description',
             key: 'description',
             width: 300,
@@ -509,7 +334,6 @@ export default function OrderShipped() {
             render: (record) => (
                 <Tooltip placement="topLeft" title={record}>
                     {record}
-
                 </Tooltip>
             ),
 
@@ -518,59 +342,59 @@ export default function OrderShipped() {
             title: 'Action',
             key: 'operation',
             fixed: 'right',
-
+            width: 150,
             render: (_, record) => (
 
                 <div className='flex items-center flex-col'>
                     <div>
                         <Typography.Link onClick={() => showModalEdit(record)}>
-                            Chỉnh sửa
+                            Chấp nhận
                         </Typography.Link>
                     </div>
                     <div className='mt-2'>
-                        <Typography.Link onClick={() => showModalDelete(record)}>
-                            <div className='text-red-600'>  Xóa</div>
+                        <Typography.Link onClick={() => handleOpenCanceled(record)}>
+                            <div className='text-red-600'>hủy</div>
                         </Typography.Link>
                     </div>
                 </div>
             )
         },
     ];
-    const handleChangeSelect = (value) => {
-        setSelectedMaterials(value);
-    };
-    const handleValueChangeSelect = (e, value) => {
-        if (value.length === 0) {
-            setValue("material", null, { shouldValidate: true });
-        } else {
-            setValue("material", value, { shouldValidate: true });
 
-        }
-    };
-    const handleChange = (e, value) => {
-        console.log(value);
-        setSelectedMaterials(value);
-        // setMaterial(value)
-        if (value.length === 0) {
-            setValue("material", null, { shouldValidate: true });
-        } else {
-            setValue("material", value, { shouldValidate: true });
 
-        }
-        console.log([value]);
-    };
     return (
         <>
             {contextHolder}
-           
-            <div className='flex p-5 justify-center'>
+            <div className='flex gap-2'>
+                <Button
+                    disabled={disabled}
+                    type="primary"
+                    onClick={() => setIsModalOpenProcessingS(true)}
+                    className={`flex  items-center justify-center rounded-md border border-transparent text-base font-medium text-white ${disabled ? " bg-slate-700" : "hover:to-sky-700 hover:from-sky-800 bg-gradient-to-b from-sky-600 to-sky-700"}  `}
+                >
+                    Chấp nhận
+                </Button>
+                <Button
+                    disabled={disabled}
+                    type="primary"
+                    onClick={() => setIsModalOpenCanceledS(true)}
+                    className={`flex  items-center justify-center rounded-md border border-transparent text-base font-medium text-white ${disabled ? " bg-slate-700" : "hover:to-red-700 hover:from-red-800 bg-gradient-to-b from-red-600 to-red-700"}  `}
+                >
+                    Từ chối
+                </Button>
+            </div>
+            <div className='flex p-2 justify-center'>
                 <Table
+                    rowSelection={{
+                        type: "checkbox",
+                        ...rowSelection,
+                    }}
                     rowKey="_id"
                     columns={columns}
-                    dataSource={products}
+                    dataSource={order}
                     scroll={{
                         x: 1520,
-                        y: "70vh",
+                        y: "55vh",
                     }}
                     bordered
                     pagination={{
@@ -579,188 +403,98 @@ export default function OrderShipped() {
                     }}
                 />
             </div>
-            <Modal title={textApp.TableProduct.title.change}
+
+
+            <Modal title="Chấp nhận đơn hàng này"
                 okType="primary text-black border-gray-700"
-                open={isModalOpen}
-
-                width={800}
-                style={{ top: 20 }}
-
-                onCancel={handleCancel}>
-                <FormProvider {...methods} >
-                    <form onSubmit={handleSubmit(onSubmit)} className="mx-auto mt-4 max-w-xl sm:mt-8">
-                        <div className=' overflow-y-auto p-4'>
-                            <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2"
-                                style={{ height: "65vh" }}>
-                                <div className="sm:col-span-2">
-                                    <div className="mt-2.5">
-                                        <ComInput
-                                            type="text"
-                                            label={textApp.CreateProduct.label.name}
-                                            placeholder={textApp.CreateProduct.placeholder.name}
-                                            {...register("name")}
-                                            required
-                                        />
-                                    </div>
-                                </div>
-                                <div>
-                                    <ComNumber
-                                        label={textApp.CreateProduct.label.price}
-                                        placeholder={textApp.CreateProduct.placeholder.price}
-                                        // type="money"
-                                        value={productPrice}
-                                        defaultValue={productRequestDefault.price}
-                                        min={1000}
-                                        money
-                                        onChangeValue={handleValueChange}
-                                        {...register("price1")}
-                                        required
-                                    />
-
-                                </div>
-                                <div>
-                                    <ComNumber
-                                        label={textApp.CreateProduct.label.reducedPrice}
-                                        placeholder={textApp.CreateProduct.placeholder.reducedPrice}
-                                        // type="money"
-                                        // defaultValue={productRequestDefault.reducedPrice}
-                                        min={1000}
-                                        value={productReducedPrice}
-                                        money
-                                        onChangeValue={handleValueChange1}
-                                        {...register("reducedPrice1")}
-                                        required
-                                    />
-
-                                </div>
-                                <div>
-                                    <ComNumber
-                                        label={textApp.CreateProduct.label.quantity}
-                                        placeholder={textApp.CreateProduct.placeholder.quantity}
-                                        // type="numbers"
-                                        min={0}
-                                        value={productQuantity}
-                                        onChangeValue={handleValueChangeQuantity}
-                                        {...register("quantity")}
-                                        required
-                                    />
-
-                                </div>
-
-
-                                <div className="">
-                                    <ComSelect
-                                        size={"large"}
-                                        style={{
-                                            width: '100%',
-                                        }}
-                                        label={textApp.CreateProduct.label.material}
-                                        placeholder={textApp.CreateProduct.placeholder.material}
-                                        required
-                                        onChangeValue={handleChange}
-                                        value={selectedMaterials}
-                                        options={options}
-                                        {...register("material")}
-
-                                    />
-                                </div>
-                                <div className="sm:col-span-2">
-                                    <ComInput
-                                        label={textApp.CreateProduct.label.shape}
-                                        placeholder={textApp.CreateProduct.placeholder.shape}
-                                        required
-                                        type="text"
-                                        {...register("shape")}
-                                    />
-                                </div>
-                                {/* <div className="sm:col-span-2">
-                                    <ComInput
-                                        label={textApp.CreateProduct.label.detail}
-                                        placeholder={textApp.CreateProduct.placeholder.detail}
-                                        required
-                                        type="text"
-                                        {...register("detail")}
-                                    />
-                                </div> */}
-                                {/* <div className="sm:col-span-2">
-                                    <ComInput
-                                        label={textApp.CreateProduct.label.models}
-                                        placeholder={textApp.CreateProduct.placeholder.models}
-                                        required
-                                        type="text"
-                                        {...register("models")}
-                                    />
-                                </div>
-    
-                                <div className="sm:col-span-2">
-                                    <ComInput
-                                        label={textApp.CreateProduct.label.accessory}
-                                        placeholder={textApp.CreateProduct.placeholder.accessory}
-                                        required
-                                        type="text"
-                                        {...register("accessory")}
-                                    />
-                                </div> */}
-
-
-                                <div className="sm:col-span-2">
-
-                                    <div className="mt-2.5">
-
-                                        <ComTextArea
-                                            label={textApp.CreateProduct.label.description}
-                                            placeholder={textApp.CreateProduct.placeholder.description}
-                                            rows={4}
-                                            defaultValue={''}
-                                            required
-                                            maxLength={1000}
-                                            {...register("description")}
-                                        />
-                                    </div>
-                                </div>
-                                <div className="sm:col-span-1">
-                                    <ComUpImg onChange={onChange} />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="mt-10">
-                            <ComButton
-
-                                disabled={disabled}
-                                htmlType="submit"
-                                type="primary"
-
-                                className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                            >
-                                {textApp.common.button.createProduct}
-                            </ComButton>
-                        </div>
-                    </form>
-                </FormProvider>
-
-            </Modal>
-
-
-            <Modal title={textApp.TableProduct.title.delete}
-                okType="primary text-black border-gray-700"
-                open={isModalOpenDelete}
+                open={isModalOpenProcessing}
                 width={500}
                 // style={{ top: 20 }}
-                onCancel={handleCancelDelete}>
-
+                onCancel={handleCancelProcessing}>
+                <div className='text-lg p-6'>Bạn có chắc chắn muốn chuyển qua đang đã hoàn thành hay không?</div>
                 <div className='flex'>
                     <ComButton
-                        disabled={disabled}
                         type="primary"
                         danger
-                        onClick={deleteById}
+                        onClick={Delivered}
                     >
-                        {textApp.TableProduct.modal.submitDelete}
+                        xác nhận
                     </ComButton>
                     <ComButton
                         type="primary"
-                        disabled={disabled}
-                        onClick={handleCancelDelete}
+                        onClick={handleCancelProcessing}
+                    >
+                        hủy
+                    </ComButton>
+                </div>
+            </Modal>
+            <Modal title="Xác nhận hủy"
+                okType="primary text-black border-gray-700"
+                open={isModalOpenCanceled}
+                width={500}
+                // style={{ top: 20 }}
+                onCancel={handleCancelCanceled}>
+                <div className='text-lg p-6'>Bạn có chắc chắn muốn hủy đơn hàng này.</div>
+                <div className='flex'>
+                    <ComButton
+                        type="primary"
+                        danger
+                        onClick={sttCanceled}
+                    >
+                        Xác nhận
+                    </ComButton>
+                    <ComButton
+                        type="primary"
+                        onClick={handleCancelCanceled}
+                    >
+                        {textApp.TableProduct.modal.cancel}
+                    </ComButton>
+                </div>
+            </Modal>
+
+            <Modal title="Chấp nhận đơn hàng"
+                okType="primary text-black border-gray-700"
+                open={isModalOpenProcessingS}
+                width={500}
+                // style={{ top: 20 }}
+                onCancel={handleCancelProcessingS}>
+                <div className='text-lg p-6'>Bạn có chắc chắn muốn chuyển qua đã hoàn thành hay không?</div>
+
+                <div className='flex'>
+                    <ComButton
+                        type="primary"
+                        danger
+                        onClick={processingS}
+                    >
+                        xác nhận
+                    </ComButton>
+                    <ComButton
+                        type="primary"
+                        onClick={handleCancelProcessingS}
+                    >
+                        hủy
+                    </ComButton>
+                </div>
+            </Modal>
+            <Modal title="Xác nhận hủy đơn hàng"
+                okType="primary text-black border-gray-700"
+                open={isModalOpenCanceledS}
+                width={500}
+                // style={{ top: 20 }}
+                onCancel={handleCancelCanceledS}>
+                <div className='text-lg p-6'>Bạn có chắc chắn muốn hủy đơn hàng đã chọn này không?</div>
+
+                <div className='flex'>
+                    <ComButton
+                        type="primary"
+                        danger
+                        onClick={canceledS}
+                    >
+                        Xác nhận
+                    </ComButton>
+                    <ComButton
+                        type="primary"
+                        onClick={handleCancelCanceledS}
                     >
                         {textApp.TableProduct.modal.cancel}
                     </ComButton>

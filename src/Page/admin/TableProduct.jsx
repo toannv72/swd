@@ -96,7 +96,6 @@ export default function TableProduct() {
     };
     const handleCancelDelete = () => {
         setIsModalOpenDelete(false);
-
     };
     const handleValueChange = (e, value) => {
         setProductPrice(value)
@@ -575,7 +574,6 @@ export default function TableProduct() {
             setValue("material", value, { shouldValidate: true });
 
         }
-        console.log([value]);
     };
     return (
         <>
