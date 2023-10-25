@@ -4,7 +4,7 @@ export const textApp = {
     common: {
         button: {
             login: "Đăng nhập",
-            reissue: "Reissue",
+            reissue: "Đăng ký",
             createProduct: "Tạo sản phẩm"
         }
     },
@@ -15,12 +15,12 @@ export const textApp = {
             password: "Mật khẩu"
         },
         placeholder: {
-            username: "Please enter you Login ID",
-            password: "Please enter you password"
+            username: "Vui lòng nhập tên đăng nhập",
+            password: "Vui lòng nhập mật khẩu"
         },
         message: {
-            username: "Login ID is required item",
-            password: "Password is required item",
+            username: "Tên đăng nhập không được để trống",
+            password: "Mật khẩu không được để trống",
             error: "Tài khoản hoặc mật khẩu sai",
             error1: "Đang có lỗi máy chủ vui lòng liên hệ quản lý.",
         }
@@ -35,20 +35,20 @@ export const textApp = {
             email: "Email"
         },
         placeholder: {
-            username: "Please enter you Login User",
-            phone: "Please enter you phone",
-            email: "Please enter you email",
-            password: "Please enter you password",
-            password2: "Please enter you password",
+            username: "Vui lòng nhập tên đăng nhập",
+            phone: "Vui lòng nhập số điện thoại",
+            email: "Vui lòng nhập địa chỉ email",
+            password: "Vui lòng nhập mật khẩu",
+            password2: "Vui lòng nhập mật khẩu",
         },
         message: {
-            username: "Login User is required item",
+            username: "Tên đăng nhập không được để trống",
             usernameMIn: "Tài khoản phải lớn hơn 6 kí tự",
-            phone: "Phone is required item",
-            password: "Password is required item",
-            password2: "Password is required item",
+            phone: "Số điện thoại không được để trống",
+            password: "Mật khẩu không được để trống",
+            password2: "Mật khẩu không được để trống",
             passwordMIn: "Mật khẩu phải lớn hơn hoặc bằng 5 kí tự",
-            email: "Email is required item",
+            email: "Địa chỉ mail không được để trống",
             emailFormat: "Định dạng mail không hợp lệ.",
             passwordCheck: "Mật khẩu nhập lại không khớp.",
         }
@@ -61,42 +61,42 @@ export const textApp = {
             reducedPrice: "Giá tiền giảm",
             shape: "Hình dáng",
             quantity: "Số lượng sản phẩm",
-            detail: "detail",
-            models: "models",
+            detail: "Chi tiết",
+            models: "Mẫu mã",
             material: "Chất liệu",
-            accessory: "accessory",
-            sold: "sold",
-            image: 'Img',
+            accessory: "Phụ kiền",
+            sold: "Đã bán",
+            image: 'Hình ảnh',
             description: "Chi tiết sản phẩm",
         },
         placeholder: {
-            name: "Please enter Product Name",
-            price: "Please enter price",
-            quantity: "Please enter quantity",
+            name: "Vui lòng nhập tên sản phẩm",
+            price: "Vui lòng nhập giá tiền sản phẩm",
+            quantity: "Vui lòng nhập số lượng sản phẩm",
             shape: "Vui lòng nhập hình dáng sản phẩm",
-            detail: "Please enter detail",
-            models: "Please enter models",
-            material: "Please enter material",
-            accessory: "Please enter accessory",
-            sold: "Please enter sold",
-            image: "Please enter Img",
-            description: "Please enter Describe",
+            detail: "Vui lòng nhập chi tiết sản phẩm",
+            models: "Vui lòng nhập mẫu mã sản phẩm",
+            material: "Vui lòng nhập chất liệu sản phẩm",
+            accessory: "Vui lòng nhập phụ kiền",
+            sold: "Vui lòng nhập số lượng đã bán",
+            image: "Vui lòng thêm hình ảnh",
+            description: "Vui lòng nhập mô tả",
         },
         message: {
-            name: "name is required item",
-            price: "price is required item",
+            name: "Tên sản phẩm không được để trống",
+            price: "Giá sản phẩm không được để trống",
             priceMin: "phải lớn hơn hoặc bằng 1",
             shape: "Yêu cầu này là bắt buộc",
             priceDecimal: "Số tiền không được là số thập phân ",
-            quantity: "quantity is required item",
+            quantity: "Số lượng sản phẩm không được để trống",
             quantityMin: "phải lớn hơn hoặc bằng 1",
-            detail: "detail is required item",
-            models: "models is required item",
-            material: "material is required item",
-            accessory: "accessory is required item",
-            sold: "sold is required item",
-            image: "image is required item",
-            description: "description is required item",
+            detail: "Chi tiết sản phẩm không được để trống",
+            models: "Mẫu mã sản phẩm không được để trống",
+            material: "Chất liệu sản phẩm không được để trống",
+            accessory: "Phụ kiền không được để trống",
+            sold: "Sản phẩm đã bán không được để trống",
+            image: "Hình ảnh sản phẩm không được để trống",
+            description: "Mô tả sản phẩm không được để trống",
         },
         Notification: {
             m1: {
@@ -256,10 +256,10 @@ export const textApp = {
             placeholder: {
                 name: "Vui lòng nhập họ và tên",
                 address: "Vui lòng nhập địa chỉ",
-                phone: "Vui lòng số điện thoại",
-                email: "Vui lòng Email",
+                phone: "Vui lòng nhập số điện thoại",
+                email: "Vui lòng nhập  Email",
                 promotion: "Mã khuyễn mãi",
-                description: "Vui lòng thông tin bổ sung"
+                description: "Vui lòng nhập thông tin bổ sung"
 
             },
             message: {
