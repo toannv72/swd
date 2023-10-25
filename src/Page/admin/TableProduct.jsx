@@ -213,6 +213,7 @@ export default function TableProduct() {
                                 description:
                                     textApp.TableProduct.Notification.update.description
                             });
+                            setDataRun(!dataRun)
                         })
                         .catch((error) => {
                             api["error"]({
@@ -235,6 +236,7 @@ export default function TableProduct() {
                                 description:
                                     textApp.TableProduct.Notification.change.description
                             });
+
                         })
                         .catch((error) => {
                             console.error("Error fetching items:", error);
@@ -245,6 +247,7 @@ export default function TableProduct() {
                                     textApp.TableProduct.Notification.updateFail.description
                             });
                         });
+                    setDataRun(!dataRun)
                 }
 
             }
@@ -255,7 +258,6 @@ export default function TableProduct() {
         setImages([]);
         setDisabled(false)
         setIsModalOpen(false);
-        setDataRun(!dataRun)
     }
 
     const deleteById = () => {
@@ -734,7 +736,14 @@ export default function TableProduct() {
                                         />
                                     </div>
                                 </div>
-                                <div className="sm:col-span-1">
+                                <div className="sm:col-span-2">
+                                    <label className="text-paragraph font-bold">
+                                        Hình ảnh
+                                        <span className="text-paragraph font-bold text-error-7 text-red-500">
+                                            *
+                                        </span>
+
+                                    </label>
                                     <ComUpImg onChange={onChange} />
                                 </div>
                             </div>
