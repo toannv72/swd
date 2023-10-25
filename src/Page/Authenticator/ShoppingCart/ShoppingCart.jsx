@@ -5,6 +5,8 @@ import { Button, Checkbox, InputNumber } from 'antd'
 import { textApp } from '../../../TextContent/textApp'
 import { Link, useNavigate } from 'react-router-dom'
 import Modal from 'react-modal';
+import { useStorage } from '../../../hooks/useLocalStorage'
+
 
 Modal.setAppElement('#root');
 
@@ -12,8 +14,9 @@ Modal.setAppElement('#root');
 export default function ShoppingCart({ show, updateShoppingCart }) {
   const [open, setOpen] = useState(show)
   const [disabled, setDisabled] = useState(false);
+  const [check, setCheck] = useState(false);
   const [checkedList, setCheckedList] = useState([]);
-  const [cart, setCart] = useState(JSON.parse(localStorage.getItem('cart')) || []);
+  const [cart, setCart] = useStorage('cart', []);
   const [totalAmount, setTotalAmount] = useState(0);
   const navigate = useNavigate();
   const nonDisabledProducts = cart.filter(product => product.quantity > 0);
@@ -23,12 +26,15 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
     // Sử dụng window.confirm() để xác nhận xóa sản phẩm
     const confirmDelete = window.confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');
     if (confirmDelete) {
+      const removedProduct = cart.find(item => item._id === productId);
       const updatedCart = cart.filter(item => item._id !== productId);
       setCart(updatedCart);
+    
     }
   };
   const onChange = (list) => {
     setCheckedList(list);
+
   };
   const onCheckAllChange = (e) => {
     const nonDisabledProducts = cart.filter(product => product.quantity > 0);
@@ -45,15 +51,20 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
       }
     }, [checkedList]);
 
-    useEffect(() => {
-      // Kiểm tra xem có ít nhất một sản phẩm được chọn hay không
-      if (checkedList.length > 0) {
-        setDisabled(false); // Khi có ít nhất một sản phẩm được chọn, kích hoạt nút "Xóa tất cả"
-      } else {
-        setDisabled(true);
-      }
-    }, [checkedList]);
-    // Hàm để chọn hoặc bỏ chọn sản phẩm
+  useEffect(() => {
+    // Kiểm tra xem có ít nhất một sản phẩm được chọn hay không
+    if (checkedList.length > 0) {
+      setDisabled(false); // Khi có ít nhất một sản phẩm được chọn, kích hoạt nút "Xóa tất cả"
+    } else {
+      setDisabled(true);
+    }
+    let total = 0;
+    for (const product of checkedList) {
+      total += product.reducedPrice*product.data;
+    }
+    setTotalAmount(total)
+  }, [checkedList]);
+  // Hàm để chọn hoặc bỏ chọn sản phẩm
   const toggleProductSelection = (productId) => {
     if (checkedList.includes(productId)) {
       // Bỏ chọn sản phẩm nếu đã chọn
@@ -67,18 +78,18 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
   const removeAllSelectedProducts = () => {
     const confirmDelete = window.confirm('Bạn có chắc chắn muốn xóa các sản phẩm này?');
     if (confirmDelete) {
-    // Lấy danh sách các ID sản phẩm đã chọn
-    const selectedProductIds = checkedList.map((product) => product._id);
-    
-    // Lọc ra các sản phẩm không nằm trong danh sách đã chọn
-    const updatedCart = cart.filter((product) => !selectedProductIds.includes(product._id));
-    
-    setCart(updatedCart);
-    setCheckedList([]); // Bỏ chọn tất cả sau khi xóa
-    localStorage.setItem('cart', JSON.stringify(updatedCart)); // Cập nhật dữ liệu trong localStorage
+      // Lấy danh sách các ID sản phẩm đã chọn
+      const selectedProductIds = checkedList.map((product) => product._id);
+      // Lọc ra các sản phẩm không nằm trong danh sách đã chọn
+      const updatedCart = cart.filter((product) => !selectedProductIds.includes(product._id));
+      console.log(updatedCart);
+      setCart(updatedCart);
+      setCheckedList([]); // Bỏ chọn tất cả sau khi xóa
+      localStorage.setItem('cart', JSON.stringify(updatedCart)); // Cập nhật dữ liệu trong localStorage
+      
     }
   };
-  
+
 
   useEffect(
     () => {
@@ -95,7 +106,12 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
   };
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
-  }, [cart])
+    console.log(1111111111111111,cart);
+    
+  }, [cart,check])
+
+
+
   const removeFromCart = (productId) => {
     const updatedCart = cart.filter(item => item._id !== productId);
     setCart(updatedCart);
@@ -110,17 +126,13 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
   const onSubmit = () => {
     setOpen(false);
     handleCartClose();
-    console.log(selectedProducts);
     const selectedProductIds = checkedList.map((product) => product._id);
-  const updatedCart = cart.filter((product) => !selectedProductIds.includes(product._id));
-  
-  setCart(updatedCart);
-  setCheckedList([]); // Bỏ chọn tất cả sản phẩm đã chọn
-  localStorage.setItem('cart', JSON.stringify(updatedCart)); // Cập nhật dữ liệu trong localStorage
-
-  // Thực hiện các hành động liên quan đến thanh toán ở đây
-
-  // Chuyển người dùng đến trang thanh toán hoặc thực hiện các hành động cần thiết
+    const updatedCart = cart.filter((product) => !selectedProductIds.includes(product._id));
+    setCart(updatedCart);
+    setCheckedList([]); // Bỏ chọn tất cả sản phẩm đã chọn
+    localStorage.setItem('cart', JSON.stringify(updatedCart)); // Cập nhật dữ liệu trong localStorage
+    // Thực hiện các hành động liên quan đến thanh toán ở đây
+    // Chuyển người dùng đến trang thanh toán hoặc thực hiện các hành động cần thiết
     navigate('/payment', { state: { dataProduct: selectedProducts } })
   }
 
@@ -145,7 +157,6 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
         currency: 'VND',
       });
   }
-
   const calculateTotalAmount = () => {
     let total = 0;
     for (const product of cart) {
@@ -198,18 +209,18 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
                         </div>
                       </div>
                       <Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll}>
-      {textApp.ShoppingCart.checkbox}
-    </Checkbox>
-    
-    {disabled ? null : ( // Hiển thị nút "Xóa tất cả" nếu không bị vô hiệu hóa
-      <Button
-      onClick={removeAllSelectedProducts}
-      disabled={disabled}
-      className="font-medium text-indigo-600 hover:text-indigo-500"
-    >
-      Xóa nhiều
-    </Button>
-    )}
+                        {textApp.ShoppingCart.checkbox}
+                      </Checkbox>
+
+                      {disabled ? null : ( // Hiển thị nút "Xóa tất cả" nếu không bị vô hiệu hóa
+                        <Button
+                          onClick={removeAllSelectedProducts}
+                          disabled={disabled}
+                          className="font-medium text-indigo-600 hover:text-indigo-500 border-none"
+                        >
+                          Xóa các sản phẩm đã chọn
+                        </Button>
+                      )}
                       <div className="mt-8">
                         <div className="flow-root">
                           <div role="list" className="-my-6 divide-y divide-gray-200">
@@ -243,19 +254,19 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
                                             className="w-14 text-sm"
                                             min={1}
                                             onChange={(newQuantity) => handleQuantityChange(product._id, newQuantity)}
-                                            defaultValue={product?.data || 1}
+                                            value={product?.data}
                                             max={product.quantity}
                                           />
                                           {product.quantity} Sản phẩm
                                         </div>
 
                                         <div className="flex">
-                                        <button
-        onClick={() => removeProduct(product._id)}
-        className="font-medium text-indigo-600 hover:text-indigo-500"
-      >
-        Xóa
-      </button>
+                                          <button
+                                            onClick={() => removeProduct(product._id)}
+                                            className="font-medium text-indigo-600 hover:text-indigo-500"
+                                          >
+                                            Xóa
+                                          </button>
                                         </div>
                                       </div>
                                     </div>
@@ -270,31 +281,28 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
 
                     <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
                       <div className="flex justify-between text-base font-medium text-gray-900">
-                        <p>Subtotal</p>
-                        <p>{formatCurrency(calculateTotalAmount())}</p>
+                        <p>Tổng cộng</p>
+                        <p>{formatCurrency(totalAmount)}</p>
                       </div>
-                      <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
+                      <p className="mt-0.5 text-sm text-gray-500">Vận chuyển và thuế được tính khi thanh toán.</p>
                       <div className="mt-6">
                         <Button
                           onClick={() => { onSubmit() }}
-                          // onClick={() => { setOpen(false); handleCartClose(); }}
-                          // disabled={true}
                           disabled={disabled}
-
                           className="flex h-12 items-center w-full justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                         >
-                          Checkout
+                          Thanh toán
                         </Button>
                       </div>
                       <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                         <p>
-                          or
+                          hoặc
                           <button
                             type="primary"
                             className="font-medium text-indigo-600 hover:text-indigo-500"
                             onClick={() => { setOpen(false); handleCartClose(); }}
                           >
-                            Continue Shopping
+                            Tiếp tục mua sắm
                             <span aria-hidden="true"> &rarr;</span>
                           </button>
                         </p>
