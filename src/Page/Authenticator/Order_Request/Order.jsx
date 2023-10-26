@@ -4,6 +4,7 @@ import ComFooter from "../../Components/ComFooter/ComFooter";
 import Pending from "./Pending";
 import Processing from "./Processing"
 import Transporting from "./Transporting"
+import Deposit from "./Deposit"
 import Done from "./Done"
 import Cancel from "./Cancel"
 import Return from "./Return"
@@ -22,6 +23,11 @@ const data = [
     label: textApp.OrderHistory.label.status,
     value: textApp.OrderHistory.value.status,
     desc:<Pending/>,
+  },
+  {
+    label: textApp.OrderHistory.label.status7,
+    value: textApp.OrderHistory.value.status7,
+    desc:<Deposit/>,
   },
   {
     label: textApp.OrderHistory.label.status1,
@@ -57,6 +63,8 @@ const data = [
     desc:<All/>,
   },
 ];
+
+console.log("data"+ data[1].label);
 export default function Order() {
   const [activeTab, setActiveTab] = useState(data[0].value);
 
@@ -65,7 +73,7 @@ export default function Order() {
   return (
     <>
       <ComHeader />
-      <Tabs value={activeTab}>
+      {/* <Tabs value={activeTab}>
         <TabsHeader
           className="rounded-none border-b border-blue-gray-50 bg-transparent p-0"
           indicatorProps={{
@@ -81,6 +89,7 @@ export default function Order() {
               className={activeTab === value ? "text-gray-900 z-0" : "cursor-pointer"}
             >
               {label}
+              
             </Tab>
           ))}
         </TabsHeader>
@@ -91,7 +100,7 @@ export default function Order() {
             </TabPanel>
           ))}
         </TabsBody>
-      </Tabs>
+      </Tabs> */}
       <ComFooter />
     </>
   );

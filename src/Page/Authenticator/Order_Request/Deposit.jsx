@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { textApp } from "../../../TextContent/textApp";
 import { getData } from '../../../api/api';
 
-export default function Cancel({activeTab}) {
+export default function Deposit({activeTab}) {
   const [order, setOrder] = useState([]);
   const [products, setProducts] = useState([]);
 
@@ -18,7 +18,7 @@ export default function Cancel({activeTab}) {
           console.error("Error fetching products:", error);
         });
 
-      getData('customOrder/admin/canceled', {})
+      getData('customOrder/admin/deposit', {})
         .then((orderData) => {
           setOrder(orderData?.data?.docs);
     

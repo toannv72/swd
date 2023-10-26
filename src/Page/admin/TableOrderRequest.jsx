@@ -8,6 +8,7 @@ import {
 } from "@material-tailwind/react";
 import React, { useState } from "react";
 import OrderPending from './ComOrderTableRequest/OrderPending';
+import OrderDeposit  from './ComOrderTableRequest/OrderDeposit';
 import OrderProcessing from './ComOrderTableRequest/OrderProcessing';
 import OrderShipped from './ComOrderTableRequest/OrderShipped';
 import OrderDelivered from './ComOrderTableRequest/OrderDelivered';
@@ -16,11 +17,17 @@ import OrderReturned from './ComOrderTableRequest/OrderReturned';
 import OrderAll from './ComOrderTableRequest/OrderAll';
 import { textApp } from "../../TextContent/textApp";
 import ComHeaderStaff from "../Components/ComHeaderStaff/ComHeaderStaff";
+
 const data = [
     {
         label: textApp.OrderHistory.label.status,
         value: textApp.OrderHistory.value.status,
         desc: <OrderPending  />,
+    },
+    {
+        label: textApp.OrderHistory.label.status7,
+        value: textApp.OrderHistory.value.status7,
+        desc: <OrderDeposit/>,
     },
     {
         label: textApp.OrderHistory.label.status1,

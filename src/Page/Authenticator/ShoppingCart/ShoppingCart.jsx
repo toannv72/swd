@@ -16,6 +16,7 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
     JSON.parse(localStorage.getItem("cart")) || []
   );
   const [totalAmount, setTotalAmount] = useState(0);
+  const [selectedProductsTotal, setSelectedProductsTotal] = useState(0);
   const navigate = useNavigate();
   const nonDisabledProducts = cart.filter((product) => product.quantity > 0);
   const checkAll = nonDisabledProducts.length === checkedList.length;
@@ -34,10 +35,16 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
   const onChange = (list) => {
     setCheckedList(list);
   };
+  // const onCheckAllChange = (e) => {
+  //   const nonDisabledProducts = cart.filter((product) => product.quantity > 0);
+  //   setCheckedList(e.target.checked ? nonDisabledProducts : []);
+  // };
   const onCheckAllChange = (e) => {
     const nonDisabledProducts = cart.filter((product) => product.quantity > 0);
-    setCheckedList(e.target.checked ? nonDisabledProducts : []);
+    // Nếu ô "Chọn tất cả" được chọn, cập nhật checkedList với danh sách _id của tất cả sản phẩm hợp lệ
+    setCheckedList(e.target.checked ? nonDisabledProducts.map(product => product._id) : []);
   };
+  
   useEffect(() => {
     if (checkedList.length === 0) {
       setDisabled(true);
@@ -57,13 +64,14 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
   // Hàm để chọn hoặc bỏ chọn sản phẩm
   const toggleProductSelection = (productId) => {
     if (checkedList.includes(productId)) {
-      // Bỏ chọn sản phẩm nếu đã chọn
+      // Nếu sản phẩm đã được chọn, hãy loại bỏ nó khỏi checkedList
       setCheckedList(checkedList.filter((id) => id !== productId));
     } else {
-      // Chọn sản phẩm nếu chưa chọn
+      // Nếu sản phẩm chưa được chọn, hãy thêm nó vào checkedList
       setCheckedList([...checkedList, productId]);
     }
   };
+  
 
   const removeAllSelectedProducts = () => {
     const confirmDelete = window.confirm(
@@ -142,6 +150,7 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
     console.log(updatedCart);
     setCart(updatedCart);
   };
+
   function formatCurrency(number) {
     // Sử dụng hàm toLocaleString() để định dạng số thành chuỗi với ngăn cách hàng nghìn và mặc định là USD.
     return number.toLocaleString("en-US", {
@@ -152,11 +161,18 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
 
   const calculateTotalAmount = () => {
     let total = 0;
-    for (const product of cart) {
-      total += product.reducedPrice;
+    // Iterate through checkedList and find corresponding products in the cart
+    for (const productId of checkedList) {
+      const selectedProduct = cart.find((product) => product._id === productId);
+      if (selectedProduct) {
+        // Add the price of the selected product to the total
+        total += selectedProduct.reducedPrice;
+      }
     }
     return total;
   };
+  
+
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog
@@ -247,11 +263,11 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
                                 .map((product, index) => (
                                   <div className="flex gap-2" key={index}>
                                     <Checkbox
-                                      value={product}
-                                      disabled={
-                                        product.quantity === 0 ? true : false
-                                      }
-                                    />
+  value={product._id}
+  checked={checkedList.includes(product._id)}
+  disabled={product.quantity === 0 ? true : false}
+/>
+
                                     <li key={product.id} className="flex py-4">
                                       <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                         <img
@@ -307,7 +323,6 @@ export default function ShoppingCart({ show, updateShoppingCart }) {
                                               onClick={() =>
                                                 removeProduct(product._id)
                                               }
-                                              className="font-medium text-indigo-600 hover:text-indigo-500"
                                             >
                                               Xóa
                                             </button>
