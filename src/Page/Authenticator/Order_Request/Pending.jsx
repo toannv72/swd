@@ -19,7 +19,7 @@ export default function Pending({activeTab}) {
           console.error("Error fetching products:", error);
         });
 
-      getData('customOrder/admin/pending', {})
+      getData('customOrder/user/pending', {})
         .then((orderData) => {
           setOrder(orderData?.data?.docs);
 

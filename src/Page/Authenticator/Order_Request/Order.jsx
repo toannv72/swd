@@ -73,7 +73,7 @@ export default function Order() {
   return (
     <>
       <ComHeader />
-      {/* <Tabs value={activeTab}>
+       <Tabs value={activeTab}>
         <TabsHeader
           className="rounded-none border-b border-blue-gray-50 bg-transparent p-0"
           indicatorProps={{
@@ -100,7 +100,7 @@ export default function Order() {
             </TabPanel>
           ))}
         </TabsBody>
-      </Tabs> */}
+      </Tabs> 
       <ComFooter />
     </>
   );

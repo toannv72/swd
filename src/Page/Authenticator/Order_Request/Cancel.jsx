@@ -18,7 +18,7 @@ export default function Cancel({activeTab}) {
           console.error("Error fetching products:", error);
         });
 
-      getData('customOrder/admin/canceled', {})
+      getData('customOrder/user/canceled', {})
         .then((orderData) => {
           setOrder(orderData?.data?.docs);
     

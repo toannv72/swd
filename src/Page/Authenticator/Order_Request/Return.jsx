@@ -18,7 +18,7 @@ export default function Return({activeTab}) {
           console.error("Error fetching products:", error);
         });
 
-      getData('customOrder/admin/returned', {})
+      getData('customOrder/user/returned', {})
         .then((orderData) => {
           setOrder(orderData?.data?.docs);
     
