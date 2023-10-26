@@ -88,9 +88,9 @@ export default function Pending() {
                 </div>
                 <div className="col-span-1 mt-4 md:mt-0">
                   <div className="flex flex-col items-end mb-4">
-                    <div className={`flex-none ${orderData.status === "Done" ? 'bg-emerald-500' : 'bg-red-500'} text-white rounded-full px-3 py-1 mb-2`}>
-                      {orderData.status}
-                    </div>
+                  <div className={`flex-none ${orderData.status === "Delivered" ? 'bg-emerald-500' : (orderData.status === "Canceled" || orderData.status === "Returned" ? 'bg-red-500' : 'bg-yellow-500')} text-white rounded-full px-3 py-1 mb-2`}>
+                    {orderData.status === "Delivered" ? "Đã hoàn thành" : (orderData.status === "Canceled" ? "Đã hủy" : (orderData.status === "Returned" ? "Trả hàng" : (orderData.status === "Pending" ? "Chờ duyệt" : (orderData.status === "Processing" ? "Đang xử lí" : "Đang vận chuyển"))))}
+                  </div>
                   </div>
                 </div>
                 <div className="col-span-3 mt-4 md:mt-0">

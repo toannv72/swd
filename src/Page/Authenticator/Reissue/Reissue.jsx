@@ -157,7 +157,7 @@ export default function Reissue() {
                     </FormProvider>
 
                     <p className="mt-10 text-center text-sm text-gray-500">
-                        Not a member?{' '}
+                        Chưa có tài khoản?{' '}
                         <ComLink to={routs["/login"].link} >
                             <>{routs["/login"].name}</>
                         </ComLink>

@@ -118,7 +118,7 @@ export default function ComHeaderManager() {
                           <ListItemPrefix>
                             <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                           </ListItemPrefix>
-                          Analytics
+                          Phân tích
                         </ListItem>
                       </Link>
                       {/* <ListItem>

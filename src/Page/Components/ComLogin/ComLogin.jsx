@@ -88,7 +88,7 @@ export default function ComLogin({handleCancel}) {
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
 
                     <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-                        Sign in to your account
+                        Đăng nhập
                     </h2>
                 </div>
 
@@ -137,7 +137,7 @@ export default function ComLogin({handleCancel}) {
                     </FormProvider>
 
                     <p className="mt-10 text-center text-sm text-gray-500">
-                        Not a member?{' '}
+                        Chưa có tài khoản?{' '}
                         <ComLink to={routs["/reissue"].link} >
                             <>{routs["/reissue"].name}</>
                         </ComLink>

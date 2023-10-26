@@ -155,19 +155,19 @@ export default function ComHeaderStaff() {
                         <ListItemPrefix>
                           <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                         </ListItemPrefix>
-                        Analytics
+                        Phân tích
                       </ListItem>
                       <ListItem>
                         <ListItemPrefix>
                           <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                         </ListItemPrefix>
-                        Reporting
+                        Báo cáo
                       </ListItem>
                       <ListItem>
                         <ListItemPrefix>
                           <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                         </ListItemPrefix>
-                        Projects
+                        Dự án
                       </ListItem>
                     </List>
                   </AccordionBody>
@@ -264,7 +264,7 @@ export default function ComHeaderStaff() {
                   <ListItemPrefix>
                     <InboxIcon className="h-5 w-5" />
                   </ListItemPrefix>
-                  Inbox
+                  Tin nhắn
                   <ListItemSuffix>
                     <Chip value="14" size="sm" variant="ghost" color="blue-gray" className="rounded-full" />
                   </ListItemSuffix>
@@ -273,13 +273,13 @@ export default function ComHeaderStaff() {
                   <ListItemPrefix>
                     <UserCircleIcon className="h-5 w-5" />
                   </ListItemPrefix>
-                  Profile
+                  Thông tin
                 </ListItem>
                 <ListItem>
                   <ListItemPrefix>
                     <Cog6ToothIcon className="h-5 w-5" />
                   </ListItemPrefix>
-                  Settings
+                  Cài đặt
                 </ListItem>
 
                 <Link to={routs['/logout'].link}>
