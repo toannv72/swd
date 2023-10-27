@@ -21,7 +21,7 @@ import moment from 'moment/moment';
 
 export default function OrderProcessing({ activeTab }) {
     const [disabled, setDisabled] = useState(false);
-
+    const [products, setProducts] = useState([]);
     const [order, setOrder] = useState([]);
     const [isModalOpenProcessing, setIsModalOpenProcessing] = useState(false);
     const [isModalOpenCanceled, setIsModalOpenCanceled] = useState(false);
@@ -29,13 +29,15 @@ export default function OrderProcessing({ activeTab }) {
     const [isModalOpenCanceledS, setIsModalOpenCanceledS] = useState(false);
     const [dataRun, setDataRun] = useState(false);
     const [orderRequestDefault, setOrderRequestDefault] = useState({});
+    const [orderDetail, setOrderDetail] = useState({});
+    const [orderModalDetail, setModalOrderDetail] = useState(false);
     const [api, contextHolder] = notification.useNotification();
     const [selectedMaterials, setSelectedMaterials] = useState();
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
     const searchInput = useRef(null);
     const [selected, setSelected] = useState([]);
-
+    console.log(orderDetail);
     const rowSelection = {
         onChange: (selectedRowKeys, selectedRows) => {
 
@@ -62,6 +64,17 @@ export default function OrderProcessing({ activeTab }) {
             id: e._id
         })
         setIsModalOpenProcessing(true);
+    };
+    const showModalDetail = (e) => {
+        setOrderDetail({
+            detail: e
+        })
+        setModalOrderDetail(true);
+    };
+
+    const closeModalDetail = () => {
+        setOrderDetail({})
+        setModalOrderDetail(false);
     };
 
     const handleOpenCanceled = (e) => {
@@ -102,29 +115,11 @@ export default function OrderProcessing({ activeTab }) {
             setDisabled(true)
         }
     }, [selected]);
-    // const processing = () => {
-    //     putData('/order/admin/put', 'Shipped', { orders: [orderRequestDefault.id] })
-    //         .then((e) => {
-    //             setDataRun(!dataRun);
-    //         })
-    //         .catch(err => console.log(err))
-    //     setDataRun(!dataRun);
-    //     handleCancelProcessingS()
-    // }
-    // console.log(dataRun);
-    // const sttCanceled = () => {
-    //     putData('/order/admin/put', 'Pending', { orders: [orderRequestDefault.id] })
-    //         .then((e) => {
-    //             setDataRun(!dataRun);
-    //         })
-    //         .catch(err => console.log(err))
-    //     setDataRun(!dataRun);
-    //     handleCancelCanceled()
-    // }isModalOpenProcessing
+
     const shipped = () => {
         putData('/order/admin/put', 'Shipped', { orders: [orderRequestDefault.id] })
             .then((e) => {
-              
+
                 setDataRun(!dataRun);
             })
             .catch(err => console.log(err))
@@ -142,17 +137,6 @@ export default function OrderProcessing({ activeTab }) {
         setDisabled(true)
     }
 
-    const pendingS = () => {
-        putData('/order/admin/put', 'Canceled', { orders: selected })
-            .then((e) => {
-                setDataRun(!dataRun);
-            })
-            .catch(err => console.log(err))
-        setDataRun(!dataRun);
-        handleCancelCanceledS();
-        console.log(selected);
-        setDisabled(true)
-    }
     useEffect(() => {
         getData('/order/admin/Processing', {})
             .then((data) => {
@@ -161,7 +145,14 @@ export default function OrderProcessing({ activeTab }) {
             .catch((error) => {
                 console.error("Error fetching items:", error);
             });
-    }, [dataRun,activeTab]);
+        getData('/product/staff', {})
+            .then((productData) => {
+                setProducts(productData?.data);
+            })
+            .catch((error) => {
+                console.error("Error fetching products:", error);
+            });
+    }, [dataRun, activeTab]);
 
 
     const getColumnSearchProps = (dataIndex, title) => ({
@@ -256,13 +247,15 @@ export default function OrderProcessing({ activeTab }) {
             key: '_id',
             fixed: 'left',
 
+            ...getColumnSearchProps('_id', 'Mã đơn hàng'),
             render: (_, record) => (
 
                 <div >
-                    <h1>{record._id}</h1>
+                    <Typography.Link onClick={() => showModalDetail(record)}>
+                        {record._id}
+                    </Typography.Link>
                 </div>
             ),
-            ...getColumnSearchProps('_id', 'Mã đơn hàng'),
         },
         {
             title: 'Tên Người đặt',
@@ -371,6 +364,11 @@ export default function OrderProcessing({ activeTab }) {
         },
     ];
 
+    const getProductById = (productId) => {
+        // Tìm sản phẩm theo ID trong danh sách sản phẩm
+     
+        return products?.docs?.find(product => product._id === productId);
+    };
 
     return (
         <>
@@ -439,30 +437,6 @@ export default function OrderProcessing({ activeTab }) {
                     </ComButton>
                 </div>
             </Modal>
-            {/* <Modal title="hủy đơn hàng này"
-                okType="primary text-black border-gray-700"
-                open={isModalOpenCanceled}
-                width={500}
-                // style={{ top: 20 }}
-                onCancel={handleCancelCanceled}>
-
-                <div className='flex'>
-                    <ComButton
-                        type="primary"
-                        danger
-                        onClick={sttCanceled}
-                    >
-                        Xác nhận
-                    </ComButton>
-                    <ComButton
-                        type="primary"
-                        onClick={handleCancelCanceled}
-                    >
-                        {textApp.TableProduct.modal.cancel}
-                    </ComButton>
-                </div>
-            </Modal> */}
-
             <Modal title="Chấp nhận đơn hàng"
                 okType="primary text-black border-gray-700"
                 open={isModalOpenProcessingS}
@@ -481,36 +455,74 @@ export default function OrderProcessing({ activeTab }) {
                     </ComButton>
                     <ComButton
                         type="primary"
-                        onClick={handleCancelProcessingS}
+                        onClick={closeModalDetail}
                     >
                         hủy
                     </ComButton>
                 </div>
             </Modal>
-            {/* <Modal title="Xác nhận hủy đơn hàng"
+
+            <Modal title="Chi tiết đơn hàng"
                 okType="primary text-black border-gray-700"
-                open={isModalOpenCanceledS}
+                open={orderModalDetail}
                 width={500}
                 // style={{ top: 20 }}
-                onCancel={handleCancelCanceledS}>
-                <div className='text-lg p-6'>Bạn có chắc chắn muốn hủy đơn hàng đã chọn này không?</div>
+                onCancel={closeModalDetail}>
+                <div className=" flex items-center justify-center">
+                    <div className="p-4 md:p-8 lg:p-12 rounded-lg  w-full">
+                     
+                        <div className="mb-4">
+                            <h2 className="text-lg font-semibold mb-2">Thông tin sản phẩm:</h2>
+                            {orderDetail?.detail?.products?.map((product, index) => {
+                                // Sử dụng getProductById để lấy thông tin sản phẩm đầy đủ
+                                const fullProduct = getProductById(product.product);
+                                const materials = fullProduct?.material?.join(', ');
+                                console.log(product.product)
+                                return (
+                                    <div key={index} className="mb-4 flex items-center">
+                                        <img src={fullProduct?.image} alt={fullProduct?.name} className="w-24 h-24 object-cover rounded-lg" />
+                                        <div className="ml-4">
+                                            <p className="text-lg font-semibold">{fullProduct?.name}</p>
+                                            <p>
+                                                {textApp.OrderHistory.product.quantity} {product?.quantity}
+                                            </p>
+                                            <p>
+                                                {textApp.OrderHistory.product.price} {product?.price?.toLocaleString("en-US", { style: "currency", currency: "VND" })}
+                                            </p>
+                                            <p>
+                                                {textApp.Product.page.material}{materials}
+                                            </p>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                        <p className="text-gray-600 mb-2">
+                            {textApp.Invoice.orderDate}:{" "}
+                            {new Date(orderDetail?.detail?.createdAt).toLocaleDateString("en-US")}
+                        </p>
+                        <p className="text-gray-600 mb-2">
+                            {textApp.Invoice.paymentMethod}
+                        </p>
+                        <p className="text-gray-600 mb-6">
+                            {textApp.OrderHistory.product.amount}:{" "}
+                            {orderDetail?.detail?.totalAmount?.toLocaleString("en-US", {
+                                style: "currency",
+                                currency: "VND",
+                            })}
+                        </p>
 
+                    </div>
+                </div>
                 <div className='flex'>
                     <ComButton
                         type="primary"
-                        danger
-                        onClick={pendingS}
+                        onClick={closeModalDetail}
                     >
-                        Xác nhận
-                    </ComButton>
-                    <ComButton
-                        type="primary"
-                        onClick={handleCancelCanceledS}
-                    >
-                        {textApp.TableProduct.modal.cancel}
+                        Đóng
                     </ComButton>
                 </div>
-            </Modal> */}
+            </Modal>
         </>
     )
 }

@@ -6,14 +6,13 @@ import ComHeader from "../../Components/ComHeader/ComHeader";
 import ComFooter from "../../Components/ComFooter/ComFooter";
 
 const InvoicePage = () => {
-  const location = useLocation();
   const { id } = useParams();
   const [products, setProducts] = useState([]);
   const [order, setOrder] = useState(null);
 
   useEffect(() => {
     // Lấy danh sách sản phẩm
-    getData('/product', {})
+    getData('/product/staff', {})
       .then((productData) => {
         setProducts(productData?.data);
       })
@@ -34,6 +33,7 @@ const InvoicePage = () => {
 
   const getProductById = (productId) => {
     // Tìm sản phẩm theo ID trong danh sách sản phẩm
+    console.log(products?.docs);
     return products?.docs?.find(product => product._id === productId);
   };
 
@@ -44,7 +44,7 @@ const InvoicePage = () => {
   return (
     <>
       <ComHeader />
-      <div className="min-h-screen flex items-center justify-center">
+      <div className=" flex items-center justify-center">
         <div className="bg-white p-4 md:p-8 lg:p-12 rounded-lg shadow-md w-full md:w-3/4 lg-w-1/2 xl:w-1/3">
           <h1 className="bg-blue-500 text-white py-2 px-4 rounded-md text-center block w-full text-2xl font-semibold mb-4">
             {textApp.Invoice.title}
@@ -59,7 +59,7 @@ const InvoicePage = () => {
               // Sử dụng getProductById để lấy thông tin sản phẩm đầy đủ
               const fullProduct = getProductById(product.product);
               const materials = fullProduct?.material?.join(', ');
-
+              console.log(product.product)
               return (
                 <div key={index} className="mb-4 flex items-center">
                   <img src={fullProduct?.image} alt={fullProduct?.name} className="w-24 h-24 object-cover rounded-lg" />
@@ -69,10 +69,10 @@ const InvoicePage = () => {
                       {textApp.OrderHistory.product.quantity} {product?.quantity}
                     </p>
                     <p>
-                      {textApp.OrderHistory.product.price}: {product?.price?.toLocaleString("en-US", { style: "currency", currency: "VND" })}
+                      {textApp.OrderHistory.product.price} {product?.price?.toLocaleString("en-US", { style: "currency", currency: "VND" })}
                     </p>
                     <p>
-                      {textApp.Product.page.material}: {materials}
+                      {textApp.Product.page.material}{materials}
                     </p>
                   </div>
                 </div>

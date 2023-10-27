@@ -29,7 +29,9 @@ export default function OrderPending({ activeTab }) {
     const [searchedColumn, setSearchedColumn] = useState('');
     const searchInput = useRef(null);
     const [selected, setSelected] = useState([]);
-
+    const [products, setProducts] = useState([]);
+    const [orderDetail, setOrderDetail] = useState({});
+    const [orderModalDetail, setModalOrderDetail] = useState(false);
     const rowSelection = {
         onChange: (selectedRowKeys, selectedRows) => {
 
@@ -58,7 +60,14 @@ export default function OrderPending({ activeTab }) {
         setIsModalOpenProcessing(true);
 
     };
-
+    const closeModalDetail = () => {
+        setOrderDetail({})
+        setModalOrderDetail(false);
+    };
+    const getProductById = (productId) => {
+        // Tìm sản phẩm theo ID trong danh sách sản phẩm\
+        return products?.docs?.find(product => product._id === productId);
+    };
     const handleOpenCanceled = (e) => {
 
         setOrderRequestDefault({
@@ -142,6 +151,13 @@ export default function OrderPending({ activeTab }) {
         handleCancelCanceledS()
     }
     useEffect(() => {
+        getData('/product/staff', {})
+            .then((productData) => {
+                setProducts(productData?.data);
+            })
+            .catch((error) => {
+                console.error("Error fetching products:", error);
+            });
         setTimeout(() => {
             getData('/order/admin/pending', {})
                 .then((data) => {
@@ -236,7 +252,13 @@ export default function OrderPending({ activeTab }) {
             ) : (
                 text
             ),
-    });
+    }); 
+    const showModalDetail = (e) => {
+        setOrderDetail({
+            detail: e
+        })
+        setModalOrderDetail(true);
+    };
     const columns = [
 
 
@@ -247,13 +269,15 @@ export default function OrderPending({ activeTab }) {
             key: '_id',
             fixed: 'left',
 
+            ...getColumnSearchProps('_id', 'Mã đơn hàng'),
             render: (_, record) => (
 
                 <div >
-                    <h1>{record._id}</h1>
+                    <Typography.Link onClick={() => showModalDetail(record)}>
+                        {record._id}
+                    </Typography.Link>
                 </div>
             ),
-            ...getColumnSearchProps('_id', 'Mã đơn hàng'),
         },
         {
             title: 'Tên Người đặt',
@@ -498,6 +522,67 @@ export default function OrderPending({ activeTab }) {
                         onClick={handleCancelCanceledS}
                     >
                         {textApp.TableProduct.modal.cancel}
+                    </ComButton>
+                </div>
+            </Modal>
+            <Modal title="Chi tiết đơn hàng"
+                okType="primary text-black border-gray-700"
+                open={orderModalDetail}
+                width={500}
+                // style={{ top: 20 }}
+                onCancel={closeModalDetail}>
+                <div className=" flex items-center justify-center">
+                    <div className="p-4 md:p-8 lg:p-12 rounded-lg  w-full">
+                     
+                        <div className="mb-4">
+                            <h2 className="text-lg font-semibold mb-2">Thông tin sản phẩm:</h2>
+                            {orderDetail?.detail?.products?.map((product, index) => {
+                                // Sử dụng getProductById để lấy thông tin sản phẩm đầy đủ
+                                const fullProduct = getProductById(product.product);
+                                const materials = fullProduct?.material?.join(', ');
+                                console.log(product.product)
+                                return (
+                                    <div key={index} className="mb-4 flex items-center">
+                                        <img src={fullProduct?.image} alt={fullProduct?.name} className="w-24 h-24 object-cover rounded-lg" />
+                                        <div className="ml-4">
+                                            <p className="text-lg font-semibold">{fullProduct?.name}</p>
+                                            <p>
+                                                {textApp.OrderHistory.product.quantity} {product?.quantity}
+                                            </p>
+                                            <p>
+                                                {textApp.OrderHistory.product.price} {product?.price?.toLocaleString("en-US", { style: "currency", currency: "VND" })}
+                                            </p>
+                                            <p>
+                                                {textApp.Product.page.material}{materials}
+                                            </p>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                        <p className="text-gray-600 mb-2">
+                            {textApp.Invoice.orderDate}:{" "}
+                            {new Date(orderDetail?.detail?.createdAt).toLocaleDateString("en-US")}
+                        </p>
+                        <p className="text-gray-600 mb-2">
+                            {textApp.Invoice.paymentMethod}
+                        </p>
+                        <p className="text-gray-600 mb-6">
+                            {textApp.OrderHistory.product.amount}:{" "}
+                            {orderDetail?.detail?.totalAmount?.toLocaleString("en-US", {
+                                style: "currency",
+                                currency: "VND",
+                            })}
+                        </p>
+
+                    </div>
+                </div>
+                <div className='flex'>
+                    <ComButton
+                        type="primary"
+                        onClick={closeModalDetail}
+                    >
+                        Đóng
                     </ComButton>
                 </div>
             </Modal>
