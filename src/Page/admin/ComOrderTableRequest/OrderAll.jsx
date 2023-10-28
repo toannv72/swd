@@ -284,7 +284,7 @@ export default function OrderAll() {
     }
     useEffect(() => {
         setTimeout(() => {
-            getData('/product', {})
+            getData('customOrder/admin', {})
                 .then((data) => {
                     setProducts(data?.data?.docs)
                 })

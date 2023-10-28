@@ -285,7 +285,7 @@ export default function OrderDelivered() {
     }
     useEffect(() => {
         setTimeout(() => {
-            getData('/product', {})
+            getData('customOrder/admin/delivered', {})
                 .then((data) => {
                     setProducts(data?.data?.docs)
                 })

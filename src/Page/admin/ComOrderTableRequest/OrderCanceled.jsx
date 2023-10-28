@@ -286,7 +286,7 @@ export default function OrderCanceled() {
     }
     useEffect(() => {
         setTimeout(() => {
-            getData('/product', {})
+            getData('customOrder/admin/canceled', {})
                 .then((data) => {
                     setProducts(data?.data?.docs)
                 })
