@@ -119,7 +119,7 @@ export default function OrderShipped({ activeTab }) {
     }
 
     const sttCanceled = () => {
-        putData('/order/admin/put', 'Canceled', { orders: [orderRequestDefault.id] })
+        putData('/order/admin/put', 'Returned', { orders: [orderRequestDefault.id] })
             .then((e) => {
 
                 setDataRun(!dataRun);
@@ -142,7 +142,7 @@ export default function OrderShipped({ activeTab }) {
     }
 
     const canceledS = () => {
-        putData('/order/admin/put', 'Canceled', { orders: selected })
+        putData('/order/admin/put', 'Returned', { orders: selected })
             .then((e) => {
                 setDataRun(!dataRun);
                 handleCancelCanceledS()
@@ -379,7 +379,7 @@ export default function OrderShipped({ activeTab }) {
                     </div>
                     <div className='mt-2'>
                         <Typography.Link onClick={() => handleOpenCanceled(record)}>
-                            <div className='text-red-600'>hủy</div>
+                            <div className='text-red-600'>Trả hàng</div>
                         </Typography.Link>
                     </div>
                 </div>
@@ -406,7 +406,7 @@ export default function OrderShipped({ activeTab }) {
                     onClick={() => setIsModalOpenCanceledS(true)}
                     className={`flex  items-center justify-center rounded-md border border-transparent text-base font-medium text-white ${disabled ? " bg-slate-700" : "hover:to-red-700 hover:from-red-800 bg-gradient-to-b from-red-600 to-red-700"}  `}
                 >
-                    Từ chối
+                    Trả hàng
                 </Button>
             </div>
             <div className='flex p-2 justify-center'>
@@ -460,7 +460,7 @@ export default function OrderShipped({ activeTab }) {
                 width={500}
                 // style={{ top: 20 }}
                 onCancel={handleCancelCanceled}>
-                <div className='text-lg p-6'>Bạn có chắc chắn muốn hủy đơn hàng này.</div>
+                <div className='text-lg p-6'>Đơn hàng này sẽ được trả về cửa hàng?</div>
                 <div className='flex'>
                     <ComButton
                         type="primary"
@@ -508,7 +508,7 @@ export default function OrderShipped({ activeTab }) {
                 width={500}
                 // style={{ top: 20 }}
                 onCancel={handleCancelCanceledS}>
-                <div className='text-lg p-6'>Bạn có chắc chắn muốn hủy đơn hàng đã chọn này không?</div>
+                <div className='text-lg p-6'>Những đơn hàng được chọn sẽ được trả về cửa hàng?</div>
 
                 <div className='flex'>
                     <ComButton
