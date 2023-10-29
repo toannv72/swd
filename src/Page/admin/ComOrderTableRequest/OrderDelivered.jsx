@@ -536,15 +536,18 @@ export default function OrderDelivered() {
 
                 <div className='flex items-center flex-col'>
                     <div>
-                        <Typography.Link onClick={() => showModalEdit(record)}>
-                            Chỉnh sửa
-                        </Typography.Link>
+                        {/* <Typography.Link onClick={() => showModalEdit(record)}>
+                            Hoàn thành
+                        </Typography.Link> */}
+                        <div>
+                            Hoàn thành
+                        </div>
                     </div>
-                    <div className='mt-2'>
+                    {/* <div className='mt-2'>
                         <Typography.Link onClick={() => showModalDelete(record)}>
-                            <div className='text-red-600'>  Xóa</div>
+                            <div className='text-red-600'> Trả hàng</div>
                         </Typography.Link>
-                    </div>
+                    </div> */}
                 </div>
             )
         },

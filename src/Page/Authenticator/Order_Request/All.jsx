@@ -64,7 +64,7 @@ export default function All() {
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Số Lượng</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Số Tiền </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Trạng Thái</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Hành Động</th>
+            {/* <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Hành Động</th> */}
           </tr>
         </thead>
         <tbody>
@@ -76,15 +76,17 @@ export default function All() {
               <td className="px-6 py-4 whitespace-nowrap">{orderData.shippingAddress}</td>
               <td className="px-6 py-4 whitespace-nowrap">{orderData.createdAt}</td>
               <td className="px-6 py-4 whitespace-nowrap">{orderData.quantity}</td><td className="px-6 py-4 whitespace-nowrap">{orderData.quantity}</td>
-              <td className="px-6 py-4 whitespace-nowrap">{orderData.status}</td>
-                <div className="col-span-1 mt-4 md:mt-0">
+              <td className="px-6 py-4 whitespace-nowrap">
+              <div className="col-span-1 mt-4 md:mt-0">
                   <div className="flex flex-col items-end mb-4">
                     <div className={`flex-none ${orderData.status === "Done" ? 'bg-emerald-500' : 'bg-red-500'} text-white rounded-full px-3 py-1 mb-2`}>
                       {orderData.status}
                     </div>
                   </div>
                 </div>
-                <div className="col-span-3 mt-4 md:mt-0">
+              </td>
+              
+                {/* <div className="col-span-3 mt-4 md:mt-0">
                   <div className="flex flex-col items-end mb-4">
                     <div className="flex items-center space-x-2">
                       <button className="text-gray-900 font-semibold rounded-md">
@@ -92,7 +94,7 @@ export default function All() {
                       </button>
                     </div>
                   </div>
-                </div>
+                </div> */}
             </tr>
           ))}
           </tbody>

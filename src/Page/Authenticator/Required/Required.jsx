@@ -306,6 +306,14 @@ export default function Required() {
                 />
             
               </div> */}
+              <div>
+  <ComInput
+    label={"Giá sản phẩm"}
+    placeholder={"Nhập giá sản phẩm"}
+    {...register("price")}
+    required
+  />
+</div>
 
               <div className="sm:col-span-2">
                 <div className="mt-2.5">
