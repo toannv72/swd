@@ -49,7 +49,7 @@ export default function Pending() {
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-semibold mb-4">{textApp.OrderHistory.title}</h1>
       {order.length === 0 ? (
-        <p>Loading...</p>
+        <p> </p>
       ) : order.error ? (
         <p>Error: {order.error.message}</p>
       ) : (
