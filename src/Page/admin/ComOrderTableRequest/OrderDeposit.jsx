@@ -350,7 +350,7 @@ export default function OrderDeposit({ activeTab }) {
                 <div className='flex items-center flex-col'>
                     <div>
                         <Typography.Link onClick={() => showModalEdit(record)}>
-                            Chấp nhận
+                        Đặt cọc
                         </Typography.Link>
                     </div>
                     <div className='mt-2'>

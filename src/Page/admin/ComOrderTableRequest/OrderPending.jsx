@@ -99,7 +99,7 @@ export default function OrderPending({ activeTab }) {
         }
     }, [selected]);
     const processing = () => {
-        putData('customOrder/admin/put', 'Processing', { orders: [orderRequestDefault.id] })
+        putData('customOrder/admin/put', 'Deposit', { orders: [orderRequestDefault.id] })
             .then((e) => {
                 setDataRun(!dataRun);
             })
@@ -120,7 +120,7 @@ export default function OrderPending({ activeTab }) {
     }
 
     const processingS = () => {
-        putData('customOrder/admin/put', 'Processing', { orders: selected })
+        putData('customOrder/admin/put', 'Deposit', { orders: selected })
             .then((e) => {
                 setDataRun(!dataRun);
             })

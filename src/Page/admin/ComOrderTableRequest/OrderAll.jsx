@@ -526,27 +526,27 @@ export default function OrderAll() {
             ),
 
         },
-        {
-            title: 'Action',
-            key: 'operation',
-            fixed: 'right',
+        // {
+        //     title: 'Action',
+        //     key: 'operation',
+        //     fixed: 'right',
 
-            render: (_, record) => (
+        //     render: (_, record) => (
 
-                <div className='flex items-center flex-col'>
-                    <div>
-                        <Typography.Link onClick={() => showModalEdit(record)}>
-                            Chỉnh sửa
-                        </Typography.Link>
-                    </div>
-                    <div className='mt-2'>
-                        <Typography.Link onClick={() => showModalDelete(record)}>
-                            <div className='text-red-600'>  Xóa</div>
-                        </Typography.Link>
-                    </div>
-                </div>
-            )
-        },
+        //         <div className='flex items-center flex-col'>
+        //             <div>
+        //                 <Typography.Link onClick={() => showModalEdit(record)}>
+        //                     Chỉnh sửa
+        //                 </Typography.Link>
+        //             </div>
+        //             <div className='mt-2'>
+        //                 <Typography.Link onClick={() => showModalDelete(record)}>
+        //                     <div className='text-red-600'>  Xóa</div>
+        //                 </Typography.Link>
+        //             </div>
+        //         </div>
+        //     )
+        // },
     ];
     const handleChangeSelect = (value) => {
         setSelectedMaterials(value);
