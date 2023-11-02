@@ -80,7 +80,7 @@ export default function Pprocessing({activeTab}) {
                             {textApp.OrderHistory.product.quantity} {product?.quantity}
                           </div>
                           <div className="text-sm text-gray-900">
-                            {textApp.OrderHistory.product.price} {productInfo?.price && formatCurrency(productInfo?.price)}
+                            {textApp.OrderHistory.product.price} {productInfo?.reducedPrice && formatCurrency(productInfo?.reducedPrice)}
                           </div>
                         </li>
                       );

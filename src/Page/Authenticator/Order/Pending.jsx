@@ -85,7 +85,7 @@ export default function Pending({activeTab}) {
                             {textApp.OrderHistory.product.quantity} {product?.quantity}
                           </div>
                           <div className="text-sm text-gray-900">
-                            {textApp.OrderHistory.product.price} {formatCurrency(productInfo?.price)}
+                            {textApp.OrderHistory.product.price} {formatCurrency(productInfo?.reducedPrice)}
                           </div>
                         </li>
                       );
