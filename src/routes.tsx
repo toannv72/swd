@@ -12,14 +12,13 @@ import Order from "./Page/Authenticator/Order/Order";
 import Logout from "./Page/Authenticator/Logout/Logout"; 
 import TableOrder from "./Page/admin/TableOrder"; 
 import Invoice from "./Page/Authenticator/Payment/Invoice";
-
 import Required from "./Page/Authenticator/Required/Required"
 import TableUser from "./Page/Admin2/TableUser";
 import Dashboard from "./Page/manager/dashboard";
- 
-
 import ShowAll from "./Page/Authenticator/ShowAll/ShowAll";
 import Search from "./Page/Authenticator/Search/Search";
+import ProductNew from "./Page/Authenticator/ProductShow/Productnew";
+import ProductSold from "./Page/Authenticator/ProductShow/Productsold";
 export const routers = createBrowserRouter([ 
   { 
     path: "*", 
@@ -87,5 +86,13 @@ export const routers = createBrowserRouter([
   { 
     path: "/search/:search", 
     element: <Search/>, 
+  },
+  { 
+    path: "/product/new", 
+    element: <ProductNew/>, 
+  },
+  { 
+    path: "/product/sold", 
+    element: <ProductSold/>, 
   },
 ]); 
