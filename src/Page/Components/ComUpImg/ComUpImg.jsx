@@ -15,17 +15,29 @@ const ComUpImg = ({onChange}) => {
       return true;
   };
 
-  const handleFileChange = ({ fileList }) => {
-      if (fileList.length > maxImages) {
-          message.error(`Chỉ được chọn tối đa ${maxImages} ảnh.`);
-          setFileList(fileList.slice(0, maxImages)); // Giới hạn số lượng ảnh được chọn
-          return;
-        }
-    const filteredFileList = fileList.filter((file) => isImageFile(file));
-    setFileList(filteredFileList);
-    onChange(filteredFileList)
-  };
+  // const handleFileChange = ({ fileList }) => {
+  //     if (fileList.length > maxImages) {
+  //         message.error(`Chỉ được chọn tối đa ${maxImages} ảnh.`);
+  //         setFileList(fileList.slice(0, maxImages)); // Giới hạn số lượng ảnh được chọn
+  //         return;
+  //       }
+  //   const filteredFileList = fileList.filter((file) => isImageFile(file));
+  //   setFileList(filteredFileList);
+  //   onChange(filteredFileList)
+  // };
 
+  const handleFileChange = ({ fileList }) => {
+    const filteredFileList = fileList.filter((file) => isImageFile(file));
+    if (filteredFileList.length > maxImages) {
+      message.error(`Chỉ được chọn tối đa ${maxImages} ảnh.`);
+      const firstFiveImages = filteredFileList.slice(0, maxImages);
+      setFileList(firstFiveImages);
+      onChange(firstFiveImages);
+    } else {
+      setFileList(filteredFileList);
+      onChange(filteredFileList);
+    }
+  };
   return (
     <>
       <Upload

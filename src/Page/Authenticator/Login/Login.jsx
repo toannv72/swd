@@ -72,7 +72,7 @@ export default function Login() {
                     return navigate('/staff/product/table')
                 }
                 if (data._doc.role==='manager') {
-                    return navigate('/manager')
+                    return navigate('/manager/dashboard')
                 }
                 if (data._doc.role==='admin') {
                     return navigate('/admin/tableUser')
