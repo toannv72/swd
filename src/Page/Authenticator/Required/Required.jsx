@@ -37,21 +37,12 @@ export default function Required() {
   const [disabled, setDisabled] = useState(false);
   const [image, setImages] = useState("");
   const [api, contextHolder] = notification.useNotification();
-  console.log("image", image);
-  const CreateProductMessenger = yup.object({
-    // orderName: khôn được nhập số
-    name: yup
-      .string()
-      .matches(/^[a-zA-Z ]*$/, "Vui lòng không nhập số và kí tự đặc biệt")
-      .required("Vui lòng nhập tên người đặt hàng"),
 
-    bird: yup
-      .string()
-      .matches(
-        /^[a-zA-Z ]*$/,
-        "Vui lòng nhập tên không có số và kí tự đặc biệt"
-      )
-      .required("Vui lòng nhập tên chim"),
+  const CreateProductMessenger = yup.object({
+
+    name: yup.string().required(textApp.Payment.information.message.name),
+    bird: yup.string().required(textApp.Payment.information.message.name),
+
     email: yup
       .string()
       .email("Vui lòng nhập đúng định dạng gmail")
@@ -62,13 +53,7 @@ export default function Required() {
       .min(10, "Số điện thoại phải có ít nhất 10 chữ số")
       .max(10, "Số điện thoại không được quá 10 chữ số")
       .required("Vui lòng nhập số điện thoại"),
-
-    // quantity: yup
-    //   .number()
-    //   .min(1, "Số lượng phải lớn hơn 0")
-    //   .typeError("Số lượng phải là số")
-    //   .required("Vui lòng nhập số lượng"),
-
+    quantity: yup.number().typeError("Số lượng không được để trống").min(1, textApp.CreateProduct.message.quantityMin).required('Số lượng không được để trống'),
     material: yup.array().required(textApp.CreateProduct.message.material),
     spokes: yup
       .number()
@@ -77,30 +62,29 @@ export default function Required() {
       .required("Vui lòng nhập số nan")
       .typeError("Số nan phải là số"),
     shippingAddress: yup.string().required("Vui lòng nhập địa chỉ giao hàng"),
-
     description: yup
       .string()
       .required(textApp.CreateProduct.message.description),
   });
-  const createOrderRequestDefault = {
-    price: 1000,
-    reducedPrice: 1000,
+  const createProductRequestDefault = {
+    quantity: 1,
+
   };
   const methods = useForm({
     resolver: yupResolver(CreateProductMessenger),
     defaultValues: {
       name: "",
-      bird: "",
-      email: "",
       phone: "",
-      spokes: "",
-      image: "",
+      email: "",
+      bird: "",
       material: "",
-      // quantity: 1,
+      image: "",
+      spokes: "",
+      quantity: 1,
       shippingAddress: "",
       description: "",
     },
-    values: createOrderRequestDefault,
+    values: createProductRequestDefault
   });
   const { handleSubmit, register, setFocus, watch, setValue } = methods;
 
@@ -260,9 +244,9 @@ export default function Required() {
                   required
                 />
               </div>
-              {/* <div>
+              <div>
                 <ComNumber
-                  label={"Số luợng"}
+                  label={"Số lượng"}
                   placeholder={"Nhập số lượng"}
                   // type="numbers"
                   min={1}
@@ -270,7 +254,7 @@ export default function Required() {
                   {...register("quantity")}
                   required
                 />
-              </div> */}
+              </div>
               <div className="">
                 <ComSelect
                   size={"large"}
@@ -320,8 +304,15 @@ export default function Required() {
                   />
                 </div>
               </div>
-              <div className="sm:col-span-1">
-                <ComUpImg onChange={onChange} multiple={false} />
+              <div className="sm:col-span-2">
+                <label className="text-paragraph font-bold">
+                  Hình ảnh
+                  <span className="text-paragraph font-bold text-error-7 text-red-500">
+                    *
+                  </span>
+
+                </label>
+                <ComUpImg numberImg={1} onChange={onChange} multiple={false} />
               </div>
             </div>
             <div className="mt-10">

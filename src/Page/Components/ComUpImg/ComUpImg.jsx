@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { UploadOutlined } from '@ant-design/icons';
 import { Button, Upload ,message } from 'antd';
 import { PlusOutlined } from "@ant-design/icons";
-const ComUpImg = ({onChange}) => {
+const ComUpImg = ({onChange,numberImg}) => {
   const [fileList, setFileList] = useState([]);
-  const maxImages = 5;
+  const maxImages = numberImg||5;
   const isImageFile = (file) => {
     const acceptedFormats = ['.jpg', '.jpeg', '.png', '.gif'];
     const fileExtension = file.name.toLowerCase().slice(-4); // Lấy phần mở rộng của tệp
