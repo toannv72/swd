@@ -8,7 +8,7 @@ export default function Done({activeTab}) {
 
   useEffect(() => {
   
-      getData('/product', {})
+      getData('/product/staff', {})
         .then((productData) => {
        
             setProducts(productData?.data);

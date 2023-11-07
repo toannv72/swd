@@ -8,7 +8,7 @@ export default function Transporting({activeTab}) {
 
   useEffect(() => {
   
-      getData('/product', {})
+      getData('/product/staff', {})
         .then((productData) => {
        
             setProducts(productData?.data);

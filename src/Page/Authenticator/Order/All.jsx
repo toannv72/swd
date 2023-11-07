@@ -5,11 +5,10 @@ import { getData } from '../../../api/api';
 export default function Pending() {
   const [order, setOrder] = useState([]);
   const [products, setProducts] = useState([]);
-  const [dataRun, setDataRun] = useState(false);
 
   useEffect(() => {
   
-      getData('/product', {})
+      getData('/product/staff', {})
         .then((productData) => {
        
             setProducts(productData?.data);
