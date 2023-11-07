@@ -290,6 +290,7 @@ export const textApp = {
         status4:"Đã hủy",
         status5:"Trả hàng",
         status6:"Tất cả",
+        status7:"Chờ đặt cọc",
     },
     value:{
         status: "pending",
@@ -299,6 +300,7 @@ export const textApp = {
         status4:"cancel",
         status5:"return",
         status6:"all",
+        status7:"deposit"
     },
     product:{
         quantity:"Số lượng: ",

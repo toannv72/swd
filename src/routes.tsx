@@ -20,6 +20,8 @@ import Search from "./Page/Authenticator/Search/Search";
 import ProductNew from "./Page/Authenticator/ProductShow/Productnew";
 import ProductSold from "./Page/Authenticator/ProductShow/Productsold";
 import ProductsAll from "./Page/Authenticator/ProductShow/Productsall";
+import OrderRequest from "./Page/Authenticator/Order_Request/OrderRequest";
+import TableOrderRequest from "./Page/admin/TableOrderRequest";
 export const routers = createBrowserRouter([ 
   { 
     path: "*", 
@@ -99,5 +101,13 @@ export const routers = createBrowserRouter([
   { 
     path: "/product/all", 
     element: <ProductsAll/>, 
+  },
+  {
+    path: "/orderRequest",
+    element: <OrderRequest />, 
+  },
+  {
+    path: "/staff/orderRequest",
+    element: <TableOrderRequest />, 
   },
 ]); 

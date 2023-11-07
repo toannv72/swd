@@ -72,50 +72,7 @@ export default function ComHeaderStaff() {
             <img className="h-16 w-auto" src={images.logo} alt="" />
           </div>
 
-          {/* <Popover.Group className="hidden lg:flex lg:gap-x-12">
-            <Popover className="relative">
-              <Popover.Button className="flex items-center gap-x-1 text-sm font-semibold leading-6  text-indigo-600 hover:text-indigo-500 ">
-                {textApp.HeaderAdmin.product}
-                <ChevronDownIcon className="h-5 w-5 flex-none font-semibold text-indigo-600 hover:text-indigo-500 " aria-hidden="true" />
-              </Popover.Button>
-
-              <Transition
-                as={Fragment}
-                enter="transition ease-out duration-200"
-                enterFrom="opacity-0 translate-y-1"
-                enterTo="opacity-100 translate-y-0"
-                leave="transition ease-in duration-150"
-                leaveFrom="opacity-100 translate-y-0"
-                leaveTo="opacity-0 translate-y-1"
-              >
-                <Popover.Panel className="absolute -left-8 top-full z-10 mt-3  w-auto overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-gray-900/5">
-                  <div className="p-2">
-                    {products.map((item) => (
-                      <div
-                        key={item.name}
-                        className="group relative flex items-center gap-x-6 rounded-lg p-1 text-sm leading-6 hover:bg-gray-50"
-                      >
-
-                        <div className="min-w-full ">
-                          <ComLink to={item.href} className=" font-semibold text-gray-900 whitespace-nowrap ">
-                            {item.name}
-                          </ComLink>
-                          <p className="mt-1 text-gray-600">{item.description}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-
-                </Popover.Panel>
-              </Transition>
-            </Popover>
-
-          </Popover.Group>
-          <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-            <Link to={routs['/logout'].link} className="text-sm font-semibold leading-6 text-gray-900">
-              {routs['/logout'].name}
-            </Link>
-          </div> */}
+         
         </nav>
         <Dialog as="div" className="" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
           <div className="fixed inset-0 z-10" />
@@ -136,6 +93,18 @@ export default function ComHeaderStaff() {
                       <ClipboardDocumentListIcon className="h-5 w-5" />
                     </ListItemPrefix>
                     {routs['/tableOrder'].name}
+                    <ListItemSuffix>
+                      <Chip value="" size="sm" variant="ghost" color="blue-gray" className="rounded-full" />
+                    </ListItemSuffix>
+                  </ListItem>
+                </Link>
+
+                <Link to={routs['/orderRequest'].link}>
+                  <ListItem>
+                    <ListItemPrefix>
+                      <ClipboardDocumentListIcon className="h-5 w-5" />
+                    </ListItemPrefix>
+                    {routs['/orderRequest'].name}
                     <ListItemSuffix>
                       <Chip value="" size="sm" variant="ghost" color="blue-gray" className="rounded-full" />
                     </ListItemSuffix>
