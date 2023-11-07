@@ -5,25 +5,27 @@ import { ComLink } from "../../Components/ComLink/ComLink";
 import images from "../../../img";
 import ComHeader from "../../Components/ComHeader/ComHeader";
 import ComFooter from "../../Components/ComFooter/ComFooter";
-import { Pagination } from "antd";
+import { InputNumber, Pagination, Select } from "antd";
 
 
 
 export default function ProductSold() {
-    const { search } = useParams();
+
     const [products, setProducts] = useState([])
     const [page, setPage] = useState(1)
-
+    const [sortPrice, setSortPrice] = useState(0)
+    const [minPrice, setMinPrice] = useState(1000)
+    const [maxPrice, setMaxPrice] = useState(10000000)
+   
     useEffect(() => {
-        getData(`/product/sold?limit=9&page=${page}`)
+        getData(`/product/sold?limit=9&page=${page}&sortPrice=${sortPrice}&minPrice=${minPrice}&maxPrice=${maxPrice}`)
             .then((product) => {
                 setProducts(product.data)
             })
             .catch((error) => {
                 console.log(error);
             })
-    }, [page]);
-
+    }, [page, sortPrice, minPrice, maxPrice]);
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [page]);
@@ -61,11 +63,63 @@ export default function ProductSold() {
             </>
         )
     }
+    const changeSelect = (value) => {
+        console.log(`selected ${value}`);
+        setSortPrice(value)
+    };
+
+    const onChangePriceMin = (value) => {
+        setMinPrice(value)
+
+    };
+    const onChangePriceMax = (value) => {
+        setMaxPrice(value)
+    };
     return (
         <>
             <ComHeader />
             <div className="bg-white p-4">
                 <div className=" mx-auto  max-w-2xl px-4 py-4 sm:px-6 sm:py-4  lg:max-w-7xl lg:px-2">
+                <div className="flex gap-2 mb-2">
+                        Giá giao động
+                        <InputNumber
+                            style={{
+                                width: 120,
+                            }}
+                            defaultValue={1000}
+                            formatter={(value) => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                            parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
+                            onChange={onChangePriceMin}
+                        />
+
+                        <InputNumber
+                            defaultValue={10000000}
+                            style={{
+                                width: 120,
+                            }}
+                            formatter={(value) => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                            parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
+                            onChange={onChangePriceMax}
+                        />
+                        <Select
+                            defaultValue="Sắp xếp theo giá tiền"
+                            style={{
+                                width: 120,
+                            }}
+                            onChange={changeSelect}
+                            options={[
+                                {
+                                    label: 'Tăng dần',
+                                    value: '1',
+                                },
+                                {
+                                    label: 'Giảm dần',
+                                    value: '-1',
+                                },
+
+                            ]}
+                        />
+                    </div>
                     <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
                         {products?.docs?.map((product, index) => (
                             index !== 8 ? <ComLink key={index} to={`/product/${product._id}`} className="shadow-md  border-solid border-2 border-white hover:border-zinc-400">

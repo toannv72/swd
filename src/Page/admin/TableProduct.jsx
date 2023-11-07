@@ -553,17 +553,7 @@ export default function TableProduct() {
             )
         },
     ];
-    const handleChangeSelect = (value) => {
-        setSelectedMaterials(value);
-    };
-    const handleValueChangeSelect = (e, value) => {
-        if (value.length === 0) {
-            setValue("material", null, { shouldValidate: true });
-        } else {
-            setValue("material", value, { shouldValidate: true });
 
-        }
-    };
     const handleChange = (e, value) => {
         console.log(value);
         setSelectedMaterials(value);

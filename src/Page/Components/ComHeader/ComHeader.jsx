@@ -5,8 +5,6 @@ import {
   Bars3Icon,
   ShoppingBagIcon,
   XMarkIcon,
-  HomeIcon,
-  PencilSquareIcon
 } from "@heroicons/react/24/outline";
 import ShoppingCart from "../../Authenticator/ShoppingCart/ShoppingCart";
 import { routs } from "../../../constants/ROUT";
@@ -23,8 +21,9 @@ import { useStorage } from "../../../hooks/useLocalStorage";
 
 const navigation = {
   pages: [
-    { name: textApp.Header.home, href: "/", icon: <HomeIcon class="h-6 w-6 text-gray-500" /> },
-    { name: textApp.Header.required, href: "/required", icon: <PencilSquareIcon class="h-6 w-6 text-gray-500"/> },
+    { name: textApp.Header.home, href: "/",  },
+    { name: "Sản phẩm", href: "/product/sold",  },
+    { name: textApp.Header.required, href: "/required", },
   ],
 
 };

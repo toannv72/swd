@@ -72,9 +72,6 @@ export default function CreateProduct() {
         return typeof number === 'number' && isFinite(number) && Math.floor(number) === number;
     }
     const onSubmit = (data) => {
-        console.log(data);
-        console.log(data.reducedPrice % 1000 !== 0);
-        console.log(data.reducedPrice % 1000);
 
         if (data.price % 1000 !== 0) {
             api["error"]({
