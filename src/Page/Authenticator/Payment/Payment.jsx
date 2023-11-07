@@ -145,7 +145,7 @@ export default function Payment(props) {
                                     <ComInput
                                         placeholder={textApp.Payment.information.placeholder.phone}
                                         label={textApp.Payment.information.label.phone}
-
+                                        type={"numbers"}
                                         {...register("phone")}
                                         required
                                     />

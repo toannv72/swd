@@ -44,6 +44,43 @@ export default function Pending() {
       });
     }
 }
+function getStatusClass(status) {
+  switch (status) {
+    case 'Pending':
+      return 'bg-yellow-500';
+    case 'Processing':
+      return 'bg-orange-500';
+    case 'Shipped':
+      return 'bg-blue-500';
+    case 'Delivered':
+      return 'bg-green-500';
+    case 'Canceled':
+      return 'bg-red-500';
+    case 'Returned':
+      return 'bg-purple-500';
+    default:
+      return '';
+  }
+}
+
+function getStatusText(status) {
+  switch (status) {
+    case 'Pending':
+      return 'Chờ xử lý';
+    case 'Processing':
+      return 'Đang xử lý';
+    case 'Shipped':
+      return 'Đang vận chuyển';
+    case 'Delivered':
+      return 'hoàn thành';
+    case 'Canceled':
+      return 'Đã hủy';
+    case 'Returned':
+      return 'Đã trả hàng';
+    default:
+      return '';
+  }
+}
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-semibold mb-4">{textApp.OrderHistory.title}</h1>
@@ -89,8 +126,8 @@ export default function Pending() {
                 </div>
                 <div className="col-span-1 mt-4 md:mt-0">
                   <div className="flex flex-col items-end mb-4">
-                  <div className={`flex-none ${orderData.status === "Delivered" ? 'bg-emerald-500' : (orderData.status === "Canceled" || orderData.status === "Returned" ? 'bg-red-500' : 'bg-yellow-500')} text-white rounded-full px-3 py-1 mb-2`}>
-                    {orderData.status === "Delivered" ? "Đã hoàn thành" : (orderData.status === "Canceled" ? "Đã hủy" : (orderData.status === "Returned" ? "Trả hàng" : (orderData.status === "Pending" ? "Chờ duyệt" : (orderData.status === "Processing" ? "Đang xử lí" : "Đang vận chuyển"))))}
+                  <div className={`flex-none text-white rounded-full px-3 py-1 mb-2 ${getStatusClass(orderData?.status)}`}>
+                  {getStatusText(orderData?.status)}
                   </div>
                   </div>
                 </div>

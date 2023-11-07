@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import { getData } from "../../../api/api";
 import { ComLink } from "../../Components/ComLink/ComLink";
 import images from "../../../img";
 import ComHeader from "../../Components/ComHeader/ComHeader";
 import ComFooter from "../../Components/ComFooter/ComFooter";
-import { Button, InputNumber, Pagination, Select } from "antd";
+import {  InputNumber, Pagination, Select } from "antd";
 
 
 
@@ -85,7 +84,7 @@ export default function ProductNew() {
             <div className="bg-white p-4">
 
                 <div className=" mx-auto  max-w-2xl px-4 py-4 sm:px-6 sm:py-4  lg:max-w-7xl lg:px-2">
-
+                <h2 className="bg-red-500 h-12 flex items-center p-2 text-2xl font-bold tracking-tight text-white mb-4">Sản phẩm mới</h2>
                     <div className="flex gap-2 mb-2">
                         Giá giao động
                         <InputNumber

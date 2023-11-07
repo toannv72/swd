@@ -19,6 +19,7 @@ import ShowAll from "./Page/Authenticator/ShowAll/ShowAll";
 import Search from "./Page/Authenticator/Search/Search";
 import ProductNew from "./Page/Authenticator/ProductShow/Productnew";
 import ProductSold from "./Page/Authenticator/ProductShow/Productsold";
+import ProductsAll from "./Page/Authenticator/ProductShow/Productsall";
 export const routers = createBrowserRouter([ 
   { 
     path: "*", 
@@ -94,5 +95,9 @@ export const routers = createBrowserRouter([
   { 
     path: "/product/sold", 
     element: <ProductSold/>, 
+  },
+  { 
+    path: "/product/all", 
+    element: <ProductsAll/>, 
   },
 ]); 

@@ -22,7 +22,7 @@ import { useStorage } from "../../../hooks/useLocalStorage";
 const navigation = {
   pages: [
     { name: textApp.Header.home, href: "/",  },
-    { name: "Sản phẩm", href: "/product/sold",  },
+    { name: "Sản phẩm", href: "/product/all",  },
     { name: textApp.Header.required, href: "/required", },
   ],
 
