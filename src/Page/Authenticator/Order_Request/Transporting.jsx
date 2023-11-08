@@ -18,7 +18,7 @@ export default function Transporting({activeTab}) {
           console.error("Error fetching products:", error);
         });
 
-      getData('customOrder/user/deposit', {})
+      getData('customOrder/user/shipped', {})
         .then((orderData) => {
           setOrder(orderData?.data?.docs);
     
