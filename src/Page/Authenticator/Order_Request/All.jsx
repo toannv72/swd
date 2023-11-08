@@ -85,16 +85,6 @@ export default function All() {
                   </div>
                 </div>
               </td>
-              
-                {/* <div className="col-span-3 mt-4 md:mt-0">
-                  <div className="flex flex-col items-end mb-4">
-                    <div className="flex items-center space-x-2">
-                      <button className="text-gray-900 font-semibold rounded-md">
-                        {textApp.OrderHistory.button.contact}
-                      </button>
-                    </div>
-                  </div>
-                </div> */}
             </tr>
           ))}
           </tbody>

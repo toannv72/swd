@@ -46,27 +46,42 @@ export default function Done({activeTab}) {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-semibold mb-4">{textApp.OrderHistory.title}</h1>
-      {order.length === 0 ? (
-        <p>Loading...</p>
-      ) : order.error ? (
-        <p>Error: {order.error.message}</p>
-      ) : (
-        <ul role="list" className="divide-y divide-gray-200">
-          {order.map((orderData) => (
-           <tr key={orderData.index}>
-           <td className="px-6 py-4 whitespace-nowrap">{orderData._id}</td>
-           <td className="px-6 py-4 whitespace-nowrap">{orderData.name}</td>
-           <td className="px-6 py-4 whitespace-nowrap">{orderData.phone}</td>
-           <td className="px-6 py-4 whitespace-nowrap">{orderData.shippingAddress}</td>
-           <td className="px-6 py-4 whitespace-nowrap">{orderData.createdAt}</td>
-           <td className="px-6 py-4 whitespace-nowrap">{orderData.quantity}</td><td className="px-6 py-4 whitespace-nowrap">{orderData.quantity}</td>
-           <td className="px-6 py-4 whitespace-nowrap">{orderData.status}</td>
-           
-         </tr>
-          ))}
-        </ul>
-      )}
-    </div>
+    <h1 className="text-2xl font-semibold mb-4">{textApp.OrderHistory.title}</h1>
+    {order.length === 0 ? (
+      <p>Loading...</p>
+    ) : order.error ? (
+      <p>Error: {order.error.message}</p>
+    ) : (
+
+      <table className="min-w-full divide-y divide-gray-200">
+        <thead>
+        <tr>
+          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tên Đơn Hàng</th>
+          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tên Người Đặt</th>
+          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Số Điện Thoại</th>
+          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Địa Chỉ</th>
+          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ngày Đặt Hàng</th>
+          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Số Lượng</th>
+          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Số Tiền </th>
+          {/* <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Trạng Thái</th> */}
+          {/* <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Hành Động</th> */}
+        </tr>
+      </thead>
+      <tbody>
+        {order.map((orderData) => (
+          <tr key={orderData.index}>
+            <td className="px-6 py-4 whitespace-nowrap">{orderData._id}</td>
+            <td className="px-6 py-4 whitespace-nowrap">{orderData.name}</td>
+            <td className="px-6 py-4 whitespace-nowrap">{orderData.phone}</td>
+            <td className="px-6 py-4 whitespace-nowrap">{orderData.shippingAddress}</td>
+            <td className="px-6 py-4 whitespace-nowrap">{orderData.createdAt}</td>
+            <td className="px-6 py-4 whitespace-nowrap">{orderData.quantity}</td>
+            <td className="px-6 py-4 whitespace-nowrap">{orderData.price}</td>
+          </tr>
+        ))}
+        </tbody>
+      </table>
+    )}
+  </div>
   );
 }
