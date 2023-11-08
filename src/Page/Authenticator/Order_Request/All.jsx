@@ -29,7 +29,7 @@ export default function All({activeTab}) {
     
         });
     // }
-  }, [[activeTab]]);
+  }, [activeTab]);
 
   const getProductById = (productId) => {
     // Tìm sản phẩm theo ID trong danh sách sản phẩm
