@@ -130,7 +130,11 @@ export const textApp = {
             m8: {
                 message: "Lỗi",
                 description: "Giá tiền giảm phải hợp lý!"
-            }
+            },
+            m9: {
+                message: "Thành công",
+                description: "Tạo đơn hàng thành công!"
+            },
         }
     },
     TableProduct: {

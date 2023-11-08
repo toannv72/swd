@@ -17,7 +17,7 @@ import ComSelect from "../../Components/ComInput/ComSelect";
 import bird from "../../../../src/img/bird-svgrepo-com.svg";
 import ComFooter from "../../Components/ComFooter/ComFooter";
 import ComHeader from "../../Components/ComHeader/ComHeader";
-
+import { useNavigate } from 'react-router-dom';
 const options = [
   {
     label: "Gỗ",
@@ -37,7 +37,7 @@ export default function Required() {
   const [disabled, setDisabled] = useState(false);
   const [image, setImages] = useState("");
   const [api, contextHolder] = notification.useNotification();
-
+  const navigate = useNavigate();
   const CreateProductMessenger = yup.object({
 
     name: yup.string().required(textApp.Payment.information.message.name),
@@ -123,15 +123,16 @@ export default function Required() {
           ...data, // Giữ lại các trường dữ liệu hiện có trong data
           image: "" + dataImg,
         };
-        console.log(updatedData);
+        console.log("updatedData: ",updatedData);
         postData("/customOrder/user", updatedData, {})
           .then((dataS) => {
-            console.log(dataS);
+            console.log("dataS: ",dataS);
             setDisabled(false);
             api["success"]({
-              message: textApp.CreateProduct.Notification.m2.message,
-              description: textApp.CreateProduct.Notification.m2.description,
+              message: textApp.CreateProduct.Notification.m9.message,
+              description: textApp.CreateProduct.Notification.m9.description,
             });
+            navigate(`/required/bill/${dataS._id}`);
           })
           .catch((error) => {
             api["error"]({

@@ -13,6 +13,7 @@ import Logout from "./Page/Authenticator/Logout/Logout";
 import TableOrder from "./Page/admin/TableOrder"; 
 import Invoice from "./Page/Authenticator/Payment/Invoice";
 import Required from "./Page/Authenticator/Required/Required"
+import RequiredSuccess from "./Page/Authenticator/Required/RequiredSuccess"
 import TableUser from "./Page/Admin2/TableUser";
 import Dashboard from "./Page/manager/dashboard";
 import ShowAll from "./Page/Authenticator/ShowAll/ShowAll";
@@ -50,6 +51,10 @@ export const routers = createBrowserRouter([
   { 
     path: "/required", 
     element: <Required />
+  },
+  { 
+    path: "/required/bill/:id", 
+    element: <RequiredSuccess />
   },
   { 
     path: "/staff/product/create",
