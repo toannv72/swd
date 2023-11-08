@@ -134,7 +134,7 @@ export default function OrderDelivered({ activeTab }) {
     const shipped = () => {
         putData('/order/admin/put', 'Delivered', { orders: [orderRequestDefault.id] })
             .then((e) => {
-              
+
                 setDataRun(!dataRun);
             })
             .catch(err => console.log(err))
@@ -178,7 +178,7 @@ export default function OrderDelivered({ activeTab }) {
             .catch((error) => {
                 console.error("Error fetching items:", error);
             });
-    }, [dataRun,activeTab]);
+    }, [dataRun, activeTab]);
 
 
     const getColumnSearchProps = (dataIndex, title) => ({
@@ -544,7 +544,7 @@ export default function OrderDelivered({ activeTab }) {
                 onCancel={closeModalDetail}>
                 <div className=" flex items-center justify-center">
                     <div className="p-4 md:p-8 lg:p-12 rounded-lg  w-full">
-                     
+
                         <div className="mb-4">
                             <h2 className="text-lg font-semibold mb-2">Thông tin sản phẩm:</h2>
                             {orderDetail?.detail?.products?.map((product, index) => {
@@ -574,6 +574,9 @@ export default function OrderDelivered({ activeTab }) {
                         <p className="text-gray-600 mb-2">
                             {textApp.Invoice.orderDate}:{" "}
                             {new Date(orderDetail?.detail?.createdAt).toLocaleDateString("en-US")}
+                        </p> <p className="text-gray-600 mb-2">
+                            Ngày hoàn thành:{" "}
+                            {new Date(orderDetail?.detail?.updatedAt).toLocaleDateString("en-US")}
                         </p>
                         <p className="text-gray-600 mb-2">
                             {textApp.Invoice.paymentMethod}
