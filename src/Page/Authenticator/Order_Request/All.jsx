@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { textApp } from "../../../TextContent/textApp";
 import { getData } from '../../../api/api';
 
-export default function All() {
+export default function All({activeTab}) {
   const [order, setOrder] = useState([]);
   const [products, setProducts] = useState([]);
   const [dataRun, setDataRun] = useState(false);
@@ -29,7 +29,7 @@ export default function All() {
     
         });
     // }
-  }, []);
+  }, [[activeTab]]);
 
   const getProductById = (productId) => {
     // Tìm sản phẩm theo ID trong danh sách sản phẩm
@@ -44,6 +44,47 @@ export default function All() {
           currency: 'VND',
       });
     }
+}
+function getStatusClass(status) {
+  switch (status) {
+    case 'Pending':
+      return 'bg-yellow-500';
+    case 'Processing':
+      return 'bg-orange-500';
+    case 'Shipped':
+      return 'bg-blue-500';
+    case 'Delivered':
+      return 'bg-green-500';
+    case 'Canceled':
+      return 'bg-red-500';
+    case 'Returned':
+      return 'bg-purple-500';
+    case 'Deposit':
+      return 'bg-yellow-500';
+    default:
+      return '';
+  }
+}
+
+function getStatusText(status) {
+  switch (status) {
+    case 'Pending':
+      return 'Chờ xử lý';
+    case 'Processing':
+      return 'Đang xử lý';
+    case 'Shipped':
+      return 'Đang vận chuyển';
+    case 'Delivered':
+      return 'Hoàn thành';
+    case 'Canceled':
+      return 'Đã hủy';
+    case 'Returned':
+      return 'Đã trả hàng';
+    case 'Deposit':
+    return 'Chờ đặt cọc';
+    default:
+      return '';
+  }
 }
   return (
     <div className="container mx-auto p-4">
@@ -79,8 +120,8 @@ export default function All() {
               <td className="px-6 py-4 whitespace-nowrap">
               <div className="col-span-1 mt-4 md:mt-0">
                   <div className="flex flex-col items-end mb-4">
-                    <div className={`flex-none ${orderData.status === "Done" ? 'bg-emerald-500' : 'bg-red-500'} text-white rounded-full px-3 py-1 mb-2`}>
-                      {orderData.status}
+                  <div className={`flex-none text-white rounded-full px-3 py-1 mb-2 ${getStatusClass(orderData?.status)}`}>
+                  {getStatusText(orderData?.status)}
                     </div>
                   </div>
                 </div>
