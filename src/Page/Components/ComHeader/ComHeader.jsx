@@ -21,8 +21,8 @@ import { useStorage } from "../../../hooks/useLocalStorage";
 
 const navigation = {
   pages: [
-    { name: textApp.Header.home, href: "/",  },
-    { name: "Sản phẩm", href: "/product/all",  },
+    { name: textApp.Header.home, href: "/", },
+    { name: "Sản phẩm", href: "/product/all", },
     { name: textApp.Header.required, href: "/required", },
   ],
 
@@ -136,10 +136,10 @@ export default function ComHeader({ dataCart, updateCart }) {
                             to={page.href}
                             className=" block p-2 font-medium text-gray-900"
                           >
-                           <div className="flex gap-2">
+                            <div className="flex gap-2">
                               {page.icon}
                               {page.name}
-                           </div>
+                            </div>
                           </Link>
                         </div>
                       ))}
@@ -210,9 +210,9 @@ export default function ComHeader({ dataCart, updateCart }) {
                           className="flex items-center text-base font-medium text-gray-700 hover:text-gray-800"
                         >
                           <div className="flex gap-2 justify-center">
-                              {page.icon}
-                              <p>{page.name}</p>
-                           </div>
+                            {page.icon}
+                            <p>{page.name}</p>
+                          </div>
                         </Link>
                       ))}
                     </div>
@@ -314,6 +314,20 @@ export default function ComHeader({ dataCart, updateCart }) {
                                   )}
                                 >
                                   {routs['/order'].name}
+                                </ComLink>
+
+                              )}
+                            </Menu.Item>
+                            <Menu.Item >
+                              {({ active }) => (
+                                <ComLink
+                                  to={'/orderRequest'}
+                                  className={classNames(
+                                    active ? 'bg-gray-100' : '',
+                                    'block px-4 py-2 text-sm text-gray-700'
+                                  )}
+                                >
+                                  Đơn hàng theo yêu cầu
                                 </ComLink>
 
                               )}

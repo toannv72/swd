@@ -64,7 +64,6 @@ const data = [
   },
 ];
 
-console.log("data"+ data[1].label);
 export default function OrderRequest() {
   const [activeTab, setActiveTab] = useState(data[0].value);
 

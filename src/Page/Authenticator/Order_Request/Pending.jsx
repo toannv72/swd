@@ -5,7 +5,6 @@ import { getData } from '../../../api/api';
 export default function Pending({activeTab}) {
   const [order, setOrder] = useState([]);
   const [products, setProducts] = useState([]);
-  const [dataRun, setDataRun] = useState(false);
 
   useEffect(() => {
   
@@ -31,12 +30,6 @@ export default function Pending({activeTab}) {
     // }
   }, [activeTab]);
 
-   console.log("order", order );
-  //  console.log("order_name", order
-  const getProductById = (productId) => {
-    // Tìm sản phẩm theo ID trong danh sách sản phẩm
-    return products?.docs?.find(product => product._id === productId);
-  };
 
   function formatCurrency(number) {
     // Sử dụng hàm toLocaleString() để định dạng số thành chuỗi với ngăn cách hàng nghìn và mặc định là USD.
@@ -85,10 +78,7 @@ export default function Pending({activeTab}) {
                   {orderData.amount === 0 ? '' : formatCurrency(orderData.amount)}
                 </td>
               <td className="px-6 py-4 whitespace-nowrap">{orderData.status}</td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <button className="bg-blue-500 text-white rounded-md px-2 py-1">{textApp.OrderHistory.button.cancel}</button>
-                <button className="text-gray-900 font-semibold rounded-md">{textApp.OrderHistory.button.contact}</button>
-              </td>
+            
             </tr>
           ))}
         </tbody>

@@ -62,10 +62,7 @@ export default function Pprocessing({activeTab}) {
            <td className="px-6 py-4 whitespace-nowrap">{orderData.createdAt}</td>
            <td className="px-6 py-4 whitespace-nowrap">{orderData.quantity}</td><td className="px-6 py-4 whitespace-nowrap">{orderData.quantity}</td>
            <td className="px-6 py-4 whitespace-nowrap">{orderData.status}</td>
-           <td className="px-6 py-4 whitespace-nowrap">
-             <button className="bg-blue-500 text-white rounded-md px-2 py-1">{textApp.OrderHistory.button.cancel}</button>
-             <button className="text-gray-900 font-semibold rounded-md">{textApp.OrderHistory.button.contact}</button>
-           </td>
+           
          </tr>
           ))}
         </ul>
