@@ -540,7 +540,6 @@ export default function OrderDelivered({ activeTab }) {
                 okType="primary text-black border-gray-700"
                 open={orderModalDetail}
                 width={500}
-                // style={{ top: 20 }}
                 onCancel={closeModalDetail}>
                 <div className=" flex items-center justify-center">
                     <div className="p-4 md:p-8 lg:p-12 rounded-lg  w-full">
