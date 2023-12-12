@@ -1,6 +1,6 @@
 # Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+this is BE [LiNK](https://github.com/toannv72/API_NodeJs).
 
 ## Available Scripts
 
