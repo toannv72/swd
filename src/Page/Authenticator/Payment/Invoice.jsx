@@ -1,14 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { textApp } from "../../../TextContent/textApp";
 import { Link, useLocation, useParams } from "react-router-dom";
-import { getData } from "../../../api/api";
+import { getData, postData } from "../../../api/api";
 import ComHeader from "../../Components/ComHeader/ComHeader";
 import ComFooter from "../../Components/ComFooter/ComFooter";
+import PageNotFound from "../404/PageNotFound";
 
 const InvoicePage = () => {
   const { id } = useParams();
   const [products, setProducts] = useState([]);
   const [order, setOrder] = useState(null);
+  const [error, setError] = useState(false);
+  const location = useLocation();
+  
+  useEffect(() => {
+    if (location?.search) {
+      postData(`/order/payment/bill/${id}${location?.search}`, {})
+      .then((productData) => {
+        setProducts(productData?.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching products:", error);
+      });
+    }
+ 
+
+  }, []);
 
   useEffect(() => {
     // Lấy danh sách sản phẩm
@@ -26,19 +43,19 @@ const InvoicePage = () => {
         setOrder(data.data);
       })
       .catch((error) => {
+        setError(true)
         console.error("Lỗi khi lấy dữ liệu đơn hàng:", error);
       });
-
   }, [id]);
 
   const getProductById = (productId) => {
     // Tìm sản phẩm theo ID trong danh sách sản phẩm
-    console.log(products?.docs);
+   
     return products?.docs?.find(product => product._id === productId);
   };
 
-  if (!order) {
-    return <div>Loading...</div>;
+  if (error) {
+    return <PageNotFound />;
   }
 
   return (
@@ -59,7 +76,7 @@ const InvoicePage = () => {
               // Sử dụng getProductById để lấy thông tin sản phẩm đầy đủ
               const fullProduct = getProductById(product.product);
               const materials = fullProduct?.material?.join(', ');
-              console.log(product.product)
+     
               return (
                 <div key={index} className="mb-4 flex items-center">
                   <img src={fullProduct?.image} alt={fullProduct?.name} className="w-24 h-24 object-cover rounded-lg" />
@@ -81,7 +98,7 @@ const InvoicePage = () => {
           </div>
           <p className="text-gray-600 mb-2">
             {textApp.Invoice.orderDate}:{" "}
-            {new Date(order.createdAt).toLocaleDateString("en-US")}
+            {new Date(order?.createdAt).toLocaleDateString("en-US")}
           </p>
           <p className="text-gray-600 mb-2">
             {textApp.Invoice.paymentMethod}

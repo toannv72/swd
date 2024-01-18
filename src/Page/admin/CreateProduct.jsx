@@ -279,27 +279,7 @@ export default function CreateProduct() {
                                 />
                             </div>
 
-                            {/* <div className="sm:col-span-2">
-                                <ComInput
-                                    label={textApp.CreateProduct.label.models}
-                                    placeholder={textApp.CreateProduct.placeholder.models}
-                                    required
-                                    type="text"
-                                    {...register("models")}
-                                />
-                            </div> */}
-
-                            {/* <div className="sm:col-span-2">
-                                <ComInput
-                                    label={textApp.CreateProduct.label.accessory}
-                                    placeholder={textApp.CreateProduct.placeholder.accessory}
-                                    required
-                                    type="text"
-                                    {...register("accessory")}
-                                />
-                            </div> */}
-
-
+                 
                             <div className="sm:col-span-2">
 
                                 <div className="mt-2.5">

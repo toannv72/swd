@@ -11,6 +11,7 @@ import * as yup from "yup"
 import { yupResolver } from '@hookform/resolvers/yup'
 import ComNumber from '../../Components/ComInput/ComNumber'
 import { Button, notification } from 'antd'
+import PageNotFound from '../404/PageNotFound'
 
 
 const reviews = { href: '#', average: 4, totalCount: 117 }
@@ -28,6 +29,7 @@ export default function Product() {
     const [sttCart, setSttCart] = useState(true)
     const [api, contextHolder] = notification.useNotification();
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || []);
+    const [error, setError] = useState(false);
 
     const location = useLocation();
 
@@ -57,6 +59,8 @@ export default function Product() {
                 }
             })
             .catch((error) => {
+                setError(true)
+
                 console.log(error);
             })
 
@@ -77,12 +81,12 @@ export default function Product() {
     function formatCurrency(number) {
         // Sử dụng hàm toLocaleString() để định dạng số thành chuỗi với ngăn cách hàng nghìn và mặc định là USD.
         if (typeof number === "number") {
-      
+
             return number.toLocaleString('en-US', {
                 style: 'currency',
                 currency: 'VND',
             });
-          }
+        }
     }
     const onSubmit = (data) => {
 
@@ -140,6 +144,9 @@ export default function Product() {
         setCart(JSON.parse(localStorage.getItem('cart')))
 
     }, [sttCart]);
+    if (error) {
+        return <PageNotFound />;
+    }
     return (
         <>
             {contextHolder}

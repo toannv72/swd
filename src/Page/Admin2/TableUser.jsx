@@ -7,21 +7,15 @@ import * as yup from "yup"
 import { SearchOutlined } from '@ant-design/icons';
 import { Button, Input, Modal, Radio, Space, Table, Typography, notification } from 'antd';
 import { textApp } from '../../TextContent/textApp';
-import { deleteData, getData, postData, putData } from '../../api/api';
-import { firebaseImgs } from '../../upImgFirebase/firebaseImgs';
+import { deleteData, getData, postData } from '../../api/api';
 import ComButton from '../Components/ComButton/ComButton';
-import ComUpImg from '../Components/ComUpImg/ComUpImg';
 import ComInput from '../Components/ComInput/ComInput';
-import ComTextArea from '../Components/ComInput/ComTextArea';
-import ComNumber from '../Components/ComInput/ComNumber';
-import ComSelect from '../Components/ComInput/ComSelect';
 import moment from 'moment/moment';
 import ComHeaderAdmin from '../Components/ComHeaderAdmin/ComHeaderAdmin';
 
 
 export default function TableUser() {
     const [disabled, setDisabled] = useState(false);
-    const [image, setImages] = useState([]);
     const [products, setProducts] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
