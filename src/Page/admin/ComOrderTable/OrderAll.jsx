@@ -553,7 +553,7 @@ export default function OrderAll({ activeTab }) {
                 onCancel={closeModalDetail}>
                 <div className=" flex items-center justify-center">
                     <div className="p-4 md:p-8 lg:p-12 rounded-lg  w-full">
-                     
+
                         <div className="mb-4">
                             <h2 className="text-lg font-semibold mb-2">Thông tin sản phẩm:</h2>
                             {orderDetail?.detail?.products?.map((product, index) => {

@@ -148,8 +148,9 @@ export default function Reissue() {
                                 disabled={disabled}
                                 htmlType="submit"
                                 type="primary"
+                                
                             >
-                                {textApp.Reissue.pageTitle}
+                                {textApp.Reissue.pageTitle} 
                             </ComButton>
 
 

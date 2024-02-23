@@ -12,11 +12,11 @@ import { useStorage } from "../../../hooks/useLocalStorage";
 import { useEffect, useState } from "react";
 import { postData } from "../../../api/api";
 import ComHeader from "../../Components/ComHeader/ComHeader";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FieldError } from "../../Components/FieldError/FieldError";
 import { useCookies } from "react-cookie";
 import ComFooter from "../../Components/ComFooter/ComFooter";
-
+import './login.css'
 
 export default function Login() {
     const [token, setToken] = useStorage("user", {});
@@ -42,15 +42,14 @@ export default function Login() {
     const methods = useForm({
         resolver: yupResolver(loginMessenger),
         defaultValues: {
-            // code: "",
             username: "",
             password: "",
-            // email: "",
         },
         values: LoginRequestDefault
     })
     const { handleSubmit, register, setFocus, watch, setValue } = methods
     const onSubmit = (data) => {
+        console.log(111111111,data);
         setLoginError(false)
 
         setLogin(false)
@@ -94,10 +93,10 @@ export default function Login() {
     return (
         <>
             <ComHeader />
-            <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+            <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 ">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
 
-                    <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+                    <h2 style={{}} className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 Login-h2">
                         Đăng nhập
                     </h2>
                 </div>
@@ -151,6 +150,7 @@ export default function Login() {
                         <ComLink to={routs["/reissue"].link} >
                             <>{routs["/reissue"].name}</>
                         </ComLink>
+                        <Link to={'/'}>Home nef</Link>
                     </p>
                 </div>
             </div>
